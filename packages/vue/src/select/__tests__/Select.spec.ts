@@ -54,6 +54,35 @@ describe('Select', () => {
     wrapper.unmount()
   })
 
+  it('uses full width dropdown wrapper to match Input in form layouts', () => {
+    const wrapper = mount(Select, {
+      props: {
+        options
+      },
+      attachTo: document.body
+    })
+
+    expect(wrapper.classes()).toContain('w-full')
+    expect(wrapper.classes()).toContain('min-w-0')
+    expect(wrapper.find('[data-ui-select="true"]').classes()).toContain('w-full')
+    wrapper.unmount()
+  })
+
+  it('supports explicit trigger width while the control fills its wrapper', () => {
+    const wrapper = mount(Select, {
+      props: {
+        options,
+        width: 240
+      },
+      attachTo: document.body
+    })
+
+    expect((wrapper.element as HTMLElement).style.width).toBe('240px')
+    expect(wrapper.classes()).toContain('w-full')
+    expect(wrapper.find('[data-ui-select="true"]').classes()).toContain('w-full')
+    wrapper.unmount()
+  })
+
   it('renders multiple selected tags', () => {
     const wrapper = mount(Select, {
       props: {
@@ -85,6 +114,48 @@ describe('Select', () => {
     await input.trigger('keydown', { key: 'Enter', code: 'Enter' })
 
     expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['input'])
+    expect(document.body.querySelector('.ui-select-dropdown')).toBeNull()
+    wrapper.unmount()
+  })
+
+  it('selects the first available filtered option and closes with Enter', async () => {
+    const wrapper = mount(Select, {
+      props: {
+        options,
+        filterable: true
+      },
+      attachTo: document.body
+    })
+
+    const input = wrapper.find('input')
+    await input.trigger('focus')
+    await input.setValue('按钮')
+    await input.trigger('keydown', { key: 'Enter', code: 'Enter' })
+    await flushPromises()
+
+    expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['button'])
+    expect(document.body.querySelector('.ui-select-dropdown')).toBeNull()
+    wrapper.unmount()
+  })
+
+  it('closes dropdown after selecting an option in single mode', async () => {
+    const wrapper = mount(Select, {
+      props: {
+        options
+      },
+      attachTo: document.body
+    })
+
+    await wrapper.find('[data-ui-select="true"]').trigger('click')
+    await flushPromises()
+    expect(document.body.querySelector('.ui-select-dropdown')).not.toBeNull()
+
+    const firstOption = document.body.querySelector('.dropdown-item-wrapper') as HTMLElement
+    firstOption.click()
+    await flushPromises()
+
+    expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['button'])
+    expect(document.body.querySelector('.ui-select-dropdown')).toBeNull()
     wrapper.unmount()
   })
 

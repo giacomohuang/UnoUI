@@ -5,6 +5,7 @@ export const selectProps: ParamTableRow[] = [
   { name: 'options', type: 'SelectOption[]', default: '[]', desc: '选项数据源' },
   { name: 'placeholder', type: 'string', default: `'请选择'`, desc: '未选择时的占位文案' },
   { name: 'size', type: `'sm' | 'md' | 'lg'`, default: `'md'`, desc: '尺寸' },
+  { name: 'width', type: 'string | number', default: 'undefined', desc: '选择器触发器宽度，未传时撑满父级' },
   { name: 'disabled', type: 'boolean', default: 'false', desc: '是否禁用' },
   { name: 'clearable', type: 'boolean', default: 'false', desc: '是否允许一键清空' },
   { name: 'multiple', type: 'boolean', default: 'false', desc: '是否启用多选模式' },
@@ -58,6 +59,10 @@ const options: SelectOption[] = [
   <!-- 单选 -->
   <Select v-model="value" :options="options"
           clearable placeholder="选择组件" />
+
+  <!-- 固定宽度 -->
+  <Select v-model="value" :options="options"
+          width="240px" placeholder="固定宽度" />
 
   <!-- 可过滤 -->
   <Select v-model="value" :options="options"

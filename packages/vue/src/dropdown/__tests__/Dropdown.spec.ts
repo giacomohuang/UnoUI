@@ -48,6 +48,63 @@ afterEach(() => {
 })
 
 describe('Dropdown', () => {
+  it('keeps inline trigger width by default and supports full width mode', () => {
+    const inline = mount(Dropdown, {
+      props: {
+        items
+      },
+      slots: {
+        trigger: '<button>inline</button>',
+        item: '<button>item</button>'
+      },
+      attachTo: document.body
+    })
+    const full = mount(Dropdown, {
+      props: {
+        items,
+        fullWidth: true
+      },
+      slots: {
+        trigger: '<button>full</button>',
+        item: '<button>item</button>'
+      },
+      attachTo: document.body
+    })
+
+    expect(inline.classes()).toContain('inline-block')
+    expect(inline.classes()).not.toContain('w-full')
+    expect(full.classes()).toContain('w-full')
+    expect(full.classes()).toContain('min-w-0')
+    inline.unmount()
+    full.unmount()
+  })
+
+  it('marks keyboard active item when slotted item has hover background', async () => {
+    const wrapper = mount(Dropdown, {
+      props: {
+        open: true,
+        items,
+        valueKey: 'value',
+        contentClass: 'dropdown-keyboard-active-test'
+      },
+      slots: {
+        trigger: '<button>open</button>',
+        item: '<div class="hover:bg-secondary px-3 py-2">item</div>'
+      },
+      attachTo: document.body
+    })
+    await nextTick()
+
+    const handled = (wrapper.vm as unknown as { handleKeyDown: (event: KeyboardEvent) => boolean }).handleKeyDown(new KeyboardEvent('keydown', { code: 'ArrowDown', key: 'ArrowDown', bubbles: true }))
+    await nextTick()
+
+    const activeItem = document.body.querySelector('.dropdown-keyboard-active-test .dropdown-item-wrapper.is-active')
+    expect(handled).toBe(true)
+    expect(activeItem).not.toBeNull()
+    expect(activeItem?.firstElementChild?.className).toContain('hover:bg-secondary')
+    wrapper.unmount()
+  })
+
   it('opens from hover trigger and emits openChange source', async () => {
     vi.useFakeTimers()
     const wrapper = mount(Dropdown, {

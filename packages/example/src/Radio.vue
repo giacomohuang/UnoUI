@@ -55,6 +55,41 @@
           </Radio>
         </div>
       </div>
+
+      <div class="grid gap-2 md:grid-cols-[72px_minmax(0,1fr)] md:items-start">
+        <span class="pt-1.5 text-xs font-medium text-tertiary">按钮</span>
+        <div class="grid gap-3">
+          <div class="inline-flex w-fit items-center">
+            <Radio v-for="option in radioButtonOptions" :key="option.value" v-model="radioButtonValue" type="button" name="radio-button-outline" :value="option.value" :disabled="option.disabled">
+              {{ option.label }}
+            </Radio>
+          </div>
+          <div class="inline-flex w-fit items-center">
+            <Radio
+              v-for="option in radioButtonOptions"
+              :key="`solid-${option.value}`"
+              v-model="radioButtonSolidValue"
+              type="button"
+              button-style="solid"
+              name="radio-button-solid"
+              :value="option.value"
+              :disabled="option.disabled"
+            >
+              {{ option.label }}
+            </Radio>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid gap-2 md:grid-cols-[72px_minmax(0,1fr)] md:items-start">
+        <span class="pt-2 text-xs font-medium text-tertiary">方法</span>
+        <div class="flex flex-wrap items-center gap-3 rounded-md bg-secondary/60 px-3 py-3">
+          <Radio ref="radioFocusRef" v-model="radioFocusValue" type="button" button-style="solid" name="radio-focus" value="focus">可聚焦</Radio>
+          <Button size="sm" variant="outline" icon="i-lucide:focus" @click="radioFocusRef?.focus()">聚焦</Button>
+          <Button size="sm" variant="outline" icon="i-lucide:circle-slash" @click="radioFocusRef?.blur()">失焦</Button>
+          <span class="text-xs text-tertiary">当前：{{ radioFocusValue }}</span>
+        </div>
+      </div>
     </div>
 
     <!-- API 参数 -->
@@ -72,6 +107,9 @@
           </TabPane>
           <TabPane name="slots" label="Slots">
             <ParamTable :columns="slotsColumns" :rows="radioSlots" />
+          </TabPane>
+          <TabPane name="exposes" label="Exposes">
+            <ParamTable :columns="exposedColumns" :rows="radioExposes" />
           </TabPane>
         </Tabs>
       </div>
@@ -92,16 +130,23 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
+import { Button } from '@unoui/vue/button'
 import { Radio } from '@unoui/vue/radio'
 import { Tabs, TabPane } from '@unoui/vue/tab'
-import { propsColumns, emitsColumns, slotsColumns } from '@/data/shared'
-import { radioProps, radioEmits, radioSlots, radioCodeExample } from '@/data/radio'
+import { propsColumns, emitsColumns, slotsColumns, exposedColumns } from '@/data/shared'
+import { radioProps, radioEmits, radioSlots, radioExposes, radioCodeExample } from '@/data/radio'
 import ParamTable from '@/components/ParamTable.vue'
 import CodeBlock from '@/components/CodeBlock.vue'
 
 type RadioSize = 'sm' | 'md' | 'lg'
 
+interface RadioExpose {
+  focus: () => void
+  blur: () => void
+}
+
 const radioApiTab = ref('props')
+const radioFocusRef = ref<RadioExpose | null>(null)
 const radioSizes: RadioSize[] = ['sm', 'md', 'lg']
 const radioStatusValue = ref('controlled')
 const radioModeValue = ref('map')
@@ -118,4 +163,13 @@ const radioBorderOptions = [
   { label: '月报', value: 'monthly' },
   { label: '冻结', value: 'locked', disabled: true }
 ]
+const radioButtonValue = ref('map')
+const radioButtonSolidValue = ref('list')
+const radioButtonOptions = [
+  { label: '地图', value: 'map' },
+  { label: '列表', value: 'list' },
+  { label: '统计', value: 'stats' },
+  { label: '禁用', value: 'disabled', disabled: true }
+]
+const radioFocusValue = ref('focus')
 </script>

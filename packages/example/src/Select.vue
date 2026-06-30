@@ -9,6 +9,7 @@
         <h3 class="text-sm font-bold text-secondary">Select</h3>
         <Select v-model="selectValue" :options="selectOptions" clearable placeholder="选择模块" />
         <Select v-model="selectSmallValue" :options="selectOptions" size="sm" placeholder="小尺寸" />
+        <Select v-model="selectFixedWidthValue" :options="selectOptions" width="220px" placeholder="固定宽度" />
         <Select v-model="selectDisabledValue" :options="selectOptions" disabled />
         <div class="text-xs text-tertiary">当前值：{{ selectValue || '空' }}</div>
       </div>
@@ -86,6 +87,7 @@ import CodeBlock from '@/components/CodeBlock.vue'
 const selectApiTab = ref('props')
 const selectValue = ref('button')
 const selectSmallValue = ref('tag')
+const selectFixedWidthValue = ref('')
 const selectDisabledValue = ref('modal')
 const selectFilterValue = ref('')
 const selectCustomValue = ref('table')

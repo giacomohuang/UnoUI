@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { clsx } from 'clsx'
-import { computed, nextTick, onMounted, onUnmounted, ref, useAttrs, useSlots, watch } from 'vue'
+import { computed, nextTick, onMounted, onUnmounted, ref, useAttrs, useSlots, watch, type CSSProperties } from 'vue'
 
 import { Dropdown } from '../dropdown'
 import { Tag } from '../tag'
@@ -28,6 +28,8 @@ const props = withDefaults(
     placeholder?: string
     /** size 是选择器尺寸，可选，默认 md，并与 Input/Button 高度对齐。 */
     size?: SelectProps['size']
+    /** width 是选择器触发器宽度；未传时默认撑满父级以适配 FormItem。 */
+    width?: string | number
     /** disabled 表示是否禁用选择器交互。 */
     disabled?: boolean
     /** clearable 表示是否允许一键清空。 */
@@ -70,6 +72,7 @@ const props = withDefaults(
     options: () => [],
     placeholder: '请选择',
     size: 'md',
+    width: undefined,
     disabled: false,
     clearable: false,
     multiple: false,
@@ -145,6 +148,8 @@ const displayLabel = computed(() => selectedOptions.value[0]?.label || '')
 const inputDisplayValue = computed(() => (props.filterable && open.value ? query.value : displayLabel.value))
 const dropdownWidth = computed(() => props.teleportedWidth || triggerWidth.value || '180px')
 const hiddenInputValue = computed(() => (props.multiple ? selectedValues.value.join(',') : (selectedValues.value[0] ?? '')))
+const normalizedWidth = computed(() => (typeof props.width === 'number' ? `${props.width}px` : props.width))
+const selectRootStyle = computed<CSSProperties | undefined>(() => (normalizedWidth.value === undefined ? undefined : { width: normalizedWidth.value }))
 
 const filteredOptions = computed(() => {
   if (!props.filterable || !query.value.trim()) return normalizedOptions.value
@@ -216,7 +221,10 @@ function commitValue(value: SelectModelValue | undefined) {
   const normalizedValue = normalizeModelValue(value)
   emit('update:modelValue', normalizedValue)
   emit('change', normalizedValue)
-  if (!props.multiple) query.value = ''
+  if (!props.multiple) {
+    query.value = ''
+    open.value = false
+  }
 }
 
 function setOpen(value: boolean) {
@@ -258,8 +266,7 @@ function handleKeydown(event: KeyboardEvent) {
     return
   }
   if (open.value && event.key === 'Enter') {
-    dropdownRef.value?.handleKeyDown(event)
-    if (event.defaultPrevented) return
+    if (dropdownRef.value?.handleKeyDown(event)) return
   }
   if (event.key === 'Escape') {
     open.value = false
@@ -279,7 +286,6 @@ function handleKeydown(event: KeyboardEvent) {
     commitValue(exists ? selectedValues.value.filter((value) => !Object.is(value, option.value)) : [...selectedValues.value, option.value])
   } else {
     commitValue(option.value)
-    open.value = false
   }
 }
 
@@ -331,7 +337,7 @@ defineExpose({
 </script>
 
 <template>
-  <Dropdown ref="dropdownRef" v-model:value="dropdownValue" v-model:open="open" :items="filteredOptions" value-key="value" :width="dropdownWidth" :max-height="maxHeight" :focus-on-open="!filterable" content-class="ui-select-dropdown">
+  <Dropdown ref="dropdownRef" v-model:value="dropdownValue" v-model:open="open" :items="filteredOptions" value-key="value" :width="dropdownWidth" :max-height="maxHeight" :focus-on-open="!filterable" content-class="ui-select-dropdown" full-width :style="selectRootStyle">
     <template #trigger>
       <div ref="triggerRef" :class="wrapperClass" :style="attrs.style" data-ui-select="true" :tabindex="disabled ? undefined : 0" @click.stop="handleTriggerClick" @focus="handleFocus" @blur="handleBlur" @keydown="handleKeydown">
         <span v-if="slots.prefix" class="flex shrink-0 items-center pl-2 text-tertiary">

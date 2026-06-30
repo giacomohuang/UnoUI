@@ -16,7 +16,8 @@ export const dropdownProps: ParamTableRow[] = [
   { name: 'maxHeight', type: 'string', default: `'320px'`, desc: '最大高度，超出可滚动' },
   { name: 'contentClass', type: 'string', default: 'undefined', desc: '下拉内容额外 CSS 类名' },
   { name: 'popupStyle', type: 'string | object', default: 'undefined', desc: '浮层额外内联样式' },
-  { name: 'focusOnOpen', type: 'boolean', default: 'true', desc: '打开时是否聚焦首项' }
+  { name: 'focusOnOpen', type: 'boolean', default: 'true', desc: '打开时是否聚焦首项' },
+  { name: 'fullWidth', type: 'boolean', default: 'false', desc: '触发器容器是否撑满父级；表单控件型下拉可开启' }
 ]
 
 export const dropdownEmits: ParamTableRow[] = [

@@ -3,7 +3,7 @@ import { clsx } from 'clsx'
 import { computed, ref, useAttrs, watch } from 'vue'
 
 import { getUiAttrClass, getUiAttrStyle, getUiExposeAttrs } from '../attrs'
-import { radio, radioDot, radioLabel, type RadioProps } from '.'
+import { radio, radioButton, radioDot, radioLabel, type RadioButtonStyle, type RadioProps, type RadioType } from '.'
 
 defineOptions({
   inheritAttrs: false
@@ -25,6 +25,10 @@ const props = withDefaults(
     size?: RadioProps['size']
     /** border 表示是否展示带边框样式，可选，默认 false。 */
     border?: boolean
+    /** type 表示 Radio 的视觉形态，可选，默认 radio。 */
+    type?: RadioType
+    /** buttonStyle 表示按钮形态的选中样式，可选，默认 outline。 */
+    buttonStyle?: RadioButtonStyle
     /** name 是原生 radio name，可选；同组建议使用相同 name。 */
     name?: string
   }>(),
@@ -35,6 +39,8 @@ const props = withDefaults(
     disabled: false,
     size: 'md',
     border: false,
+    type: 'radio',
+    buttonStyle: 'outline',
     name: undefined
   }
 )
@@ -48,17 +54,25 @@ const emit = defineEmits<{
 }>()
 
 const attrs = useAttrs()
+const inputRef = ref<HTMLInputElement>()
 const internalChecked = ref(!!props.checked)
 const isChecked = computed(() => (props.modelValue === undefined ? internalChecked.value : props.modelValue === props.value))
 const labelClass = computed(() =>
   clsx(
     getUiAttrClass(attrs),
-    radioLabel({
-      size: props.size,
-      border: props.border,
-      checked: isChecked.value,
-      disabled: props.disabled
-    })
+    props.type === 'button'
+      ? radioButton({
+          size: props.size,
+          buttonStyle: props.buttonStyle,
+          checked: isChecked.value,
+          disabled: props.disabled
+        })
+      : radioLabel({
+          size: props.size,
+          border: props.border,
+          checked: isChecked.value,
+          disabled: props.disabled
+        })
   )
 )
 const radioClass = computed(() =>
@@ -113,12 +127,42 @@ function handleChange(event: Event) {
   emit('update:modelValue', props.value)
   emit('change', props.value, event)
 }
+
+function focus() {
+  inputRef.value?.focus()
+}
+
+function blur() {
+  inputRef.value?.blur()
+}
+
+defineExpose({
+  blur,
+  focus
+})
 </script>
 
 <template>
   <label :class="labelClass" :style="getUiAttrStyle(attrs)">
-    <span :class="radioClass">
+    <input
+      v-if="type === 'button'"
+      ref="inputRef"
+      v-bind="getUiExposeAttrs(attrs)"
+      data-map-ui-radio="true"
+      type="radio"
+      :name="name"
+      :value="String(value)"
+      :checked="isChecked"
+      :disabled="disabled"
+      class="absolute inset-0 m-0 h-full w-full cursor-inherit opacity-0"
+      @change="handleChange"
+      @input="handleInput"
+      @focus="emit('focus', $event)"
+      @blur="emit('blur', $event)"
+    />
+    <span v-if="type === 'radio'" :class="radioClass">
       <input
+        ref="inputRef"
         v-bind="getUiExposeAttrs(attrs)"
         data-map-ui-radio="true"
         type="radio"
@@ -139,3 +183,21 @@ function handleChange(event: Event) {
     </span>
   </label>
 </template>
+
+<style scoped>
+.ui-radio-button:has(+ .ui-radio-button) {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.ui-radio-button + .ui-radio-button {
+  margin-left: -1px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.ui-radio-button + .ui-radio-button:has(+ .ui-radio-button) {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+</style>

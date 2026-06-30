@@ -58,6 +58,8 @@ const props = withDefaults(
     popupStyle?: DropdownStyle
     /** focusOnOpen 控制打开后是否自动聚焦菜单容器，输入型触发器需要关闭。 */
     focusOnOpen?: boolean
+    /** fullWidth 控制触发器容器是否撑满父级，表单控件型下拉可开启。 */
+    fullWidth?: boolean
   }>(),
   {
     align: 'left',
@@ -68,7 +70,8 @@ const props = withDefaults(
     destroyOnHidden: true,
     minWidth: '128px',
     maxHeight: '320px',
-    focusOnOpen: true
+    focusOnOpen: true,
+    fullWidth: false
   }
 )
 
@@ -480,7 +483,7 @@ watch(
 )
 
 const handleKeyDown = (e: KeyboardEvent) => {
-  if (!isOpen.value || !props.items?.length) return
+  if (!isOpen.value || !props.items?.length) return false
 
   const items = props.items
   const itemCount = items.length
@@ -497,9 +500,12 @@ const handleKeyDown = (e: KeyboardEvent) => {
   } else if (e.code === 'Enter' || e.code === 'Space') {
     if (activeIndex.value >= 0) {
       handleItemClick(items[activeIndex.value])
+      return true
     }
+    return false
   } else if (e.code === 'Escape') {
     isOpen.value = false
+    return true
   }
 
   // 键盘移动后保持当前激活项在 SimpleBar 可视区域内。
@@ -512,6 +518,8 @@ const handleKeyDown = (e: KeyboardEvent) => {
       }
     })
   }
+
+  return true
 }
 
 const handleItemClick = (item: DropdownItem) => {
@@ -581,8 +589,8 @@ defineExpose({
 </script>
 
 <template>
-  <div ref="dropdownRef" class="relative inline-block" :class="{ 'pointer-events-none opacity-50': disabled }" @mouseenter="handleMouseEnter" @mouseleave="handleMouseLeave" @contextmenu="handleContextMenu">
-    <div class="h-full flex items-center" @click="handleTriggerClick">
+  <div ref="dropdownRef" :class="['relative inline-block', fullWidth ? 'w-full min-w-0' : '', { 'pointer-events-none opacity-50': disabled }]" @mouseenter="handleMouseEnter" @mouseleave="handleMouseLeave" @contextmenu="handleContextMenu">
+    <div :class="['h-full flex items-center', fullWidth ? 'w-full min-w-0' : '']" @click="handleTriggerClick">
       <slot name="trigger" :open="isOpen" />
     </div>
 
@@ -633,10 +641,12 @@ defineExpose({
   transform: scaleY(1);
 }
 
-:deep(.dropdown-item-wrapper.is-active) {
-  background-color: rgba(0, 0, 0, 0.05);
+:deep(.dropdown-item-wrapper.is-active),
+:deep(.dropdown-item-wrapper.is-active > *) {
+  background-color: rgba(0, 0, 0, 0.05) !important;
 }
-:root.dark :deep(.dropdown-item-wrapper.is-active) {
-  background-color: rgba(255, 255, 255, 0.1);
+:root.dark :deep(.dropdown-item-wrapper.is-active),
+:root.dark :deep(.dropdown-item-wrapper.is-active > *) {
+  background-color: rgba(255, 255, 255, 0.1) !important;
 }
 </style>

@@ -262,6 +262,11 @@ Props:
 - `minWidth`, `width`, `maxHeight`
 - `contentClass`, `popupStyle`
 - `focusOnOpen`
+- `fullWidth`: make the trigger wrapper `w-full min-w-0`; use for form-control-like dropdown triggers
+
+Keyboard state:
+
+- Dropdown owns the keyboard active row state; item slot content may use hover classes, but the active row background remains the priority while navigating with arrow keys.
 
 Models:
 

@@ -63,6 +63,11 @@ const kind = ref('a')
 <template>
   <Radio v-model="kind" value="a" name="kind">A</Radio>
   <Radio v-model="kind" value="b" name="kind" border>B</Radio>
+  <div class="inline-flex">
+    <Radio v-model="kind" value="a" name="kind-buttons" type="button" button-style="solid">A</Radio>
+    <Radio v-model="kind" value="b" name="kind-buttons" type="button" button-style="solid">B</Radio>
+    <Radio v-model="kind" value="c" name="kind-buttons" type="button" button-style="solid">C</Radio>
+  </div>
 </template>
 ```
 
@@ -74,13 +79,20 @@ Props:
 - `disabled`
 - `size`: `sm | md | lg`
 - `border`
+- `type`: `radio | button`; use `button` for button-style radio while keeping native radio semantics
+- `buttonStyle`: `outline | solid`; only applies when `type="button"`
 - `name`
+
+Button-style grouping:
+
+- Put adjacent `Radio type="button"` instances in an `inline-flex` or flex row without `gap`; adjacent button radios merge borders and keep only outer group corners.
+- Keep the same `name` and shared scalar `v-model` for all options in the same button group.
 
 Events:
 
 - `update:modelValue(value)`
 - `change(value)`
-- `input(value)`
+- `input(Event)`: native input event passthrough
 - `focus(FocusEvent)`, `blur(FocusEvent)`
 
 Slots:
@@ -89,7 +101,8 @@ Slots:
 
 Expose:
 
-- None
+- `focus()`
+- `blur()`
 
 ## Switch
 
@@ -165,6 +178,7 @@ Props:
 - `modelValue`: `SelectValue | SelectValue[]`
 - `options`: `SelectOption[]`
 - `placeholder`, `size`, `disabled`
+- `width`: trigger/control width; accepts CSS length string or number-as-px
 - `clearable`, `multiple`, `filterable`
 - `collapseTags`, `maxCollapseTags`
 - `labelKey`, `valueKey`, `disabledKey`
@@ -172,6 +186,12 @@ Props:
 - `clearIcon`, `suffixIcon`
 - `maxHeight`, `teleportedWidth`
 - `name`
+
+Width/layout:
+
+- `Select` defaults to full width like `Input`, so it fits `FormItem` content columns without extra classes.
+- Use `width` when the trigger should have a fixed or custom width, for example `width="240px"` or `:width="240"`.
+- The popup width follows the trigger width by default; use `teleportedWidth` only when a fixed popup width is required.
 
 Events:
 
@@ -181,6 +201,12 @@ Events:
 - `remove-tag(SelectValue)`
 - `visible-change(boolean)`
 - `focus(FocusEvent)`, `blur(FocusEvent)`
+
+Behavior:
+
+- Single-select closes the dropdown after selecting an option by click or Enter.
+- Multiple-select keeps the dropdown open while toggling options.
+- Filterable select keeps input focus while open and forwards arrow/page navigation keys into `Dropdown`.
 
 Slots:
 
