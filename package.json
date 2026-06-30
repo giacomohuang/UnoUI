@@ -1,0 +1,16 @@
+{
+  "name": "unoui",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "pnpm --filter @unoui/vue build",
+    "build:example": "pnpm --filter @unoui/example build",
+    "dev:example": "pnpm --filter @unoui/example dev",
+    "test:unit": "pnpm --filter @unoui/vue test:unit",
+    "typecheck": "pnpm --filter @unoui/vue typecheck && pnpm --filter @unoui/example typecheck"
+  },
+  "engines": {
+    "node": "^20.19.0 || >=22.12.0"
+  }
+}

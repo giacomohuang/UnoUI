@@ -1,0 +1,15 @@
+dist
+node_modules
+pkg
+target
+.vite
+.DS_Store
+.VSCodeCounter
+.pnpm-store
+
+.env.local
+**/.env.local
+# .env.development
+# .env.production
+
+.playwright-cli
