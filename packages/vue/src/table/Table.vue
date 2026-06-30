@@ -3,6 +3,7 @@ import { clsx } from 'clsx'
 import SimpleBar from 'simplebar-vue'
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, useTemplateRef, watch } from 'vue'
 
+import { Button } from '../button'
 import { Dropdown } from '../dropdown'
 
 import '../assets/simplebar.css'

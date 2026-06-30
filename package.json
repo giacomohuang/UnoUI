@@ -5,8 +5,8 @@
   "type": "module",
   "scripts": {
     "build": "pnpm --filter @unoui/vue build",
-    "build:example": "pnpm --filter @unoui/example build",
-    "dev:example": "pnpm --filter @unoui/example dev",
+    "build:ex": "pnpm --filter @unoui/example build",
+    "dev:ex": "pnpm --filter @unoui/example dev",
     "test:unit": "pnpm --filter @unoui/vue test:unit",
     "typecheck": "pnpm --filter @unoui/vue typecheck && pnpm --filter @unoui/example typecheck"
   },
