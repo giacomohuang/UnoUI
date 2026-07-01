@@ -4,15 +4,17 @@ import { defineComponent, reactive, ref } from 'vue'
 
 import { Button } from '../../button'
 import { Input } from '../../input'
+import { Switch } from '../../switch'
 import Form from '../Form.vue'
 import FormItem from '../FormItem.vue'
-import { createFormRule, formItem, formItemLabel, formRoot, formValidatorPatterns } from '../index'
+import { createFormRule, formItem, formItemContent, formItemLabel, formRoot, formValidatorPatterns } from '../index'
 
 describe('Form', () => {
   it('exports layout classes aligned to shared ui tokens', () => {
     expect(formRoot({ inline: true })).toContain('flex')
     expect(formItem()).toContain('mb-[var(--ui-form-item-gap,16px)]')
     expect(formItem({ inline: true })).toContain('inline-flex')
+    expect(formItemContent()).toContain('justify-center')
     expect(formItemLabel({ required: true, requiredPosition: 'left' })).toContain("before:content-['*']")
   })
 
@@ -194,5 +196,30 @@ describe('Form', () => {
     expect(labelText.classes()).not.toContain('truncate')
     expect(labelText.classes()).toContain('whitespace-normal')
     expect(labelText.classes()).toContain('break-words')
+  })
+
+  it('centers compact controls like switches against the form label row', () => {
+    const wrapper = mount(
+      defineComponent({
+        components: { Form, FormItem, Switch },
+        setup() {
+          const model = reactive({ enabled: true })
+          return { model }
+        },
+        template: `
+          <Form :model="model">
+            <FormItem prop="enabled" label="状态">
+              <Switch v-model="model.enabled" active-text="开" inactive-text="关" />
+            </FormItem>
+          </Form>
+        `
+      })
+    )
+
+    const content = wrapper.find('[id="ui-form-item-enabled-content"]')
+    expect(content.classes()).toContain('flex')
+    expect(content.classes()).toContain('justify-center')
+    expect(content.classes()).toContain('min-h-[calc(2rem+3px)]')
+    expect(wrapper.findComponent(Switch).exists()).toBe(true)
   })
 })
