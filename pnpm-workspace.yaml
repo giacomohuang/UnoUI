@@ -2,7 +2,9 @@ packages:
   - packages/*
 
 allowBuilds:
+  "@parcel/watcher": true
   vue-demi: true
 
 onlyBuiltDependencies:
+  - "@parcel/watcher"
   - vue-demi
