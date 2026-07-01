@@ -5,6 +5,7 @@ import UnoCSS from 'unocss/vite'
 import { defineConfig } from 'vite'
 
 export default defineConfig({
+  base: process.env.VITE_UNOUI_BASE || '/',
   plugins: [vue(), UnoCSS()],
   resolve: {
     alias: {
