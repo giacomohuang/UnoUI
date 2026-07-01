@@ -351,7 +351,7 @@ defineExpose({
               </Tag>
               <Tag v-if="collapsedTagCount > 0" color="gray" size="sm" radius="sm">+{{ collapsedTagCount }}</Tag>
             </template>
-            <span v-else class="text-tertiary/60">{{ placeholder }}</span>
+            <span v-else-if="!filterable" class="text-tertiary/60">{{ placeholder }}</span>
             <input
               v-if="filterable"
               class="min-w-12 flex-1 border-0 bg-transparent p-0 text-sm outline-none placeholder:text-tertiary/60"
@@ -396,9 +396,9 @@ defineExpose({
       </div>
     </template>
 
-    <template #item="{ item }">
+    <template #item="{ item, active }">
       <slot name="option" :option="getDropdownOption(item).raw" :label="getDropdownOption(item).label" :value="getDropdownOption(item).value" :selected="isSelected(item)" :disabled="getDropdownOption(item).disabled">
-        <div :class="selectOption({ selected: isSelected(item), disabled: getDropdownOption(item).disabled })">
+        <div :class="selectOption({ selected: isSelected(item), active, disabled: getDropdownOption(item).disabled })" :data-ui-select-option-selected="isSelected(item) ? 'true' : undefined">
           <span class="min-w-0 flex-1 truncate">{{ getDropdownOption(item).label }}</span>
           <span v-if="isSelected(item)" class="i-lucide:check size-4 shrink-0"></span>
         </div>
@@ -416,5 +416,15 @@ defineExpose({
 <style>
 .ui-select-dropdown {
   transition-property: opacity, box-shadow, border-color, background-color;
+}
+
+.ui-select-dropdown .dropdown-item-wrapper.is-selected,
+.ui-select-dropdown .dropdown-item-wrapper.is-selected > * {
+  --at-apply: '!bg-brand/10';
+}
+
+.ui-select-dropdown .dropdown-item-wrapper.is-selected.is-active,
+.ui-select-dropdown .dropdown-item-wrapper.is-selected.is-active > * {
+  --at-apply: '!bg-brand/20 ring-1 ring-inset ring-brand/25';
 }
 </style>

@@ -65,19 +65,46 @@ export const selectInner = cva('min-w-0 flex-1 items-center text-inherit', {
 })
 
 /** selectOption 定义 Select 下拉选项样式。 */
-export const selectOption = cva('flex min-h-9 cursor-pointer items-center gap-2 px-3 py-2 text-sm transition-colors hover:bg-secondary', {
+export const selectOption = cva('flex min-h-9 cursor-pointer items-center gap-2 px-3 py-2 text-sm transition-colors', {
   variants: {
     selected: {
-      true: 'bg-brand/10 text-brand',
+      true: 'text-brand',
       false: 'text-primary'
+    },
+    active: {
+      true: '',
+      false: ''
     },
     disabled: {
       true: 'pointer-events-none text-tertiary opacity-50',
       false: ''
     }
   },
+  compoundVariants: [
+    {
+      selected: true,
+      active: false,
+      class: 'bg-brand/10 hover:bg-brand/20'
+    },
+    {
+      selected: true,
+      active: true,
+      class: 'bg-brand/20 ring-1 ring-inset ring-brand/25 hover:bg-brand/20'
+    },
+    {
+      selected: false,
+      active: false,
+      class: 'hover:bg-secondary'
+    },
+    {
+      selected: false,
+      active: true,
+      class: 'bg-secondary'
+    }
+  ],
   defaultVariants: {
     selected: false,
+    active: false,
     disabled: false
   }
 })

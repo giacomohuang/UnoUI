@@ -98,6 +98,71 @@ describe('Select', () => {
     wrapper.unmount()
   })
 
+  it('keeps selected option background when the dropdown active item is selected', async () => {
+    const wrapper = mount(Select, {
+      props: {
+        modelValue: 'button',
+        options
+      },
+      attachTo: document.body
+    })
+
+    await wrapper.find('[data-ui-select="true"]').trigger('click')
+    await flushPromises()
+
+    const selectedItem = document.body.querySelector('.ui-select-dropdown .dropdown-item-wrapper') as HTMLElement
+    const selectedContent = selectedItem.firstElementChild as HTMLElement
+    expect(selectedItem.classList).toContain('is-selected')
+    expect(selectedItem.classList).toContain('is-active')
+    expect(selectedItem.dataset.selected).toBe('true')
+    expect(selectedContent.dataset.uiSelectOptionSelected).toBe('true')
+    expect(selectedContent.className).toContain('bg-brand/20')
+    expect(selectedContent.className).toContain('ring-brand/25')
+    expect(selectedContent.className).not.toContain('hover:bg-secondary')
+    wrapper.unmount()
+  })
+
+  it('keeps a visible keyboard highlight when every multiple option is selected', async () => {
+    const wrapper = mount(Select, {
+      props: {
+        modelValue: ['button', 'input'],
+        options,
+        multiple: true
+      },
+      attachTo: document.body
+    })
+
+    const trigger = wrapper.find('[data-ui-select="true"]')
+    await trigger.trigger('click')
+    await flushPromises()
+    await trigger.trigger('keydown', { key: 'ArrowDown', code: 'ArrowDown' })
+    await flushPromises()
+
+    const activeSelectedItem = document.body.querySelector('.ui-select-dropdown .dropdown-item-wrapper.is-active.is-selected') as HTMLElement
+    const activeSelectedContent = activeSelectedItem.firstElementChild as HTMLElement
+    expect(activeSelectedItem.dataset.selected).toBe('true')
+    expect(activeSelectedContent.className).toContain('bg-brand/20')
+    expect(activeSelectedContent.className).toContain('ring-brand/25')
+    expect(activeSelectedContent.className).not.toContain('bg-secondary')
+    wrapper.unmount()
+  })
+
+  it('renders one placeholder in empty filterable multiple mode', () => {
+    const wrapper = mount(Select, {
+      props: {
+        options,
+        multiple: true,
+        filterable: true,
+        placeholder: '请选择'
+      },
+      attachTo: document.body
+    })
+
+    expect(wrapper.text()).not.toContain('请选择')
+    expect(wrapper.find('input').attributes('placeholder')).toBe('请选择')
+    wrapper.unmount()
+  })
+
   it('selects filtered option with arrow keys', async () => {
     const wrapper = mount(Select, {
       props: {

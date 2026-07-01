@@ -610,7 +610,7 @@ defineExpose({
           <slot name="header" />
           <slot v-if="$slots.default" />
           <SimpleBar v-else ref="menuRef" tabindex="-1" role="menu" @keydown="handleKeyDown" class="outline-none" :style="menuContentStyle">
-            <div v-for="(item, index) in items" :key="index" class="dropdown-item-wrapper" :class="{ 'is-active': index === activeIndex, 'pointer-events-none opacity-50': item.disabled }" @click="handleItemClick(item)">
+            <div v-for="(item, index) in items" :key="index" class="dropdown-item-wrapper" :class="{ 'is-active': index === activeIndex, 'is-selected': isItemSelected(item), 'pointer-events-none opacity-50': item.disabled }" :data-selected="isItemSelected(item) ? 'true' : undefined" @click="handleItemClick(item)">
               <slot name="item" :item="item" :index="index" :active="index === activeIndex" :selected="isItemSelected(item)" />
             </div>
           </SimpleBar>
@@ -641,12 +641,12 @@ defineExpose({
   transform: scaleY(1);
 }
 
-:deep(.dropdown-item-wrapper.is-active),
-:deep(.dropdown-item-wrapper.is-active > *) {
+:deep(.dropdown-item-wrapper.is-active:not(.is-selected)),
+:deep(.dropdown-item-wrapper.is-active:not(.is-selected) > *) {
   background-color: rgba(0, 0, 0, 0.05) !important;
 }
-:root.dark :deep(.dropdown-item-wrapper.is-active),
-:root.dark :deep(.dropdown-item-wrapper.is-active > *) {
+:root.dark :deep(.dropdown-item-wrapper.is-active:not(.is-selected)),
+:root.dark :deep(.dropdown-item-wrapper.is-active:not(.is-selected) > *) {
   background-color: rgba(255, 255, 255, 0.1) !important;
 }
 </style>
