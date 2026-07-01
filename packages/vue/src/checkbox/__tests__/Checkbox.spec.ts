@@ -3,7 +3,21 @@ import { describe, expect, it } from 'vitest'
 
 import Checkbox from '../Checkbox.vue'
 
+const getBox = (wrapper: ReturnType<typeof mount<typeof Checkbox>>) => wrapper.find('[data-map-ui-checkbox="true"]').element.parentElement as HTMLElement
+
 describe('Checkbox', () => {
+  it('renders default slot content after the checkbox box', () => {
+    const wrapper = mount(Checkbox, {
+      slots: {
+        default: '同意协议'
+      }
+    })
+
+    expect(wrapper.element.tagName.toLowerCase()).toBe('label')
+    expect(wrapper.text()).toContain('同意协议')
+    expect(wrapper.find('[data-map-ui-checkbox="true"]').exists()).toBe(true)
+  })
+
   it('renders a white check mark when checked', () => {
     const wrapper = mount(Checkbox, {
       props: {
@@ -24,17 +38,67 @@ describe('Checkbox', () => {
       }
     })
 
-    expect(wrapper.classes()).toContain('bg-brand-500')
-    expect(wrapper.classes()).toContain('dark:bg-brand-500')
-    expect(wrapper.classes()).not.toContain('bg-primary')
-    expect(wrapper.classes()).not.toContain('dark:bg-zinc-950')
+    const box = getBox(wrapper)
+    expect(box.classList).toContain('bg-brand-500')
+    expect(box.classList).toContain('dark:bg-brand-500')
+    expect(box.classList).not.toContain('bg-primary')
+    expect(box.classList).not.toContain('dark:bg-zinc-950')
+  })
+
+  it('renders an indeterminate mark and syncs native mixed state', async () => {
+    const wrapper = mount(Checkbox, {
+      props: {
+        indeterminate: true
+      }
+    })
+
+    const input = wrapper.find<HTMLInputElement>('[data-map-ui-checkbox="true"]')
+    await wrapper.vm.$nextTick()
+
+    expect(input.element.indeterminate).toBe(true)
+    expect(input.attributes('aria-checked')).toBe('mixed')
+    expect(getBox(wrapper).classList).toContain('bg-brand-500')
+    expect(wrapper.find('path').attributes('d')).toBe('M4 8H12')
+  })
+
+  it('keeps indeterminate as a visual state and emits checked value on change', async () => {
+    const wrapper = mount(Checkbox, {
+      props: {
+        modelValue: false,
+        indeterminate: true
+      }
+    })
+
+    const input = wrapper.find<HTMLInputElement>('[data-map-ui-checkbox="true"]')
+    await input.setValue(true)
+
+    expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([true])
+    expect(wrapper.emitted('change')?.[0]?.[0]).toBeInstanceOf(Event)
+  })
+
+  it('updates native indeterminate state when prop changes', async () => {
+    const wrapper = mount(Checkbox, {
+      props: {
+        indeterminate: true
+      }
+    })
+    const input = wrapper.find<HTMLInputElement>('[data-map-ui-checkbox="true"]')
+    await wrapper.vm.$nextTick()
+
+    await wrapper.setProps({ indeterminate: false })
+    await wrapper.vm.$nextTick()
+
+    expect(input.element.indeterminate).toBe(false)
+    expect(input.attributes('aria-checked')).toBe('false')
+    expect(wrapper.find('[aria-hidden="true"]').exists()).toBe(false)
   })
 
   it('uses md size by default', () => {
     const wrapper = mount(Checkbox)
 
-    expect(wrapper.classes()).toContain('size-5')
-    expect(wrapper.classes()).toContain('rounded')
+    const box = getBox(wrapper)
+    expect(box.classList).toContain('size-5')
+    expect(box.classList).toContain('rounded')
   })
 
   it('supports sm and lg sizes', () => {
@@ -49,10 +113,12 @@ describe('Checkbox', () => {
       }
     })
 
-    expect(small.classes()).toContain('size-4')
-    expect(small.classes()).toContain('rounded-sm')
-    expect(large.classes()).toContain('size-6')
-    expect(large.classes()).toContain('rounded')
+    const smallBox = getBox(small)
+    const largeBox = getBox(large)
+    expect(smallBox.classList).toContain('size-4')
+    expect(smallBox.classList).toContain('rounded-sm')
+    expect(largeBox.classList).toContain('size-6')
+    expect(largeBox.classList).toContain('rounded')
   })
 
   it('keeps checked disabled state visually selected', () => {
@@ -63,8 +129,9 @@ describe('Checkbox', () => {
       }
     })
 
-    expect(wrapper.classes()).toContain('dark:bg-zinc-800')
-    expect(wrapper.classes()).toContain('dark:border-zinc-600')
+    const box = getBox(wrapper)
+    expect(box.classList).toContain('dark:bg-zinc-800')
+    expect(box.classList).toContain('dark:border-zinc-600')
     expect(wrapper.find('[aria-hidden="true"]').exists()).toBe(true)
   })
 
@@ -75,8 +142,9 @@ describe('Checkbox', () => {
       }
     })
 
-    expect(wrapper.classes()).toContain('dark:bg-zinc-800')
-    expect(wrapper.classes()).toContain('dark:border-zinc-600')
+    const box = getBox(wrapper)
+    expect(box.classList).toContain('dark:bg-zinc-800')
+    expect(box.classList).toContain('dark:border-zinc-600')
   })
 
   it('does not emit updates when disabled', async () => {

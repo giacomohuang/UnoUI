@@ -8,47 +8,51 @@
       <div class="grid gap-2 md:grid-cols-[72px_minmax(0,1fr)] md:items-center">
         <span class="text-xs font-medium text-tertiary">尺寸</span>
         <div class="flex flex-wrap items-center gap-x-6 gap-y-2">
-          <label v-for="size in checkboxSizes" :key="size" class="flex items-center gap-2">
-            <Checkbox checked :size="size" />
+          <Checkbox v-for="size in checkboxSizes" :key="size" checked :size="size">
             <span class="font-mono text-xs">{{ size }}</span>
-          </label>
+          </Checkbox>
         </div>
       </div>
 
       <div class="grid gap-2 md:grid-cols-[72px_minmax(0,1fr)] md:items-start">
         <span class="pt-2 text-xs font-medium text-tertiary">状态</span>
         <div class="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-          <label class="flex min-h-9 items-center gap-2 rounded-md bg-secondary/60 px-3">
-            <Checkbox v-model="checkboxEnabled" />
-            <span>受控：{{ checkboxEnabled ? 'true' : 'false' }}</span>
-          </label>
-          <label class="flex min-h-9 items-center gap-2 rounded-md bg-secondary/60 px-3">
-            <Checkbox checked />
-            <span>默认选中</span>
-          </label>
-          <label class="flex min-h-9 items-center gap-2 rounded-md bg-secondary/60 px-3">
-            <Checkbox disabled />
-            <span>禁用未选</span>
-          </label>
-          <label class="flex min-h-9 items-center gap-2 rounded-md bg-secondary/60 px-3">
-            <Checkbox checked disabled />
-            <span>禁用选中</span>
-          </label>
+          <Checkbox v-model="checkboxEnabled">受控：{{ checkboxEnabled ? "true" : "false" }}</Checkbox>
+          <Checkbox checked>默认选中</Checkbox>
+          <Checkbox disabled>禁用未选</Checkbox>
+          <Checkbox checked disabled>禁用选中</Checkbox>
+          <Checkbox indeterminate>部分选中</Checkbox>
         </div>
       </div>
 
       <div class="grid gap-2 md:grid-cols-[72px_minmax(0,1fr)] md:items-start">
         <span class="pt-1.5 text-xs font-medium text-tertiary">组</span>
         <div class="grid gap-3">
+          <Checkbox :checked="checkboxGroupAllChecked" :indeterminate="checkboxGroupIndeterminate" @change="toggleCheckboxGroupAll">含禁用项全选</Checkbox>
           <div class="flex flex-wrap items-center gap-x-6 gap-y-2">
-            <label v-for="option in checkboxGroupOptions" :key="option.value" class="flex items-center gap-2">
-              <Checkbox v-model="checkboxGroupValue" :value="option.value" :disabled="option.disabled" />
-              <span>{{ option.label }}</span>
-            </label>
+            <Checkbox v-for="option in checkboxGroupOptions" :key="option.value" v-model="checkboxGroupValue" :value="option.value" :disabled="option.disabled">
+              {{ option.label }}
+            </Checkbox>
           </div>
           <div class="flex flex-wrap items-center gap-2 text-xs text-tertiary">
             <span>已选</span>
-            <span class="rounded border border-medium bg-secondary px-2 py-1 text-secondary">{{ checkboxGroupValue.join('、') || '无' }}</span>
+            <span class="rounded border border-medium bg-secondary px-2 py-1 text-secondary">{{ checkboxGroupValue.join("、") || "无" }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid gap-2 md:grid-cols-[72px_minmax(0,1fr)] md:items-start">
+        <span class="pt-1.5 text-xs font-medium text-tertiary">全选</span>
+        <div class="grid gap-3">
+          <Checkbox :checked="checkboxPlainAllChecked" :indeterminate="checkboxPlainIndeterminate" @change="toggleCheckboxPlainAll">全选</Checkbox>
+          <div class="flex flex-wrap items-center gap-x-6 gap-y-2">
+            <Checkbox v-for="option in checkboxPlainOptions" :key="option.value" v-model="checkboxPlainValue" :value="option.value">
+              {{ option.label }}
+            </Checkbox>
+          </div>
+          <div class="flex flex-wrap items-center gap-2 text-xs text-tertiary">
+            <span>已选</span>
+            <span class="rounded border border-medium bg-secondary px-2 py-1 text-secondary">{{ checkboxPlainValue.join("、") || "无" }}</span>
           </div>
         </div>
       </div>
@@ -67,6 +71,9 @@
           <TabPane name="emits" label="Emits">
             <ParamTable :columns="emitsColumns" :rows="checkboxEmits" />
           </TabPane>
+          <TabPane name="slots" label="Slots">
+            <ParamTable :columns="slotsColumns" :rows="checkboxSlots" />
+          </TabPane>
         </Tabs>
       </div>
     </div>
@@ -84,25 +91,51 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from "vue";
 
-import { Checkbox } from '@unoui/vue/checkbox'
-import { Tabs, TabPane } from '@unoui/vue/tab'
-import { propsColumns, emitsColumns } from '@/data/shared'
-import { checkboxProps, checkboxEmits, checkboxCodeExample } from '@/data/checkbox'
-import ParamTable from '@/components/ParamTable.vue'
-import CodeBlock from '@/components/CodeBlock.vue'
+import { Checkbox } from "@unoui/vue/checkbox";
+import { Tabs, TabPane } from "@unoui/vue/tab";
+import { propsColumns, emitsColumns, slotsColumns } from "@/data/shared";
+import { checkboxProps, checkboxEmits, checkboxSlots, checkboxCodeExample } from "@/data/checkbox";
+import ParamTable from "@/components/ParamTable.vue";
+import CodeBlock from "@/components/CodeBlock.vue";
 
-type CheckboxSize = 'sm' | 'md' | 'lg'
+type CheckboxSize = "sm" | "md" | "lg";
 
-const checkboxApiTab = ref('props')
-const checkboxEnabled = ref(true)
-const checkboxSizes: CheckboxSize[] = ['sm', 'md', 'lg']
-const checkboxGroupValue = ref<string[]>(['地图编辑', '路径规划'])
+const checkboxApiTab = ref("props");
+const checkboxEnabled = ref(true);
+const checkboxSizes: CheckboxSize[] = ["sm", "md", "lg"];
+const checkboxGroupValue = ref<string[]>(["地图编辑", "路径规划"]);
 const checkboxGroupOptions = [
-  { label: '地图编辑', value: '地图编辑' },
-  { label: '路径规划', value: '路径规划' },
-  { label: '资源管理', value: '资源管理' },
-  { label: '禁用项', value: '禁用项', disabled: true }
-]
+  { label: "地图编辑", value: "地图编辑" },
+  { label: "路径规划", value: "路径规划" },
+  { label: "资源管理", value: "资源管理" },
+  { label: "禁用项", value: "禁用项", disabled: true },
+];
+const checkboxGroupAllValues = computed(() => checkboxGroupOptions.map((option) => option.value));
+const checkboxGroupEnabledValues = computed(() => checkboxGroupOptions.filter((option) => !option.disabled).map((option) => option.value));
+const checkboxGroupDisabledValues = computed(() => checkboxGroupOptions.filter((option) => option.disabled).map((option) => option.value));
+const checkboxGroupAllChecked = computed(() => checkboxGroupAllValues.value.length > 0 && checkboxGroupAllValues.value.every((value) => checkboxGroupValue.value.includes(value)));
+const checkboxGroupIndeterminate = computed(() => checkboxGroupValue.value.length > 0 && !checkboxGroupAllChecked.value);
+const checkboxPlainValue = ref<string[]>(["查看"]);
+const checkboxPlainOptions = [
+  { label: "查看", value: "查看" },
+  { label: "新增", value: "新增" },
+  { label: "编辑", value: "编辑" },
+  { label: "删除", value: "删除" },
+];
+const checkboxPlainAllValues = computed(() => checkboxPlainOptions.map((option) => option.value));
+const checkboxPlainAllChecked = computed(() => checkboxPlainAllValues.value.length > 0 && checkboxPlainAllValues.value.every((value) => checkboxPlainValue.value.includes(value)));
+const checkboxPlainIndeterminate = computed(() => checkboxPlainValue.value.length > 0 && !checkboxPlainAllChecked.value);
+
+function toggleCheckboxGroupAll(event: Event) {
+  const checked = (event.target as HTMLInputElement).checked;
+  const disabledSelectedValues = checkboxGroupValue.value.filter((value) => checkboxGroupDisabledValues.value.includes(value));
+  checkboxGroupValue.value = checked ? [...disabledSelectedValues, ...checkboxGroupEnabledValues.value] : disabledSelectedValues;
+}
+
+function toggleCheckboxPlainAll(event: Event) {
+  const checked = (event.target as HTMLInputElement).checked;
+  checkboxPlainValue.value = checked ? [...checkboxPlainAllValues.value] : [];
+}
 </script>

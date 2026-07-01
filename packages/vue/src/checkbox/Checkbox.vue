@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { clsx } from 'clsx'
-import { computed, ref, useAttrs, watch } from 'vue'
+import { computed, nextTick, onMounted, ref, useAttrs, watch } from 'vue'
 
 import { getUiAttrClass, getUiAttrStyle, getUiExposeAttrs } from '../attrs'
 import { checkbox, type CheckboxProps } from '.'
@@ -23,6 +23,8 @@ const props = withDefaults(
     modelValue?: CheckboxModelValue
     /** checked 是非受控默认选中态，可选。 */
     checked?: boolean
+    /** indeterminate 表示部分选中状态，只控制视觉和原生 input 中间态。 */
+    indeterminate?: boolean
     /** value 是原生 input value，可选。 */
     value?: string | number
     /** disabled 表示是否禁用交互，可选，默认 false。 */
@@ -33,6 +35,7 @@ const props = withDefaults(
   {
     modelValue: undefined,
     checked: undefined,
+    indeterminate: false,
     disabled: false,
     size: 'md'
   }
@@ -47,18 +50,22 @@ const emit = defineEmits<{
 }>()
 
 const attrs = useAttrs()
+const inputRef = ref<HTMLInputElement | null>(null)
 const internalChecked = ref(!!props.checked)
 const hasSizeClass = computed(() => /(?:^|\s)!?(?:size|h|w)-/.test(getUiAttrClass(attrs)))
 const isChecked = computed(() => {
   if (Array.isArray(props.modelValue)) return props.value !== undefined && props.modelValue.includes(props.value)
   return props.modelValue === undefined ? internalChecked.value : props.modelValue
 })
+const isIndeterminate = computed(() => props.indeterminate)
+const isActive = computed(() => isChecked.value || isIndeterminate.value)
+const ariaChecked = computed(() => (isIndeterminate.value ? 'mixed' : Boolean(isChecked.value)))
 const checkboxClass = computed(() =>
   clsx(
     getUiAttrClass(attrs),
     checkbox({
       size: hasSizeClass.value ? null : props.size,
-      checked: isChecked.value,
+      checked: isActive.value,
       disabled: props.disabled
     })
   )
@@ -73,9 +80,21 @@ watch(
   }
 )
 
+function syncNativeInputState() {
+  if (!inputRef.value) return
+  inputRef.value.checked = Boolean(isChecked.value)
+  inputRef.value.indeterminate = isIndeterminate.value
+}
+
+onMounted(syncNativeInputState)
+watch([isChecked, isIndeterminate], () => nextTick(syncNativeInputState))
+
 function syncInputChecked(event: Event) {
   const target = event.target as HTMLInputElement | null
-  if (target) target.checked = isChecked.value
+  if (target) {
+    target.checked = Boolean(isChecked.value)
+    target.indeterminate = isIndeterminate.value
+  }
 }
 
 function getNextArrayValue(checked: boolean) {
@@ -107,26 +126,37 @@ function handleChange(event: Event) {
   internalChecked.value = checked
   emit('update:modelValue', Array.isArray(props.modelValue) ? getNextArrayValue(checked) : checked)
   emit('change', event)
+  void nextTick(syncNativeInputState)
 }
 </script>
 
 <template>
-  <span :class="checkboxClass" :style="getUiAttrStyle(attrs)">
-    <input
-      v-bind="getUiExposeAttrs(attrs)"
-      data-map-ui-checkbox="true"
-      type="checkbox"
-      :value="value"
-      :checked="isChecked"
-      :disabled="disabled"
-      class="absolute inset-0 m-0 h-full w-full cursor-inherit opacity-0"
-      @change="handleChange"
-      @input="handleInput"
-      @focus="emit('focus', $event)"
-      @blur="emit('blur', $event)"
-    />
-    <svg v-if="isChecked" aria-hidden="true" viewBox="0 0 16 16" fill="none" class="h-[82%] w-[82%]">
-      <path d="M3.5 8.25L6.5 11L12.5 5" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
-    </svg>
-  </span>
+  <label :class="['inline-flex w-fit items-center align-middle', disabled ? 'cursor-not-allowed text-tertiary opacity-70' : 'cursor-pointer text-secondary', $slots.default ? 'gap-2' : '']" :style="getUiAttrStyle(attrs)">
+    <span :class="checkboxClass">
+      <input
+        ref="inputRef"
+        v-bind="getUiExposeAttrs(attrs)"
+        data-map-ui-checkbox="true"
+        type="checkbox"
+        :value="value"
+        :checked="isChecked"
+        :aria-checked="ariaChecked"
+        :disabled="disabled"
+        class="absolute inset-0 m-0 h-full w-full cursor-inherit opacity-0"
+        @change="handleChange"
+        @input="handleInput"
+        @focus="emit('focus', $event)"
+        @blur="emit('blur', $event)"
+      />
+      <svg v-if="isIndeterminate" aria-hidden="true" viewBox="0 0 16 16" fill="none" class="h-[82%] w-[82%]">
+        <path d="M4 8H12" stroke="white" stroke-width="2.4" stroke-linecap="round" />
+      </svg>
+      <svg v-else-if="isChecked" aria-hidden="true" viewBox="0 0 16 16" fill="none" class="h-[82%] w-[82%]">
+        <path d="M3.5 8.25L6.5 11L12.5 5" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+    </span>
+    <span v-if="$slots.default" class="select-none">
+      <slot></slot>
+    </span>
+  </label>
 </template>

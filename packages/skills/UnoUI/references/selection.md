@@ -13,15 +13,23 @@ Use this file for `Checkbox`, `Radio`, `Switch`, and `Select`.
 
 ```vue
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { Checkbox } from '@unoui/vue/checkbox'
 
 const checked = ref(true)
 const selected = ref(['apple'])
+const allValues = ['apple', 'orange']
+const allChecked = computed(() => allValues.every((value) => selected.value.includes(value)))
+const indeterminate = computed(() => selected.value.length > 0 && !allChecked.value)
+
+function toggleAll(event) {
+  selected.value = event.target.checked ? [...allValues] : []
+}
 </script>
 
 <template>
   <Checkbox v-model="checked">Accept</Checkbox>
+  <Checkbox :checked="allChecked" :indeterminate="indeterminate" @change="toggleAll">All</Checkbox>
   <Checkbox v-model="selected" value="apple">Apple</Checkbox>
   <Checkbox v-model="selected" value="orange">Orange</Checkbox>
 </template>
@@ -31,9 +39,18 @@ Props:
 
 - `modelValue`: `boolean | (string | number)[]`
 - `checked`: uncontrolled checked state
+- `indeterminate`: visual/native mixed state for partial selection; does not change `modelValue` by itself
 - `value`: option value for group usage
 - `disabled`
 - `size`: `sm | md | lg`
+
+Partial selection:
+
+- Use `indeterminate` for check-all patterns when some but not all child options are selected, matching Ant Design checkbox semantics.
+- Keep `checked` derived from “all options selected”; disabled unchecked options still mean the group is not fully selected.
+- Keep `indeterminate` derived from “some selected but not all”.
+- Clicking an indeterminate checkbox emits the next normal checked value; update the child array yourself in `change`.
+- If a group includes disabled options, include them when deriving “all selected”; when toggling a parent checkbox, preserve disabled option values instead of silently selecting disabled unchecked items.
 
 Events:
 
@@ -44,7 +61,7 @@ Events:
 
 Slots:
 
-- `default`: checkbox label/content
+- `default`: content rendered after the checkbox box; the component root is a label, so clicking this content toggles the checkbox
 
 Expose:
 

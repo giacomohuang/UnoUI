@@ -3,6 +3,7 @@ import type { ParamTableRow } from '@/components/ParamTable.vue'
 export const checkboxProps: ParamTableRow[] = [
   { name: 'modelValue', type: `boolean | (string | number)[]`, default: 'undefined', desc: '受控选中状态，复选框组传数组' },
   { name: 'checked', type: 'boolean', default: 'undefined', desc: '非受控选中状态（与 modelValue 二选一）' },
+  { name: 'indeterminate', type: 'boolean', default: 'false', desc: '部分选中状态，只控制视觉和原生 input 中间态' },
   { name: 'value', type: 'string | number', default: 'undefined', desc: '复选框组的选项值，单个复选框不需要' },
   { name: 'disabled', type: 'boolean', default: 'false', desc: '是否禁用' },
   { name: 'size', type: `'sm' | 'md' | 'lg'`, default: `'md'`, desc: '复选框尺寸' }
@@ -16,14 +17,21 @@ export const checkboxEmits: ParamTableRow[] = [
   { name: 'blur', params: 'FocusEvent', desc: '失去焦点时触发' }
 ]
 
-export const checkboxSlots: ParamTableRow[] = []
+export const checkboxSlots: ParamTableRow[] = [{ name: 'default', scoped: '—', desc: '选择框后的内容，点击内容会切换复选框' }]
 
 export const checkboxCodeExample = `<script setup>
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { Checkbox } from '@unoui/vue/checkbox'
 
 const checked = ref(true)
 const fruits = ref(['apple', 'orange'])
+const allFruits = ['apple', 'orange', 'banana']
+const checkAll = computed(() => allFruits.every((fruit) => fruits.value.includes(fruit)))
+const indeterminate = computed(() => fruits.value.length > 0 && !checkAll.value)
+
+function toggleAll(event) {
+  fruits.value = event.target.checked ? [...allFruits] : []
+}
 </script>
 
 <template>
@@ -33,7 +41,12 @@ const fruits = ref(['apple', 'orange'])
   <!-- 复选框组 -->
   <Checkbox v-model="fruits" value="apple" size="md">苹果</Checkbox>
   <Checkbox v-model="fruits" value="orange" size="md">橙子</Checkbox>
-  <Checkbox v-model="fruits" value="banana" size="md" disabled>香蕉</Checkbox>
+  <Checkbox v-model="fruits" value="banana" size="md">香蕉</Checkbox>
+
+  <!-- 不含禁用项的全选/部分选择 -->
+  <Checkbox :checked="checkAll" :indeterminate="indeterminate" @change="toggleAll">
+    全选
+  </Checkbox>
 
   <!-- 不同尺寸 -->
   <Checkbox size="sm">小号</Checkbox>
