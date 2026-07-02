@@ -4,11 +4,7 @@ import SimpleBar from 'simplebar-vue'
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, useAttrs, useTemplateRef, watch } from 'vue'
 
 import '../assets/simplebar.css'
-import 'simplebar-vue/dist/simplebar.min.css'
 
-import { DnD } from '../utils/DnD'
-
-import { getUiAttrClass, getUiExposeAttrs } from '../attrs'
 import {
   millerColumnsColumn,
   millerColumnsEmpty,
@@ -24,6 +20,8 @@ import {
   type MillerColumnsProps,
   type MillerColumnsSelectEvent
 } from '.'
+import { getUiAttrClass, getUiExposeAttrs } from '../attrs'
+import { DnD } from '../utils/DnD'
 
 defineOptions({
   inheritAttrs: false

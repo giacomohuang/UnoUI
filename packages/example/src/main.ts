@@ -7,7 +7,6 @@ import { router } from './router'
 import { setTheme } from './theme'
 
 import 'virtual:uno.css'
-import '@unoui/vue/style.css'
 import './style.css'
 
 configureUnoUI({

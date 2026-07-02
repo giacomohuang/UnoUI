@@ -133,7 +133,7 @@ const pickShowcaseItems = (slugs: string[]) => slugs.map((slug) => componentPage
 
 const showcaseGroups: ShowcaseNavGroup[] = [
   { title: '概览', icon: 'i-lucide:home', items: pickShowcaseItems(['overview', 'palette']) },
-  { title: '基础输入', icon: 'i-lucide:text-cursor-input', items: pickShowcaseItems(['input', 'input-otp', 'select', 'datepicker', 'colorpicker', 'checkbox', 'radio', 'switch', 'slider', 'rate']) },
+  { title: '基础输入', icon: 'i-lucide:text-cursor-input', items: pickShowcaseItems(['input', 'input-otp', 'select', 'datepicker', 'colorpicker', 'form', 'checkbox', 'radio', 'switch', 'slider', 'rate']) },
   { title: '操作导航', icon: 'i-lucide:mouse-pointer-click', items: pickShowcaseItems(['button', 'dropdown', 'tab', 'pagination']) },
   { title: '反馈浮层', icon: 'i-lucide:message-square-warning', items: pickShowcaseItems(['alert', 'message', 'tooltip', 'popconfirm', 'modal', 'drawer']) },
   { title: '数据展示', icon: 'i-lucide:table-2', items: pickShowcaseItems(['badge', 'tag', 'qrcode', 'skeleton', 'millercolumns', 'table']) }

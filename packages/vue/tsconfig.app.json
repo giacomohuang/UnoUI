@@ -10,7 +10,6 @@
     "types": ["vite/client"],
     "paths": {
       "@unoui/vue": ["./src/index.ts"],
-      "@unoui/vue/style.css": ["./src/style.css"],
       "@unoui/vue/attrs": ["./src/attrs.ts"],
       "@unoui/vue/config": ["./src/config.ts"],
       "@unoui/vue/uno": ["./src/uno.ts"],
