@@ -492,7 +492,18 @@ const getSortIcon = (column: TableColumn<T>) => {
 <template>
   <div
     ref="tableRoot"
-    :class="clsx('ui-table overflow-hidden bg-primary', radiusClass, bordered && 'border border-medium', hasScrollLeft && 'ui-table--scrolled-left', hasScrollRight && 'ui-table--scrolled-right', hasScrollY && 'ui-table--scroll-y', showHorizontalLines && 'ui-table--horizontal-lines', showVerticalLines && 'ui-table--vertical-lines')"
+    :class="
+      clsx(
+        'ui-table overflow-hidden bg-primary',
+        radiusClass,
+        bordered && 'border border-medium',
+        hasScrollLeft && 'ui-table--scrolled-left',
+        hasScrollRight && 'ui-table--scrolled-right',
+        hasScrollY && 'ui-table--scroll-y',
+        showHorizontalLines && 'ui-table--horizontal-lines',
+        showVerticalLines && 'ui-table--vertical-lines'
+      )
+    "
   >
     <SimpleBar ref="simplebarRef" class="ui-table__scroll w-full" :auto-hide="autoHideScrollbar" :style="scrollStyle" @mousedown.capture="handleScrollbarDragStart" @scroll="handleScroll" @touchstart.capture="handleScrollbarDragStart">
       <table ref="tableElement" class="w-full border-separate border-spacing-0" :class="sizeClasses.table" :style="tableStyle">
@@ -568,6 +579,14 @@ const getSortIcon = (column: TableColumn<T>) => {
   opacity: 0 !important;
 }
 
+.ui-table {
+  --ui-table-fixed-shadow-color: rgba(15, 23, 42, 0.11);
+}
+
+[data-theme='dark'] .ui-table {
+  --ui-table-fixed-shadow-color: rgba(135, 140, 145, 0.22);
+}
+
 .ui-table:not(.ui-table--scroll-y) :deep(.simplebar-track.simplebar-vertical) {
   visibility: hidden !important;
 }
@@ -615,10 +634,10 @@ thead .ui-table__cell--fixed-right {
 }
 
 .ui-table--scrolled-left .ui-table__cell--fixed-left-edge::after {
-  box-shadow: inset 10px 0 8px -8px rgba(15, 23, 42, 0.11);
+  box-shadow: inset 10px 0 8px -8px var(--ui-table-fixed-shadow-color);
 }
 
 .ui-table--scrolled-right .ui-table__cell--fixed-right-edge::before {
-  box-shadow: inset -10px 0 8px -8px rgba(15, 23, 42, 0.11);
+  box-shadow: inset -10px 0 8px -8px var(--ui-table-fixed-shadow-color);
 }
 </style>
