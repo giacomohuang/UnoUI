@@ -149,6 +149,7 @@ Props:
 - `destroyOnClose`
 - `modal`, `lockScroll`
 - `zIndex`, `bodyClass`
+- `push`: `boolean | { distance?: number | string }`, controls whether nested drawers push the parent drawer; default distance is `180px`
 
 Events:
 

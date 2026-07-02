@@ -1,10 +1,25 @@
 import { cva } from 'class-variance-authority'
 import type { VariantProps } from 'class-variance-authority'
+import type { ComputedRef, InjectionKey } from 'vue'
 
 export { default as Drawer } from './Drawer.vue'
 
 /** DrawerDirection 是抽屉弹出方向，命名兼容 Element Plus。 */
 export type DrawerDirection = 'rtl' | 'ltr' | 'ttb' | 'btt'
+
+/** DrawerPushDistance 是多层 Drawer 推动父级抽屉的距离。 */
+export type DrawerPushDistance = number | string
+
+/** DrawerPush 控制多层 Drawer 打开时父级抽屉是否被推动。 */
+export type DrawerPush = boolean | { distance?: DrawerPushDistance }
+
+export interface DrawerContext {
+  pushDistance: ComputedRef<DrawerPushDistance>
+  push: (id: symbol) => void
+  pull: (id: symbol) => void
+}
+
+export const drawerContextKey: InjectionKey<DrawerContext> = Symbol('ui-drawer-context')
 
 /** drawerPanel 定义 Drawer 面板基础位置和布局。 */
 export const drawerPanel = cva('fixed z-10 flex bg-white/95 shadow-2xl backdrop-blur-md dark:bg-zinc-900/95', {

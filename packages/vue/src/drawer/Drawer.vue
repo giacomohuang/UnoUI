@@ -1,9 +1,11 @@
 <script setup lang="ts">
-import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue'
+import { computed, inject, nextTick, onBeforeUnmount, provide, ref, watch, type CSSProperties } from 'vue'
 
-import { drawerPanel, type DrawerDirection } from '.'
+import { drawerContextKey, drawerPanel, type DrawerDirection, type DrawerPush, type DrawerPushDistance } from '.'
 
 type DrawerBeforeClose = (done: () => void) => void | boolean | Promise<void | boolean>
+
+const DEFAULT_PUSH_DISTANCE = 180
 
 const props = withDefaults(
   defineProps<{
@@ -37,6 +39,8 @@ const props = withDefaults(
     zIndex?: number | string
     /** bodyClass 是正文区域额外类名。 */
     bodyClass?: string
+    /** push 控制多层 Drawer 打开时父级抽屉是否被推动。 */
+    push?: DrawerPush
   }>(),
   {
     modelValue: undefined,
@@ -53,7 +57,8 @@ const props = withDefaults(
     modal: true,
     lockScroll: true,
     zIndex: 2000,
-    bodyClass: ''
+    bodyClass: '',
+    push: true
   }
 )
 
@@ -68,15 +73,50 @@ const emit = defineEmits<{
 
 const isVisible = computed(() => props.modelValue ?? props.visible ?? false)
 const shouldRender = ref(isVisible.value)
+const drawerId = Symbol('ui-drawer')
+const parentDrawer = inject(drawerContextKey, null)
+const pushedChildIds = ref<symbol[]>([])
 const isHorizontal = computed(() => props.direction === 'rtl' || props.direction === 'ltr')
 const normalizedSize = computed(() => (typeof props.size === 'number' ? `${props.size}px` : props.size))
-const panelStyle = computed(() => ({
+const pushDistance = computed<DrawerPushDistance>(() => {
+  if (props.push === false) return 0
+  if (typeof props.push === 'object' && props.push.distance !== undefined) return props.push.distance
+  if (parentDrawer) return parentDrawer.pushDistance.value
+  return DEFAULT_PUSH_DISTANCE
+})
+const normalizedPushDistance = computed(() => normalizeCssSize(pushDistance.value))
+const pushTransform = computed(() => {
+  if (!pushedChildIds.value.length) return undefined
+
+  const distance = normalizedPushDistance.value
+  if (distance === '0px') return undefined
+
+  switch (props.direction) {
+    case 'rtl':
+      return `translateX(-${distance})`
+    case 'ltr':
+      return `translateX(${distance})`
+    case 'ttb':
+      return `translateY(${distance})`
+    case 'btt':
+      return `translateY(-${distance})`
+    default:
+      return undefined
+  }
+})
+const panelStyle = computed<CSSProperties>(() => ({
   width: isHorizontal.value ? normalizedSize.value : undefined,
-  height: isHorizontal.value ? undefined : normalizedSize.value
+  height: isHorizontal.value ? undefined : normalizedSize.value,
+  transform: pushTransform.value
 }))
 const transitionName = computed(() => `ui-drawer-${props.direction}`)
 let previousBodyOverflow = ''
 let hasOpened = false
+let hasPushedParent = false
+
+function normalizeCssSize(value: DrawerPushDistance) {
+  return typeof value === 'number' ? `${value}px` : value
+}
 
 function syncVisible(value: boolean) {
   emit('update:modelValue', value)
@@ -123,17 +163,48 @@ function unlockBodyScroll() {
   document.body.style.overflow = previousBodyOverflow
 }
 
+function pushChild(id: symbol) {
+  if (props.push === false || pushedChildIds.value.includes(id)) return
+  pushedChildIds.value = [...pushedChildIds.value, id]
+}
+
+function pullChild(id: symbol) {
+  if (!pushedChildIds.value.includes(id)) return
+  pushedChildIds.value = pushedChildIds.value.filter((childId) => childId !== id)
+}
+
+function pushParent() {
+  if (!parentDrawer || hasPushedParent) return
+  parentDrawer.push(drawerId)
+  hasPushedParent = true
+}
+
+function pullParent() {
+  if (!parentDrawer || !hasPushedParent) return
+  parentDrawer.pull(drawerId)
+  hasPushedParent = false
+}
+
+provide(drawerContextKey, {
+  pushDistance,
+  push: pushChild,
+  pull: pullChild
+})
+
 watch(
   isVisible,
   (visible) => {
     if (visible) {
       shouldRender.value = true
       hasOpened = true
+      pushParent()
       lockBodyScroll()
       emit('open')
       window.addEventListener('keydown', handleKeydown, { capture: true })
       nextTick(() => emit('opened'))
     } else {
+      pullParent()
+      pushedChildIds.value = []
       unlockBodyScroll()
       window.removeEventListener('keydown', handleKeydown, { capture: true })
       if (hasOpened) emit('closed')
@@ -148,6 +219,7 @@ watch(
 )
 
 onBeforeUnmount(() => {
+  pullParent()
   unlockBodyScroll()
   window.removeEventListener('keydown', handleKeydown, { capture: true })
 })
@@ -175,7 +247,7 @@ onBeforeUnmount(() => {
         <div v-if="modal" class="absolute inset-0 bg-zinc-900/10 backdrop-blur-sm" @click="closeOnClickModal && requestClose()"></div>
 
         <Transition :name="transitionName" appear>
-          <aside v-show="isVisible" :class="drawerPanel({ direction })" :style="panelStyle" data-ui-drawer="true">
+          <aside v-show="isVisible" :class="['ui-drawer-panel', drawerPanel({ direction })]" :style="panelStyle" data-ui-drawer="true">
             <header v-if="withHeader" class="flex min-h-12 items-center justify-between gap-3 border-b border-zinc-100/50 px-4 py-3 dark:border-zinc-800/50">
               <slot name="header">
                 <h3 class="min-w-0 truncate text-xs font-bold uppercase tracking-widest text-zinc-500">
@@ -211,6 +283,10 @@ onBeforeUnmount(() => {
 .ui-drawer-fade-enter-from,
 .ui-drawer-fade-leave-to {
   opacity: 0;
+}
+
+.ui-drawer-panel {
+  transition: transform 180ms ease;
 }
 
 .ui-drawer-rtl-enter-active,

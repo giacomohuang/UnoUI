@@ -15,7 +15,8 @@ export const drawerProps: ParamTableRow[] = [
   { name: 'modal', type: 'boolean', default: 'true', desc: '是否显示遮罩层' },
   { name: 'lockScroll', type: 'boolean', default: 'true', desc: '是否锁定 body 滚动' },
   { name: 'zIndex', type: 'number | string', default: '2000', desc: '层级' },
-  { name: 'bodyClass', type: 'string', default: `''`, desc: '内容区域额外 CSS 类名' }
+  { name: 'bodyClass', type: 'string', default: `''`, desc: '内容区域额外 CSS 类名' },
+  { name: 'push', type: 'boolean | { distance?: number | string }', default: 'true', desc: '多层抽屉打开时是否推动父级抽屉，默认距离 180px' }
 ]
 
 export const drawerEmits: ParamTableRow[] = [
@@ -40,10 +41,13 @@ import { Drawer } from '@unoui/vue/drawer'
 import { Button } from '@unoui/vue/button'
 
 const visible = ref(false)
+const parentVisible = ref(false)
+const childVisible = ref(false)
 </script>
 
 <template>
   <Button @click="visible = true">打开抽屉</Button>
+  <Button @click="parentVisible = true">打开多层抽屉</Button>
 
   <Drawer v-model:visible="visible" title="设置" direction="rtl" size="400px">
     <div class="p-4 text-sm text-secondary">
@@ -53,5 +57,12 @@ const visible = ref(false)
       <Button variant="outline" @click="visible = false">取消</Button>
       <Button @click="visible = false">确定</Button>
     </template>
+  </Drawer>
+
+  <Drawer v-model:visible="parentVisible" title="父级抽屉" :push="{ distance: 180 }">
+    <Button @click="childVisible = true">打开子级抽屉</Button>
+    <Drawer v-model:visible="childVisible" title="子级抽屉">
+      子级内容
+    </Drawer>
   </Drawer>
 </template>`
