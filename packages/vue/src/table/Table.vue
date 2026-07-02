@@ -107,6 +107,7 @@ const hasScrollLeft = ref(false)
 const hasScrollRight = ref(false)
 let resizeObserver: ResizeObserver | null = null
 let resizeFrame = 0
+let scrollStateFrame = 0
 
 const radiusClass = computed(() => {
   const map: Record<TableRadius, string> = {
@@ -198,15 +199,63 @@ const getScrollElement = () => {
   return current.$el?.querySelector('.simplebar-content-wrapper') as HTMLElement | null
 }
 
+const isHorizontalThumbAtStart = () => {
+  const simplebarElement = simplebarRef.value?.$el
+  const track = simplebarElement?.querySelector('.simplebar-track.simplebar-horizontal')
+  const thumb = track?.querySelector('.simplebar-scrollbar')
+  const trackRect = track?.getBoundingClientRect()
+  const thumbRect = thumb?.getBoundingClientRect()
+  if (!trackRect || !thumbRect || thumbRect.width <= 0) return false
+  return thumbRect.left - trackRect.left <= 2
+}
+
 // 同步水平滚动状态，用于固定列边缘阴影。
 const updateScrollState = () => {
   const el = getScrollElement()
   if (!el) return
-  hasScrollLeft.value = el.scrollLeft > 0
+  hasScrollLeft.value = el.scrollLeft > 2 && !isHorizontalThumbAtStart()
   hasScrollRight.value = el.scrollLeft + el.clientWidth < el.scrollWidth - 1
 }
 
 const handleScroll = () => updateScrollState()
+
+const stopScrollStateLoop = () => {
+  if (!scrollStateFrame) return
+  cancelAnimationFrame(scrollStateFrame)
+  scrollStateFrame = 0
+}
+
+const runScrollStateLoop = () => {
+  updateScrollState()
+
+  const simplebarElement = simplebarRef.value?.$el
+  if (simplebarElement?.classList.contains('simplebar-dragging')) {
+    scrollStateFrame = requestAnimationFrame(runScrollStateLoop)
+    return
+  }
+
+  scrollStateFrame = 0
+}
+
+const startScrollStateLoop = () => {
+  if (scrollStateFrame) return
+  scrollStateFrame = requestAnimationFrame(runScrollStateLoop)
+}
+
+const finishScrollStateLoop = () => {
+  stopScrollStateLoop()
+  updateScrollState()
+}
+
+const handleScrollbarDragStart = (event: MouseEvent | TouchEvent) => {
+  const target = event.target
+  if (!(target instanceof Element) || !target.closest('.simplebar-track.simplebar-horizontal')) return
+
+  startScrollStateLoop()
+  window.addEventListener('mouseup', finishScrollStateLoop, { once: true })
+  window.addEventListener('touchend', finishScrollStateLoop, { once: true })
+  window.addEventListener('touchcancel', finishScrollStateLoop, { once: true })
+}
 
 // 表格所在容器或内容尺寸变化后，主动刷新 SimpleBar 的滚动尺寸与固定列阴影状态。
 const scheduleTableResize = () => {
@@ -241,6 +290,10 @@ onBeforeUnmount(() => {
     cancelAnimationFrame(resizeFrame)
     resizeFrame = 0
   }
+  stopScrollStateLoop()
+  window.removeEventListener('mouseup', finishScrollStateLoop)
+  window.removeEventListener('touchend', finishScrollStateLoop)
+  window.removeEventListener('touchcancel', finishScrollStateLoop)
 })
 
 const getValueByPath = (row: T, path?: keyof T | string) => {
@@ -389,6 +442,8 @@ const getHeaderClass = (state: ColumnState) => {
     getAlignClass(column.align),
     props.stickyHeader && 'sticky top-0 z-20',
     state.fixed && 'sticky z-30',
+    state.fixed === 'left' && 'ui-table__cell--fixed-left',
+    state.fixed === 'right' && 'ui-table__cell--fixed-right',
     state.isLeftEdge && 'ui-table__cell--fixed-left-edge',
     state.isRightEdge && 'ui-table__cell--fixed-right-edge',
     props.showVerticalLines && state.index < props.columns.length - 1 && 'border-r border-medium/60',
@@ -408,6 +463,8 @@ const getCellClass = (state: ColumnState, row: T, index: number) => {
     column.wrap ? 'whitespace-normal' : 'whitespace-nowrap',
     getAlignClass(column.align),
     state.fixed && 'sticky z-10',
+    state.fixed === 'left' && 'ui-table__cell--fixed-left',
+    state.fixed === 'right' && 'ui-table__cell--fixed-right',
     state.isLeftEdge && 'ui-table__cell--fixed-left-edge',
     state.isRightEdge && 'ui-table__cell--fixed-right-edge',
     props.showVerticalLines && state.index < props.columns.length - 1 && 'border-r border-medium/60',
@@ -430,7 +487,7 @@ const getSortIcon = (column: TableColumn<T>) => {
     ref="tableRoot"
     :class="clsx('ui-table overflow-hidden bg-primary', radiusClass, bordered && 'border border-medium', hasScrollLeft && 'ui-table--scrolled-left', hasScrollRight && 'ui-table--scrolled-right', showHorizontalLines && 'ui-table--horizontal-lines', showVerticalLines && 'ui-table--vertical-lines')"
   >
-    <SimpleBar ref="simplebarRef" class="ui-table__scroll w-full" :auto-hide="autoHideScrollbar" :style="{ maxHeight }" @scroll="handleScroll">
+    <SimpleBar ref="simplebarRef" class="ui-table__scroll w-full" :auto-hide="autoHideScrollbar" :style="{ maxHeight }" @mousedown.capture="handleScrollbarDragStart" @scroll="handleScroll" @touchstart.capture="handleScrollbarDragStart">
       <table ref="tableElement" class="w-full border-separate border-spacing-0" :class="sizeClasses.table" :style="tableStyle">
         <thead>
           <tr>
@@ -510,30 +567,47 @@ const getSortIcon = (column: TableColumn<T>) => {
   opacity: 1 !important;
 }
 
+.ui-table__cell--fixed-left {
+  z-index: 12;
+}
+
+.ui-table__cell--fixed-right {
+  z-index: 11;
+}
+
+thead .ui-table__cell--fixed-left {
+  z-index: 32;
+}
+
+thead .ui-table__cell--fixed-right {
+  z-index: 31;
+}
+
 .ui-table__cell--fixed-left-edge::after,
 .ui-table__cell--fixed-right-edge::before {
   position: absolute;
   top: 0;
-  bottom: 0;
-  width: 10px;
+  bottom: -1px;
+  width: 30px;
+  z-index: 1;
   pointer-events: none;
   content: '';
-  opacity: 0;
-  transition: opacity 0.16s ease;
+  transition: box-shadow 0.3s ease;
 }
 
 .ui-table__cell--fixed-left-edge::after {
-  right: -10px;
-  background: linear-gradient(to right, rgba(15, 23, 42, 0.12), rgba(15, 23, 42, 0));
+  left: 100%;
 }
 
 .ui-table__cell--fixed-right-edge::before {
-  left: -10px;
-  background: linear-gradient(to left, rgba(15, 23, 42, 0.12), rgba(15, 23, 42, 0));
+  right: 100%;
 }
 
-.ui-table--scrolled-left .ui-table__cell--fixed-left-edge::after,
+.ui-table--scrolled-left .ui-table__cell--fixed-left-edge::after {
+  box-shadow: inset 10px 0 8px -8px rgba(15, 23, 42, 0.22);
+}
+
 .ui-table--scrolled-right .ui-table__cell--fixed-right-edge::before {
-  opacity: 1;
+  box-shadow: inset -10px 0 8px -8px rgba(15, 23, 42, 0.22);
 }
 </style>
