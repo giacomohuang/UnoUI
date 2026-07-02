@@ -105,6 +105,7 @@ const internalSort = ref<TableSortState | null>(props.defaultSort)
 const internalFilters = ref<TableFiltersState>({ ...props.defaultFilters })
 const hasScrollLeft = ref(false)
 const hasScrollRight = ref(false)
+const hasScrollY = ref(false)
 let resizeObserver: ResizeObserver | null = null
 let resizeFrame = 0
 let scrollStateFrame = 0
@@ -190,6 +191,11 @@ const tableStyle = computed(() => ({
   minWidth: props.minWidth || undefined
 }))
 
+const scrollStyle = computed(() => ({
+  maxHeight: props.maxHeight,
+  overflowY: props.maxHeight ? undefined : 'hidden'
+}))
+
 const tableLayoutSignature = computed(() => props.columns.map((column) => [column.key, column.width ?? '', column.minWidth ?? '', column.maxWidth ?? '', column.fixed ?? ''].join(':')).join('|'))
 
 const getScrollElement = () => {
@@ -215,6 +221,7 @@ const updateScrollState = () => {
   if (!el) return
   hasScrollLeft.value = el.scrollLeft > 2 && !isHorizontalThumbAtStart()
   hasScrollRight.value = el.scrollLeft + el.clientWidth < el.scrollWidth - 1
+  hasScrollY.value = el.scrollHeight - el.clientHeight > 2
 }
 
 const handleScroll = () => updateScrollState()
@@ -485,9 +492,9 @@ const getSortIcon = (column: TableColumn<T>) => {
 <template>
   <div
     ref="tableRoot"
-    :class="clsx('ui-table overflow-hidden bg-primary', radiusClass, bordered && 'border border-medium', hasScrollLeft && 'ui-table--scrolled-left', hasScrollRight && 'ui-table--scrolled-right', showHorizontalLines && 'ui-table--horizontal-lines', showVerticalLines && 'ui-table--vertical-lines')"
+    :class="clsx('ui-table overflow-hidden bg-primary', radiusClass, bordered && 'border border-medium', hasScrollLeft && 'ui-table--scrolled-left', hasScrollRight && 'ui-table--scrolled-right', hasScrollY && 'ui-table--scroll-y', showHorizontalLines && 'ui-table--horizontal-lines', showVerticalLines && 'ui-table--vertical-lines')"
   >
-    <SimpleBar ref="simplebarRef" class="ui-table__scroll w-full" :auto-hide="autoHideScrollbar" :style="{ maxHeight }" @mousedown.capture="handleScrollbarDragStart" @scroll="handleScroll" @touchstart.capture="handleScrollbarDragStart">
+    <SimpleBar ref="simplebarRef" class="ui-table__scroll w-full" :auto-hide="autoHideScrollbar" :style="scrollStyle" @mousedown.capture="handleScrollbarDragStart" @scroll="handleScroll" @touchstart.capture="handleScrollbarDragStart">
       <table ref="tableElement" class="w-full border-separate border-spacing-0" :class="sizeClasses.table" :style="tableStyle">
         <thead>
           <tr>
@@ -561,6 +568,10 @@ const getSortIcon = (column: TableColumn<T>) => {
   opacity: 0 !important;
 }
 
+.ui-table:not(.ui-table--scroll-y) :deep(.simplebar-track.simplebar-vertical) {
+  visibility: hidden !important;
+}
+
 .ui-table:hover :deep(.simplebar-scrollbar::before),
 .ui-table :deep(.ui-table__scroll.simplebar-scrolling .simplebar-scrollbar::before),
 .ui-table :deep(.ui-table__scroll.simplebar-dragging .simplebar-scrollbar::before) {
@@ -604,10 +615,10 @@ thead .ui-table__cell--fixed-right {
 }
 
 .ui-table--scrolled-left .ui-table__cell--fixed-left-edge::after {
-  box-shadow: inset 10px 0 8px -8px rgba(15, 23, 42, 0.22);
+  box-shadow: inset 10px 0 8px -8px rgba(15, 23, 42, 0.11);
 }
 
 .ui-table--scrolled-right .ui-table__cell--fixed-right-edge::before {
-  box-shadow: inset -10px 0 8px -8px rgba(15, 23, 42, 0.22);
+  box-shadow: inset -10px 0 8px -8px rgba(15, 23, 42, 0.11);
 }
 </style>
