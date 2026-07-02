@@ -64,11 +64,7 @@ export default defineConfig({
   transformers: [transformerDirectives(), transformerVariantGroup()],
   content: {
     pipeline: {
-      include: [
-        /\.(vue|svelte|[jt]sx|vine.ts|mdx?|astro|elm|php|phtml|marko|html)($|\?)/,
-        'src/**/*.{js,ts}',
-        'node_modules/@unoui/vue/src/**/*.{vue,js,ts}'
-      ],
+      include: [/\.(vue|svelte|[jt]sx|vine.ts|mdx?|astro|elm|php|phtml|marko|html)($|\?)/, 'src/**/*.{js,ts}', 'node_modules/@unoui/vue/src/**/*.{vue,js,ts}'],
       exclude: ['uno.config.ts']
     }
   }
@@ -105,15 +101,15 @@ import { Select } from '@unoui/vue/select'
 
 ### Components
 
-| Category | Components |
-| --- | --- |
-| General | `Button`, `ButtonGroup`, `Tag`, `Badge`, `BadgeRibbon` |
-| Form | `Form`, `FormItem`, `Input`, `Autocomplete`, `InputTag`, `InputI18n`, `InputOtp` |
-| Selection | `Checkbox`, `Radio`, `Switch`, `Select` |
-| Date and numeric | `DatePicker`, `RangePicker`, `Slider`, `ColorPicker`, `Rate` |
-| Data display | `Table`, `Pagination`, `DataSkeleton`, `QRCode`, `MillerColumns` |
-| Feedback and overlays | `Alert`, `message`, `Modal`, `Drawer`, `Tooltip`, `Popconfirm`, `Dropdown` |
-| Navigation | `Tabs`, `TabPane` |
+| Category              | Components                                                                       |
+| --------------------- | -------------------------------------------------------------------------------- |
+| General               | `Button`, `ButtonGroup`, `Tag`, `Badge`, `BadgeRibbon`                           |
+| Form                  | `Form`, `FormItem`, `Input`, `Autocomplete`, `InputTag`, `InputI18n`, `InputOtp` |
+| Selection             | `Checkbox`, `Radio`, `Switch`, `Select`                                          |
+| Date and numeric      | `DatePicker`, `RangePicker`, `Slider`, `ColorPicker`, `Rate`                     |
+| Data display          | `Table`, `Pagination`, `Skeleton`, `QRCode`, `MillerColumns`                     |
+| Feedback and overlays | `Alert`, `message`, `Modal`, `Drawer`, `Tooltip`, `Popconfirm`, `Dropdown`       |
+| Navigation            | `Tabs`, `TabPane`                                                                |
 
 ### Local Demo
 

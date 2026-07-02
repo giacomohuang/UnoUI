@@ -16,23 +16,23 @@ export const skeletonProps: ParamTableRow[] = [
 ]
 
 export const skeletonCodeExample = `<script setup>
-import { DataSkeleton } from '@unoui/vue/skeleton'
+import { Skeleton } from '@unoui/vue/skeleton'
 </script>
 
 <template>
   <!-- 表格骨架屏 -->
-  <DataSkeleton variant="table" :rows="6" :columns="5" />
+  <Skeleton variant="table" :rows="6" :columns="5" />
 
   <!-- 列表骨架屏 -->
-  <DataSkeleton variant="list" :rows="4" />
+  <Skeleton variant="list" :rows="4" />
 
   <!-- 网格骨架屏 -->
-  <DataSkeleton variant="grid" :rows="3" :columns="3" />
+  <Skeleton variant="grid" :rows="3" :columns="3" />
 
   <!-- 带信息面板 -->
-  <DataSkeleton variant="columns" :rows="5" :columns="2"
+  <Skeleton variant="columns" :rows="5" :columns="2"
                 show-info-panel :info-rows="4" />
 
   <!-- 单行文本 -->
-  <DataSkeleton variant="line" />
+  <Skeleton variant="line" />
 </template>`

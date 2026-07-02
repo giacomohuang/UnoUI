@@ -64,11 +64,7 @@ export default defineConfig({
   transformers: [transformerDirectives(), transformerVariantGroup()],
   content: {
     pipeline: {
-      include: [
-        /\.(vue|svelte|[jt]sx|vine.ts|mdx?|astro|elm|php|phtml|marko|html)($|\?)/,
-        'src/**/*.{js,ts}',
-        'node_modules/@unoui/vue/src/**/*.{vue,js,ts}'
-      ],
+      include: [/\.(vue|svelte|[jt]sx|vine.ts|mdx?|astro|elm|php|phtml|marko|html)($|\?)/, 'src/**/*.{js,ts}', 'node_modules/@unoui/vue/src/**/*.{vue,js,ts}'],
       exclude: ['uno.config.ts']
     }
   }
@@ -105,15 +101,15 @@ import { Select } from '@unoui/vue/select'
 
 ### 组件
 
-| 分类 | 组件 |
-| --- | --- |
-| 通用 | `Button`, `ButtonGroup`, `Tag`, `Badge`, `BadgeRibbon` |
-| 表单 | `Form`, `FormItem`, `Input`, `Autocomplete`, `InputTag`, `InputI18n`, `InputOtp` |
-| 选择 | `Checkbox`, `Radio`, `Switch`, `Select` |
-| 日期和数值 | `DatePicker`, `RangePicker`, `Slider`, `ColorPicker`, `Rate` |
-| 数据展示 | `Table`, `Pagination`, `DataSkeleton`, `QRCode`, `MillerColumns` |
-| 反馈和浮层 | `Alert`, `message`, `Modal`, `Drawer`, `Tooltip`, `Popconfirm`, `Dropdown` |
-| 导航 | `Tabs`, `TabPane` |
+| 分类       | 组件                                                                             |
+| ---------- | -------------------------------------------------------------------------------- |
+| 通用       | `Button`, `ButtonGroup`, `Tag`, `Badge`, `BadgeRibbon`                           |
+| 表单       | `Form`, `FormItem`, `Input`, `Autocomplete`, `InputTag`, `InputI18n`, `InputOtp` |
+| 选择       | `Checkbox`, `Radio`, `Switch`, `Select`                                          |
+| 日期和数值 | `DatePicker`, `RangePicker`, `Slider`, `ColorPicker`, `Rate`                     |
+| 数据展示   | `Table`, `Pagination`, `Skeleton`, `QRCode`, `MillerColumns`                     |
+| 反馈和浮层 | `Alert`, `message`, `Modal`, `Drawer`, `Tooltip`, `Popconfirm`, `Dropdown`       |
+| 导航       | `Tabs`, `TabPane`                                                                |
 
 ### 本地示例
 

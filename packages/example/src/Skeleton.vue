@@ -4,9 +4,9 @@
       <h2 class="text-base font-bold text-primary">Skeleton</h2>
     </div>
     <div class="grid gap-4 p-4">
-      <DataSkeleton variant="line" width="220px" height="12px" />
-      <DataSkeleton variant="list" :rows="3" item-height="34px" />
-      <DataSkeleton variant="grid" :rows="4" column-width="96px" />
+      <Skeleton variant="line" width="220px" height="12px" />
+      <Skeleton variant="list" :rows="3" item-height="34px" />
+      <Skeleton variant="grid" :rows="4" column-width="96px" />
     </div>
 
     <!-- API 参数 -->
@@ -32,9 +32,10 @@
 </template>
 
 <script setup lang="ts">
-import { DataSkeleton } from '@unoui/vue/skeleton'
+import { Skeleton } from '@unoui/vue/skeleton'
+
+import CodeBlock from '@/components/CodeBlock.vue'
+import ParamTable from '@/components/ParamTable.vue'
 import { propsColumns } from '@/data/shared'
 import { skeletonProps, skeletonCodeExample } from '@/data/skeleton'
-import ParamTable from '@/components/ParamTable.vue'
-import CodeBlock from '@/components/CodeBlock.vue'
 </script>

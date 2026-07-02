@@ -4,17 +4,17 @@ Use this file as the first stop for component work. Load only the reference file
 
 ## Reference Routing
 
-| Task or component | Read |
-| --- | --- |
-| Setup, styles, UnoCSS preset, icons, theme, `configureUnoUI` | `integration.md` |
-| `Button`, `ButtonGroup`, `Tag` | `buttons-tags.md` |
-| `Input`, `Autocomplete`, `InputTag`, `InputI18n`, `InputOtp` | `inputs.md` |
-| `Checkbox`, `Radio`, `Switch`, `Select` | `selection.md` |
-| `DatePicker`, `RangePicker`, `Slider`, `ColorPicker` | `date-numeric.md` |
-| `Form`, `FormItem`, validation rules/exposes | `form.md` |
-| `Table`, `Pagination`, `DataSkeleton`, `Badge`, `BadgeRibbon`, `QRCode`, `MillerColumns` | `data-display.md` |
+| Task or component                                                                              | Read                   |
+| ---------------------------------------------------------------------------------------------- | ---------------------- |
+| Setup, styles, UnoCSS preset, icons, theme, `configureUnoUI`                                   | `integration.md`       |
+| `Button`, `ButtonGroup`, `Tag`                                                                 | `buttons-tags.md`      |
+| `Input`, `Autocomplete`, `InputTag`, `InputI18n`, `InputOtp`                                   | `inputs.md`            |
+| `Checkbox`, `Radio`, `Switch`, `Select`                                                        | `selection.md`         |
+| `DatePicker`, `RangePicker`, `Slider`, `ColorPicker`                                           | `date-numeric.md`      |
+| `Form`, `FormItem`, validation rules/exposes                                                   | `form.md`              |
+| `Table`, `Pagination`, `Skeleton`, `Badge`, `BadgeRibbon`, `QRCode`, `MillerColumns`           | `data-display.md`      |
 | `Alert`, `message`, `MessageContainer`, `Modal`, `Drawer`, `Tooltip`, `Popconfirm`, `Dropdown` | `feedback-overlays.md` |
-| `Tabs`, `TabPane`, `Rate` | `navigation-rating.md` |
+| `Tabs`, `TabPane`, `Rate`                                                                      | `navigation-rating.md` |
 
 ## Shared Conventions
 
@@ -29,31 +29,31 @@ Use this file as the first stop for component work. Load only the reference file
 
 ## Component Index
 
-| Component | Import | Details |
-| --- | --- | --- |
-| `Alert` | `@unoui/vue/alert` | `feedback-overlays.md` |
-| `Badge`, `BadgeRibbon` | `@unoui/vue/badge` | `data-display.md` |
-| `Button`, `ButtonGroup` | `@unoui/vue/button` | `buttons-tags.md` |
-| `Checkbox` | `@unoui/vue/checkbox` | `selection.md` |
-| `ColorPicker` | `@unoui/vue/colorpicker` | `date-numeric.md` |
-| `DatePicker`, `RangePicker` | `@unoui/vue/datepicker` | `date-numeric.md` |
-| `Drawer` | `@unoui/vue/drawer` | `feedback-overlays.md` |
-| `Dropdown` | `@unoui/vue/dropdown` | `feedback-overlays.md` |
-| `Form`, `FormItem`, `createFormRule` | `@unoui/vue/form` | `form.md` |
-| `Input`, `Autocomplete`, `InputTag`, `InputI18n` | `@unoui/vue/input` | `inputs.md` |
-| `InputOtp` | `@unoui/vue/inputOtp` | `inputs.md` |
-| `message`, `Message`, `MessageContainer` | `@unoui/vue/message` | `feedback-overlays.md` |
-| `MillerColumns` | `@unoui/vue/millercolumns` | `data-display.md` |
-| `Modal` | `@unoui/vue/modal` | `feedback-overlays.md` |
-| `Pagination` | `@unoui/vue/pagination` | `data-display.md` |
-| `Popconfirm` | `@unoui/vue/popconfirm` | `feedback-overlays.md` |
-| `QRCode` | `@unoui/vue/qrcode` | `data-display.md` |
-| `Radio` | `@unoui/vue/radio` | `selection.md` |
-| `Rate` | `@unoui/vue/rate` | `navigation-rating.md` |
-| `DataSkeleton` | `@unoui/vue/skeleton` | `data-display.md` |
-| `Slider` | `@unoui/vue/slider` | `date-numeric.md` |
-| `Switch` | `@unoui/vue/switch` | `selection.md` |
-| `Tabs`, `TabPane` | `@unoui/vue/tab` | `navigation-rating.md` |
-| `Table`, `TableColumn` types | `@unoui/vue/table` | `data-display.md` |
-| `Tag` | `@unoui/vue/tag` | `buttons-tags.md` |
-| `Tooltip` | `@unoui/vue/tooltip` | `feedback-overlays.md` |
+| Component                                        | Import                     | Details                |
+| ------------------------------------------------ | -------------------------- | ---------------------- |
+| `Alert`                                          | `@unoui/vue/alert`         | `feedback-overlays.md` |
+| `Badge`, `BadgeRibbon`                           | `@unoui/vue/badge`         | `data-display.md`      |
+| `Button`, `ButtonGroup`                          | `@unoui/vue/button`        | `buttons-tags.md`      |
+| `Checkbox`                                       | `@unoui/vue/checkbox`      | `selection.md`         |
+| `ColorPicker`                                    | `@unoui/vue/colorpicker`   | `date-numeric.md`      |
+| `DatePicker`, `RangePicker`                      | `@unoui/vue/datepicker`    | `date-numeric.md`      |
+| `Drawer`                                         | `@unoui/vue/drawer`        | `feedback-overlays.md` |
+| `Dropdown`                                       | `@unoui/vue/dropdown`      | `feedback-overlays.md` |
+| `Form`, `FormItem`, `createFormRule`             | `@unoui/vue/form`          | `form.md`              |
+| `Input`, `Autocomplete`, `InputTag`, `InputI18n` | `@unoui/vue/input`         | `inputs.md`            |
+| `InputOtp`                                       | `@unoui/vue/inputOtp`      | `inputs.md`            |
+| `message`, `Message`, `MessageContainer`         | `@unoui/vue/message`       | `feedback-overlays.md` |
+| `MillerColumns`                                  | `@unoui/vue/millercolumns` | `data-display.md`      |
+| `Modal`                                          | `@unoui/vue/modal`         | `feedback-overlays.md` |
+| `Pagination`                                     | `@unoui/vue/pagination`    | `data-display.md`      |
+| `Popconfirm`                                     | `@unoui/vue/popconfirm`    | `feedback-overlays.md` |
+| `QRCode`                                         | `@unoui/vue/qrcode`        | `data-display.md`      |
+| `Radio`                                          | `@unoui/vue/radio`         | `selection.md`         |
+| `Rate`                                           | `@unoui/vue/rate`          | `navigation-rating.md` |
+| `Skeleton`                                       | `@unoui/vue/skeleton`      | `data-display.md`      |
+| `Slider`                                         | `@unoui/vue/slider`        | `date-numeric.md`      |
+| `Switch`                                         | `@unoui/vue/switch`        | `selection.md`         |
+| `Tabs`, `TabPane`                                | `@unoui/vue/tab`           | `navigation-rating.md` |
+| `Table`, `TableColumn` types                     | `@unoui/vue/table`         | `data-display.md`      |
+| `Tag`                                            | `@unoui/vue/tag`           | `buttons-tags.md`      |
+| `Tooltip`                                        | `@unoui/vue/tooltip`       | `feedback-overlays.md` |

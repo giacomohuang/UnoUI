@@ -1,12 +1,12 @@
 # Data Display
 
-Use this file for `Table`, `Pagination`, `DataSkeleton`, `Badge`, `BadgeRibbon`, `QRCode`, and `MillerColumns`.
+Use this file for `Table`, `Pagination`, `Skeleton`, `Badge`, `BadgeRibbon`, `QRCode`, and `MillerColumns`.
 
 ## Contents
 
 - Table
 - Pagination
-- DataSkeleton
+- Skeleton
 - Badge
 - BadgeRibbon
 - QRCode
@@ -18,7 +18,11 @@ Use this file for `Table`, `Pagination`, `DataSkeleton`, `Badge`, `BadgeRibbon`,
 <script setup lang="ts">
 import { Table, type TableColumn } from '@unoui/vue/table'
 
-interface Row { id: number; name: string; status: string }
+interface Row {
+  id: number
+  name: string
+  status: string
+}
 const rows: Row[] = [{ id: 1, name: 'Main', status: 'active' }]
 const columns: TableColumn<Row>[] = [
   { key: 'name', title: 'Name', sortable: true },
@@ -113,11 +117,11 @@ Expose:
 
 - None
 
-## DataSkeleton
+## Skeleton
 
 ```vue
-<DataSkeleton variant="table" :rows="6" :columns="5" />
-<DataSkeleton variant="columns" show-info-panel />
+<Skeleton variant="table" :rows="6" :columns="5" />
+<Skeleton variant="columns" show-info-panel />
 ```
 
 Props:
@@ -229,14 +233,7 @@ Expose:
 ## MillerColumns
 
 ```vue
-<MillerColumns
-  v-model="selectedIds"
-  :data-source="resourceMap"
-  id-key="id"
-  parent-id-key="pid"
-  order-key="order"
-  sortable
-/>
+<MillerColumns v-model="selectedIds" :data-source="resourceMap" id-key="id" parent-id-key="pid" order-key="order" sortable />
 ```
 
 Props:
