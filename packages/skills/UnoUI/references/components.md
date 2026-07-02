@@ -20,6 +20,7 @@ Use this file as the first stop for component work. Load only the reference file
 
 - Prefer component subpath imports: `@unoui/vue/button`, `@unoui/vue/input`, `@unoui/vue/table`.
 - Use kebab-case in templates: `prefix-icon`, `show-word-limit`, `v-model:current-page`, `@visible-change`.
+- For value-like component state, default to Vue's standard `v-model` contract: `modelValue` plus `update:modelValue`. Do not introduce `value` / `update:value` / `v-model:value` unless the current component source already defines that named model.
 - Most form controls support `size="sm|md|lg"`.
 - Icon props take UnoCSS/Iconify class strings such as `i-lucide:search`.
 - Controlled overlays usually use `v-model:open`; `Modal` uses `v-model:visible`; `Drawer` accepts `v-model` or `v-model:visible`.

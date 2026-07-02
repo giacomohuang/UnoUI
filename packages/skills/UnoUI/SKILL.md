@@ -24,7 +24,9 @@ description: Use when integrating or modifying @unoui/vue components in Vue 3 pr
    - Import public types from the matching subpath, for example `TableColumn` from `@unoui/vue/table`.
 
 4. Implement with the real API:
-   - Use Vue `v-model` names exactly as documented: `v-model`, `v-model:open`, `v-model:visible`, `v-model:current-page`, `v-model:page-size`, etc.
+   - Prefer Vue's default model contract for value-like component state: use `v-model` in templates and implement/expect `modelValue` plus `update:modelValue` in components.
+   - Use named models only for state that is already named by the current UnoUI API, such as `v-model:open`, `v-model:visible`, `v-model:current-page`, or `v-model:page-size`.
+   - Do not choose `value` / `update:value` / `v-model:value` as the default compatibility pattern when adding or porting value controls; keep those only when the existing component source explicitly exposes that named model.
    - Use kebab-case event names in templates, for example `@visible-change`, `@row-click`, `@change-complete`.
    - Do not invent compatibility props/events from Element Plus, Ant Design, or local legacy components unless this repository explicitly exposes them.
    - Do not rely on exported `cva` style helpers as the main integration API; they are low-level styling utilities.

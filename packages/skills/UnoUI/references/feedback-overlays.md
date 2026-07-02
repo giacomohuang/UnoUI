@@ -271,7 +271,7 @@ Keyboard state:
 
 Models:
 
-- `v-model:value`
+- `v-model:value`: existing Dropdown selection model; do not use as the default pattern for new value controls.
 - `v-model:open`
 
 Events:
