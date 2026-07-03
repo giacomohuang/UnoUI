@@ -5,7 +5,7 @@ import { Button } from '../button'
 import { Input } from '../input'
 import { Select, type SelectOption, type SelectValue } from '../select'
 
-import { paginationPagerButton, type PaginationLayoutToken, type PaginationProps } from '.'
+import type { PaginationLayoutToken, PaginationProps } from '.'
 
 const props = withDefaults(
   defineProps<{
@@ -83,6 +83,10 @@ const activeCurrentPage = computed(() => clampPage(props.currentPage ?? internal
 const shouldRender = computed(() => !(props.hideOnSinglePage && pageCount.value <= 1))
 const layoutTokens = computed(() => props.layout.split(',').map((item) => item.trim()).filter(Boolean) as PaginationLayoutToken[])
 const pageSizeOptions = computed<SelectOption[]>(() => props.pageSizes.map((size) => ({ label: `${size} ${props.pageSizeSuffix}`, value: size })))
+const controlHeightClass = computed(() => paginationControlHeightClasses[props.size ?? 'md'])
+const pagerMinWidthClass = computed(() => paginationPagerMinWidthClasses[props.size ?? 'md'])
+const iconButtonClass = computed(() => ['px-0!', controlHeightClass.value, pagerMinWidthClass.value])
+const textButtonClass = computed(() => [controlHeightClass.value])
 
 const normalizedPagerCount = computed(() => {
   const count = Math.max(5, props.pagerCount)
@@ -174,6 +178,18 @@ function commitJumper() {
   }
   setCurrentPage(nextPage)
 }
+
+const paginationControlHeightClasses = {
+  sm: 'h-[calc(1.75rem+2px)]',
+  md: 'h-[calc(2rem+2px)]',
+  lg: 'h-[calc(2.25rem+2px)]'
+} as const
+
+const paginationPagerMinWidthClasses = {
+  sm: 'min-w-[calc(1.75rem+2px)]',
+  md: 'min-w-[calc(2rem+2px)]',
+  lg: 'min-w-[calc(2.25rem+2px)]'
+} as const
 </script>
 
 <template>
@@ -185,7 +201,7 @@ function commitJumper() {
 
       <Select
         v-else-if="token === 'sizes'"
-        class="w-28"
+        width="7rem"
         :model-value="activePageSize"
         :options="pageSizeOptions"
         :size="size"
@@ -197,8 +213,9 @@ function commitJumper() {
         v-else-if="token === 'prev'"
         color="gray"
         variant="mono"
-        :size="size === 'lg' ? 'md' : 'sm'"
+        :size="prevText ? size : 'icon'"
         :icon="prevText ? undefined : 'i-lucide:chevron-left'"
+        :class="prevText ? textButtonClass : iconButtonClass"
         :disabled="disabled || activeCurrentPage <= 1"
         @click="setCurrentPage(activeCurrentPage - 1)"
       >
@@ -206,25 +223,29 @@ function commitJumper() {
       </Button>
 
       <div v-else-if="token === 'pager'" class="flex items-center gap-1">
-        <button
+        <Button
           v-for="pager in pagers"
           :key="String(pager)"
-          type="button"
-          :class="paginationPagerButton({ size, active: pager === activeCurrentPage, disabled })"
+          :color="pager === activeCurrentPage ? 'brand' : 'gray'"
+          :variant="pager === activeCurrentPage ? 'default' : 'mono'"
+          :size="typeof pager === 'number' ? size : 'icon'"
+          :icon="typeof pager === 'number' ? undefined : 'i-lucide:ellipsis'"
+          :icon-size="typeof pager === 'number' ? '14' : '16'"
+          :class="[controlHeightClass, pagerMinWidthClass, typeof pager !== 'number' ? 'px-0!' : 'px-2!']"
           :disabled="disabled || typeof pager !== 'number'"
           @click="typeof pager === 'number' && setCurrentPage(pager)"
         >
-          <span v-if="typeof pager === 'number'">{{ pager }}</span>
-          <span v-else class="i-lucide:ellipsis size-4"></span>
-        </button>
+          <template v-if="typeof pager === 'number'">{{ pager }}</template>
+        </Button>
       </div>
 
       <Button
         v-else-if="token === 'next'"
         color="gray"
         variant="mono"
-        :size="size === 'lg' ? 'md' : 'sm'"
+        :size="nextText ? size : 'icon'"
         :icon="nextText ? undefined : 'i-lucide:chevron-right'"
+        :class="nextText ? textButtonClass : iconButtonClass"
         :disabled="disabled || activeCurrentPage >= pageCount"
         @click="setCurrentPage(activeCurrentPage + 1)"
       >
