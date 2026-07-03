@@ -85,6 +85,11 @@ const panelGap = 4
 const viewportPadding = 8
 const maxGradientStops = 10
 const colorInputDebounceMs = 200
+const triggerSizeMap: Record<ColorPickerSize, string> = {
+  sm: '1.75rem',
+  md: '2rem',
+  lg: '2.25rem'
+}
 // 控制点拖出渐变条一段距离后松手，按设计语义移除该控制点。
 const gradientStopRemoveDistance = 24
 
@@ -130,13 +135,29 @@ const triggerClass = computed(() =>
     })
   )
 )
+const triggerStyle = computed<CSSProperties>(() => {
+  const size = triggerSizeMap[props.size ?? 'md'] ?? triggerSizeMap.md
+  return {
+    width: size,
+    height: size
+  }
+})
 const eyeDropperButtonDisabled = computed(() => props.disabled || !eyeDropperSupported.value)
 const panelStyle = computed<CSSProperties>(() => ({
   position: 'fixed',
   top: `${panelPosition.top}px`,
   left: `${panelPosition.left}px`,
   width: `${panelWidth}px`,
+  maxHeight: `calc(100vh - ${viewportPadding * 2}px)`,
+  overflowY: 'auto',
   zIndex: 2000
+}))
+const paletteStyle = computed<CSSProperties>(() => ({
+  background: hueBackground.value,
+  height: '9rem'
+}))
+const colorInputRowStyle = computed<CSSProperties>(() => ({
+  gridTemplateColumns: 'minmax(0, 1fr) 56px'
 }))
 const palettePickerStyle = computed<CSSProperties>(() => ({
   left: `${paletteColor.s}%`,
@@ -716,14 +737,14 @@ onUnmounted(() => {
 
 <template>
   <div ref="rootRef" class="relative inline-flex align-middle" :style="getUiAttrStyle(attrs)">
-    <button v-bind="getUiExposeAttrs(attrs)" data-ui-colorpicker="true" type="button" :class="triggerClass" :disabled="disabled" :aria-expanded="open" aria-haspopup="dialog" aria-label="选择颜色" @click="toggleOpen" @keydown="handleTriggerKeydown">
+    <button v-bind="getUiExposeAttrs(attrs)" data-ui-colorpicker="true" type="button" :class="triggerClass" :style="triggerStyle" :disabled="disabled" :aria-expanded="open" aria-haspopup="dialog" aria-label="选择颜色" @click="toggleOpen" @keydown="handleTriggerKeydown">
       <span class="ui-colorpicker-checker block h-full w-full overflow-hidden rounded-[inherit]">
         <span class="block h-full w-full rounded-[inherit]" :style="{ background: previewBackground }"></span>
       </span>
     </button>
 
     <Teleport to="body">
-      <div v-if="open" ref="panelRef" role="dialog" aria-label="颜色选择器" :style="panelStyle" class="max-h-[calc(100vh-16px)] overflow-y-auto rounded-lg border border-medium bg-primary text-primary shadow-xl outline-none" @contextmenu.prevent @pointerdown.stop @selectstart.prevent>
+      <div v-if="open" ref="panelRef" role="dialog" aria-label="颜色选择器" :style="panelStyle" class="ui-colorpicker-panel rounded-lg border border-medium bg-primary text-primary shadow-xl outline-none" @contextmenu.prevent @pointerdown.stop @selectstart.prevent>
         <div v-if="isGradientAllowed" class="flex h-10 items-center gap-1 border-b border-medium px-3">
           <button v-for="item in modeOptions" :key="item.mode" type="button" :title="item.label" :aria-label="item.label" class="flex size-6 items-center justify-center rounded bg-transparent" @click="changeMode(item.mode)">
             <span
@@ -772,9 +793,9 @@ onUnmounted(() => {
         </div>
 
         <div class="grid gap-3 p-3">
-          <div ref="paletteRef" class="relative h-36 overflow-hidden rounded-md border border-medium" :style="{ background: hueBackground }" @pointerdown="handlePalettePointerDown">
-            <div class="absolute inset-0 bg-[linear-gradient(to_right,#fff,rgba(255,255,255,0))]"></div>
-            <div class="absolute inset-0 bg-[linear-gradient(to_top,#000,rgba(0,0,0,0))]"></div>
+          <div ref="paletteRef" data-ui-colorpicker-palette="true" class="ui-colorpicker-palette relative overflow-hidden rounded-md border border-medium" :style="paletteStyle" @pointerdown="handlePalettePointerDown">
+            <div class="ui-colorpicker-palette-layer ui-colorpicker-palette-light"></div>
+            <div class="ui-colorpicker-palette-layer ui-colorpicker-palette-dark"></div>
             <span class="ui-colorpicker-picker absolute size-3 rounded-full border-2 border-white shadow-[0_0_0_1px_rgba(15,23,42,0.55)]" :style="palettePickerStyle"></span>
           </div>
 
@@ -815,7 +836,7 @@ onUnmounted(() => {
             </span>
           </div>
 
-          <div class="grid grid-cols-[minmax(0,1fr)_56px] items-center gap-2 text-xs">
+          <div data-ui-colorpicker-input-row="true" class="ui-colorpicker-input-row grid items-center gap-2 text-xs" :style="colorInputRowStyle">
             <input
               data-ui-colorpicker-color-input="true"
               class="min-w-0 rounded border bg-secondary px-2 py-1 font-mono text-secondary outline-none transition-colors focus:border-brand"
@@ -847,6 +868,35 @@ onUnmounted(() => {
     6px -6px,
     -6px 0;
   background-size: 12px 12px;
+}
+
+.ui-colorpicker-panel {
+  box-sizing: border-box;
+}
+
+.ui-colorpicker-palette {
+  height: 9rem;
+}
+
+.ui-colorpicker-palette-layer {
+  position: absolute;
+  inset: 0;
+}
+
+.ui-colorpicker-palette-light {
+  background: linear-gradient(to right, #fff, rgba(255, 255, 255, 0));
+}
+
+.ui-colorpicker-palette-dark {
+  background: linear-gradient(to top, #000, rgba(0, 0, 0, 0));
+}
+
+.ui-colorpicker-input-row {
+  grid-template-columns: minmax(0, 1fr) 56px;
+}
+
+.ui-colorpicker-input-row input {
+  min-width: 0;
 }
 
 .ui-colorpicker-picker {

@@ -74,6 +74,38 @@ function dispatchPointerUp(clientX: number, clientY = 6) {
 }
 
 describe('ColorPicker', () => {
+  it('keeps trigger and popup geometry stable without consumer sizing classes', async () => {
+    const wrapper = mountColorPicker({
+      props: {
+        modelValue: {
+          mode: 'solid',
+          color: { r: 0, g: 42, b: 255, a: 1 }
+        }
+      } satisfies ColorPickerProps
+    })
+
+    const trigger = wrapper.find('[data-ui-colorpicker="true"]')
+    expect(trigger.classes()).toContain('h-8')
+    expect(trigger.classes()).toContain('w-8')
+    expect(trigger.attributes('style')).toContain('width: 2rem')
+    expect(trigger.attributes('style')).toContain('height: 2rem')
+
+    await trigger.trigger('click')
+    await flushPromises()
+
+    const panel = wrapper.find('[role="dialog"]')
+    const palette = wrapper.find('[data-ui-colorpicker-palette="true"]')
+    const inputRow = wrapper.find('[data-ui-colorpicker-input-row="true"]')
+
+    expect(panel.attributes('style')).toContain('width: 260px')
+    expect(panel.attributes('style')).toContain('max-height: calc(100vh - 16px)')
+    expect(palette.classes()).toContain('ui-colorpicker-palette')
+    expect(palette.attributes('style')).toContain('height: 9rem')
+    expect(inputRow.classes()).toContain('ui-colorpicker-input-row')
+    expect(inputRow.attributes('style')).toContain('grid-template-columns: minmax(0, 1fr) 56px')
+    wrapper.unmount()
+  })
+
   it('renders a solid value and emits changed event after hue change', async () => {
     const wrapper = mountColorPicker({
       props: {

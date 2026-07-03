@@ -8,9 +8,9 @@ export type { ColorPickerGradientStop, ColorPickerMode, ColorPickerRgbaColor, Co
 export const colorPickerTrigger = cva('group/ui-colorpicker inline-flex shrink-0 items-center justify-center overflow-hidden border bg-primary align-middle transition-colors duration-150', {
   variants: {
     size: {
-      sm: 'size-[calc(1.75rem+2px)] rounded-md p-1',
-      md: 'size-[calc(2rem+2px)] rounded-md p-1',
-      lg: 'size-[calc(2.25rem+2px)] rounded-md p-1.5'
+      sm: 'h-7 w-7 rounded-md p-1',
+      md: 'h-8 w-8 rounded-md p-1',
+      lg: 'h-9 w-9 rounded-md p-1.5'
     },
     focused: {
       true: 'border-brand ring-2 ring-brand/15',
