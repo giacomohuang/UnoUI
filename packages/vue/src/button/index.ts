@@ -91,7 +91,7 @@ export const button = cva('relative flex shrink-0 items-center justify-center wh
       default: 'border',
       outline: 'border bg-transparent',
       dashed: 'border border-dashed bg-transparent',
-      link: 'bg-transparent hover:bg-transparent hover:underline underline-offset-4 underline-dashed',
+      link: 'bg-transparent hover:bg-transparent hover:underline underline-offset-4 underline-dashed px-2!',
       mono: 'border border-zinc-400 bg-primary text-zinc-500 dark:(border-zinc-500 text-zinc-400)'
     },
     size: {
