@@ -202,7 +202,7 @@ export const formRoot = cva("ui-form text-primary", {
 });
 
 /** formItem 定义 FormItem 的整体排版和字段间距，确保嵌套网格内也有稳定行距。 */
-export const formItem = cva("ui-form-item mb-[var(--ui-form-item-gap,16px)] min-w-0 last:mb-0", {
+export const formItem = cva("ui-form-item mb-[var(--ui-form-item-gap,16px)] min-w-0 self-start content-start last:mb-0", {
   variants: {
     inline: {
       true: "inline-flex w-auto items-start",

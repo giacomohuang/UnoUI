@@ -13,6 +13,8 @@ describe('Form', () => {
   it('exports layout classes aligned to shared ui tokens', () => {
     expect(formRoot({ inline: true })).toContain('flex')
     expect(formItem()).toContain('mb-[var(--ui-form-item-gap,16px)]')
+    expect(formItem()).toContain('self-start')
+    expect(formItem()).toContain('content-start')
     expect(formItem({ inline: true })).toContain('inline-flex')
     expect(formItemContent()).toContain('justify-center')
     expect(formItemLabel({ required: true, requiredPosition: 'left' })).toContain("before:content-['*']")
