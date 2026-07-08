@@ -274,13 +274,24 @@ export const formItemLabel = cva("flex min-w-0 whitespace-normal break-words tex
 /** formItemContent 定义控件区与错误提示布局。 */
 export const formItemContent = cva("flex min-w-0 flex-col justify-center", {
   variants: {
+    labelPosition: {
+      left: "",
+      right: "",
+      top: "min-h-0 justify-start",
+    },
     size: {
-      sm: "min-h-[calc(1.75rem+7px)] text-sm",
-      md: "min-h-[calc(2rem+3px)] text-sm",
-      lg: "min-h-[calc(2.25rem)] text-base",
+      sm: "text-sm",
+      md: "text-sm",
+      lg: "text-base",
     },
   },
+  compoundVariants: [
+    { labelPosition: ["left", "right"], size: "sm", class: "min-h-[calc(1.75rem+7px)]" },
+    { labelPosition: ["left", "right"], size: "md", class: "min-h-[calc(2rem+3px)]" },
+    { labelPosition: ["left", "right"], size: "lg", class: "min-h-[calc(2.25rem)]" },
+  ],
   defaultVariants: {
+    labelPosition: "right",
     size: "md",
   },
 });

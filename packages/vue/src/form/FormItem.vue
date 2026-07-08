@@ -105,7 +105,7 @@ const labelClass = computed(() =>
     requiredPosition: form?.requireAsteriskPosition.value ?? 'left'
   })
 )
-const contentClass = computed(() => clsx(formItemContent({ size: currentSize.value }), !props.label && currentLabelPosition.value !== 'top' && (shouldReserveLabelSpace.value ? 'col-start-2' : 'col-span-full')))
+const contentClass = computed(() => clsx(formItemContent({ labelPosition: currentLabelPosition.value, size: currentSize.value }), !props.label && currentLabelPosition.value !== 'top' && (shouldReserveLabelSpace.value ? 'col-start-2' : 'col-span-full')))
 const messageClass = computed(() => formItemMessage({ status: shownValidateState.value }))
 
 function isObjectValue(value: unknown): value is object {
