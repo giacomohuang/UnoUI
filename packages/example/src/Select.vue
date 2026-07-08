@@ -30,6 +30,17 @@
             </div>
           </template>
         </Select>
+        <Select v-model="selectFooterValue" :options="selectOptions" filterable clearable placeholder="带底部分页">
+          <template #footer="{ options }">
+            <div class="flex items-center justify-between border-t border-medium px-3 py-2 text-xs text-tertiary">
+              <span>共 {{ options.length }} 项</span>
+              <button type="button" class="inline-flex items-center gap-1 text-brand transition-colors hover:text-brand/80">
+                <span>下一页</span>
+                <span class="i-lucide:chevron-right size-3.5"></span>
+              </button>
+            </div>
+          </template>
+        </Select>
         <div class="text-xs text-tertiary">过滤值：{{ selectFilterValue || '空' }}</div>
       </div>
 
@@ -91,6 +102,7 @@ const selectFixedWidthValue = ref('')
 const selectDisabledValue = ref('modal')
 const selectFilterValue = ref('')
 const selectCustomValue = ref('table')
+const selectFooterValue = ref('')
 const selectMultipleValue = ref<string[]>(['button', 'input'])
 const selectCollapseValue = ref<string[]>(['button', 'input', 'table'])
 const selectOptions: SelectOption[] = [

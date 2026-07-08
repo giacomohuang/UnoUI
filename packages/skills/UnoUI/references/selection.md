@@ -229,6 +229,7 @@ Slots:
 
 - `prefix`
 - `option="{ option, label, value, selected, disabled }"`
+- `footer="{ loading, empty, emptyText, query, options }"`: fixed dropdown footer for pagination or custom actions
 
 Expose:
 

@@ -79,6 +79,37 @@ describe('Dropdown', () => {
     full.unmount()
   })
 
+  it('renders header and footer outside the scrollable item list', async () => {
+    const wrapper = mount(Dropdown, {
+      props: {
+        open: true,
+        items,
+        valueKey: 'value',
+        contentClass: 'dropdown-footer-test'
+      },
+      slots: {
+        trigger: '<button>open</button>',
+        header: '<div class="dropdown-header-slot">header</div>',
+        item: '<button>item</button>',
+        footer: '<div class="dropdown-footer-slot">footer</div>'
+      },
+      attachTo: document.body
+    })
+    await nextTick()
+
+    const menu = document.body.querySelector('.dropdown-footer-test') as HTMLElement
+    const header = menu.querySelector('.dropdown-header-slot')
+    const list = menu.querySelector('[role="menu"]')
+    const footer = menu.querySelector('.dropdown-footer-slot')
+
+    expect(header).not.toBeNull()
+    expect(list).not.toBeNull()
+    expect(footer).not.toBeNull()
+    expect(Array.from(menu.children).indexOf(header as Element)).toBeLessThan(Array.from(menu.children).indexOf(list as Element))
+    expect(Array.from(menu.children).indexOf(footer as Element)).toBeGreaterThan(Array.from(menu.children).indexOf(list as Element))
+    wrapper.unmount()
+  })
+
   it('marks keyboard active item when slotted item has hover background', async () => {
     const wrapper = mount(Dropdown, {
       props: {

@@ -409,6 +409,7 @@ defineExpose({
       <div v-if="loading || filteredOptions.length === 0" class="border-t border-medium px-3 py-3 text-center text-sm text-tertiary">
         {{ emptyText }}
       </div>
+      <slot name="footer" :loading="loading" :empty="filteredOptions.length === 0" :empty-text="emptyText" :query="query" :options="filteredOptions"></slot>
     </template>
   </Dropdown>
 </template>

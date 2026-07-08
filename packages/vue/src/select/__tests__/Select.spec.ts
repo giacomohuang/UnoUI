@@ -163,6 +163,30 @@ describe('Select', () => {
     wrapper.unmount()
   })
 
+  it('renders custom footer content in the dropdown with select state', async () => {
+    const wrapper = mount(Select, {
+      props: {
+        options,
+        filterable: true
+      },
+      slots: {
+        footer: `<template #footer="{ empty, query, options }">
+          <div class="select-footer-test">footer {{ empty }} {{ query }} {{ options.length }}</div>
+        </template>`
+      },
+      attachTo: document.body
+    })
+
+    const input = wrapper.find('input')
+    await input.trigger('focus')
+    await input.setValue('输入')
+    await flushPromises()
+
+    const footer = document.body.querySelector('.select-footer-test')
+    expect(footer?.textContent).toContain('footer false 输入 1')
+    wrapper.unmount()
+  })
+
   it('selects filtered option with arrow keys', async () => {
     const wrapper = mount(Select, {
       props: {

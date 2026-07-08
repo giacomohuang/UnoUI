@@ -38,7 +38,8 @@ export const selectEmits: ParamTableRow[] = [
 
 export const selectSlots: ParamTableRow[] = [
   { name: 'prefix', scoped: '—', desc: '选择器输入框左侧内容' },
-  { name: 'option', scoped: '{ option, label, value, selected, disabled }', desc: '自定义选项渲染' }
+  { name: 'option', scoped: '{ option, label, value, selected, disabled }', desc: '自定义选项渲染' },
+  { name: 'footer', scoped: '{ loading, empty, emptyText, query, options }', desc: '下拉菜单底部固定区域，可放分页、快捷操作等内容' }
 ]
 
 export const selectCodeExample = `<script setup>
@@ -84,6 +85,16 @@ const options: SelectOption[] = [
            :class="selected ? 'text-brand' : ''">
         <span>{{ label }}</span>
         <span v-if="selected" class="i-lucide:check size-4" />
+      </div>
+    </template>
+  </Select>
+
+  <!-- 自定义底部区域 -->
+  <Select v-model="value" :options="options" filterable>
+    <template #footer="{ options }">
+      <div class="flex items-center justify-between border-t border-medium px-3 py-2 text-xs text-tertiary">
+        <span>共 {{ options.length }} 项</span>
+        <button type="button" class="text-brand">下一页</button>
       </div>
     </template>
   </Select>

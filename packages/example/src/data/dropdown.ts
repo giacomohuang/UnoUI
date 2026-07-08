@@ -62,5 +62,11 @@ function handleSelect(item: { label: string; value: string }) {
         <span>{{ item.label }}</span>
       </div>
     </template>
+    <template #footer>
+      <div class="flex items-center justify-between border-t border-medium px-3 py-2 text-xs text-tertiary">
+        <span>第 1 / 3 页</span>
+        <Button size="sm" variant="ghost" icon="i-lucide:chevron-right">下一页</Button>
+      </div>
+    </template>
   </Dropdown>
 </template>`
