@@ -16,8 +16,14 @@ describe('Form', () => {
     expect(formItem()).toContain('self-start')
     expect(formItem()).toContain('content-start')
     expect(formItem({ inline: true })).toContain('inline-flex')
+    expect(formItem({ labelPosition: 'top' })).toContain('gap-1')
+    expect(formItem({ inline: true, labelPosition: 'top' })).toContain('flex-col')
     expect(formItemContent()).toContain('justify-center')
     expect(formItemLabel({ required: true, requiredPosition: 'left' })).toContain("before:content-['*']")
+    expect(formItemLabel({ labelPosition: 'right', size: 'md' })).toContain('min-h-[calc(2rem+3px)]')
+    expect(formItemLabel({ labelPosition: 'right', size: 'md' })).toContain('items-center')
+    expect(formItemLabel({ labelPosition: 'top', size: 'md' })).not.toContain('min-h-[calc(2rem+3px)]')
+    expect(formItemLabel({ labelPosition: 'top', size: 'md' })).not.toContain('items-center')
   })
 
   it('validates required and preset rules with async-validator', async () => {

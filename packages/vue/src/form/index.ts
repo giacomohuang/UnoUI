@@ -211,7 +211,7 @@ export const formItem = cva("ui-form-item mb-[var(--ui-form-item-gap,16px)] min-
     labelPosition: {
       left: "grid-cols-[var(--ui-form-label-width)_minmax(0,1fr)] items-start gap-x-3",
       right: "grid-cols-[var(--ui-form-label-width)_minmax(0,1fr)] items-start gap-x-3",
-      top: "gap-1.5",
+      top: "gap-1",
     },
     size: {
       sm: "",
@@ -223,6 +223,9 @@ export const formItem = cva("ui-form-item mb-[var(--ui-form-item-gap,16px)] min-
       false: "",
     },
   },
+  compoundVariants: [
+    { inline: true, labelPosition: "top", class: "flex-col" },
+  ],
   defaultVariants: {
     inline: false,
     labelPosition: "right",
@@ -240,9 +243,9 @@ export const formItemLabel = cva("flex min-w-0 whitespace-normal break-words tex
       top: "justify-start",
     },
     size: {
-      sm: "min-h-[calc(1.75rem+7px)] items-center text-xs/5",
-      md: "min-h-[calc(2rem+3px)] items-center text-sm/5",
-      lg: "min-h-[calc(2.25rem)] items-center text-base/6",
+      sm: "text-xs/5",
+      md: "text-sm/5",
+      lg: "text-base/6",
     },
     required: {
       true: "",
@@ -256,6 +259,9 @@ export const formItemLabel = cva("flex min-w-0 whitespace-normal break-words tex
   compoundVariants: [
     { required: true, requiredPosition: "left", class: "before:mr-1 before:text-red-500 before:content-['*']" },
     { required: true, requiredPosition: "right", class: "after:ml-1 after:text-red-500 after:content-['*']" },
+    { labelPosition: ["left", "right"], size: "sm", class: "min-h-[calc(1.75rem+7px)] items-center" },
+    { labelPosition: ["left", "right"], size: "md", class: "min-h-[calc(2rem+3px)] items-center" },
+    { labelPosition: ["left", "right"], size: "lg", class: "min-h-[calc(2.25rem)] items-center" },
   ],
   defaultVariants: {
     labelPosition: "right",
