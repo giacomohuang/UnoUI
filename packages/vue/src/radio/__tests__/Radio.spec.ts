@@ -2,13 +2,14 @@ import { mount } from '@vue/test-utils'
 import { afterEach, describe, expect, it } from 'vitest'
 
 import Radio from '../Radio.vue'
+import RadioGroup from '../RadioGroup.vue'
 
 describe('Radio', () => {
   afterEach(() => {
     document.body.innerHTML = ''
   })
 
-  it('renders an inner dot when checked', () => {
+  it('renders an inner dot when checked as a standalone radio', () => {
     const wrapper = mount(Radio, {
       props: {
         checked: true
@@ -22,25 +23,27 @@ describe('Radio', () => {
     expect(wrapper.find('span').classes()).toContain('bg-brand-500')
   })
 
-  it('uses modelValue and value to form radio groups without a group component', async () => {
+  it('uses RadioGroup modelValue as the selected state', async () => {
     const wrapper = mount({
-      components: { Radio },
+      components: { Radio, RadioGroup },
       data() {
         return {
           value: 'map'
         }
       },
       template: `
-        <div>
-          <Radio v-model="value" name="mode" value="map">地图</Radio>
-          <Radio v-model="value" name="mode" value="list">列表</Radio>
-        </div>
+        <RadioGroup v-model="value" name="mode">
+          <Radio value="map">地图</Radio>
+          <Radio value="list">列表</Radio>
+        </RadioGroup>
       `
     })
     const inputs = wrapper.findAll('[data-map-ui-radio="true"]')
 
     expect((inputs[0].element as HTMLInputElement).checked).toBe(true)
     expect((inputs[1].element as HTMLInputElement).checked).toBe(false)
+    expect((inputs[0].element as HTMLInputElement).name).toBe('mode')
+    expect((inputs[1].element as HTMLInputElement).name).toBe('mode')
 
     await inputs[1].setValue(true)
 
@@ -49,167 +52,201 @@ describe('Radio', () => {
     expect((inputs[1].element as HTMLInputElement).checked).toBe(true)
   })
 
-  it('does not emit updates when disabled', async () => {
-    const wrapper = mount(Radio, {
+  it('emits RadioGroup change with the selected value', async () => {
+    const wrapper = mount(RadioGroup, {
       props: {
-        modelValue: 'map',
-        value: 'list',
-        disabled: true
+        modelValue: 'map'
+      },
+      slots: {
+        default: `
+          <Radio value="map">地图</Radio>
+          <Radio value="list">列表</Radio>
+        `
+      },
+      global: {
+        components: { Radio }
       }
     })
 
-    await wrapper.find('[data-map-ui-radio="true"]').trigger('change')
-
-    expect(wrapper.emitted('update:modelValue')).toBeUndefined()
-    expect(wrapper.emitted('change')).toBeUndefined()
-  })
-
-  it('supports sm and lg sizes', () => {
-    const small = mount(Radio, {
-      props: {
-        size: 'sm'
-      }
-    })
-    const large = mount(Radio, {
-      props: {
-        size: 'lg'
-      }
-    })
-
-    expect(small.find('span').classes()).toContain('size-4')
-    expect(large.find('span').classes()).toContain('size-6')
-  })
-
-  it('supports border mode', () => {
-    const wrapper = mount(Radio, {
-      props: {
-        modelValue: 'map',
-        value: 'map',
-        border: true
-      }
-    })
-
-    expect(wrapper.classes()).toContain('border-brand-500')
-    expect(wrapper.classes()).toContain('min-h-9')
-  })
-
-  it('emits selected value on change', async () => {
-    const wrapper = mount(Radio, {
-      props: {
-        modelValue: 'map',
-        value: 'list'
-      }
-    })
-
-    await wrapper.find('[data-map-ui-radio="true"]').setValue(true)
+    await wrapper.findAll('[data-map-ui-radio="true"]')[1].setValue(true)
 
     expect(wrapper.emitted('update:modelValue')?.[0]).toEqual(['list'])
     expect(wrapper.emitted('change')?.[0]?.[0]).toBe('list')
   })
 
-  it('supports button type without rendering the circle dot', () => {
-    const wrapper = mount(Radio, {
+  it('does not update when RadioGroup is disabled', async () => {
+    const wrapper = mount(RadioGroup, {
       props: {
-        type: 'button',
         modelValue: 'map',
-        value: 'map'
+        disabled: true
       },
       slots: {
-        default: '地图'
-      }
-    })
-
-    expect(wrapper.find('[data-map-ui-radio="true"]').exists()).toBe(true)
-    expect(wrapper.find('[aria-hidden="true"]').exists()).toBe(false)
-    expect(wrapper.classes()).toContain('ui-radio-button')
-    expect(wrapper.classes()).toContain('rounded-md')
-    expect(wrapper.classes()).toContain('border-brand-500')
-    expect(wrapper.classes()).toContain('text-brand-500')
-  })
-
-  it('supports solid button style', () => {
-    const wrapper = mount(Radio, {
-      props: {
-        type: 'button',
-        buttonStyle: 'solid',
-        modelValue: 'map',
-        value: 'map'
-      }
-    })
-
-    expect(wrapper.classes()).toContain('bg-brand-500')
-    expect(wrapper.classes()).toContain('text-brand-50')
-  })
-
-  it('marks adjacent button radios for connected segmented styling', () => {
-    const wrapper = mount({
-      components: { Radio },
-      data() {
-        return {
-          value: 'apple'
-        }
+        default: `
+          <Radio value="map">地图</Radio>
+          <Radio value="list">列表</Radio>
+        `
       },
-      template: `
-        <div class="inline-flex">
-          <Radio v-model="value" type="button" name="fruit" value="apple">Apple</Radio>
-          <Radio v-model="value" type="button" name="fruit" value="pear">Pear</Radio>
-          <Radio v-model="value" type="button" name="fruit" value="orange">Orange</Radio>
-        </div>
-      `
-    })
-
-    const buttons = wrapper.findAll('.ui-radio-button')
-    expect(buttons).toHaveLength(3)
-    expect(buttons[0].classes()).toContain('z-1')
-    expect(buttons[1].classes()).toContain('border-medium')
-  })
-
-  it('uses modelValue and value for button type radio groups', async () => {
-    const wrapper = mount({
-      components: { Radio },
-      data() {
-        return {
-          value: 'map'
-        }
-      },
-      template: `
-        <div>
-          <Radio v-model="value" type="button" name="mode-button" value="map">地图</Radio>
-          <Radio v-model="value" type="button" name="mode-button" value="list">列表</Radio>
-        </div>
-      `
-    })
-    const inputs = wrapper.findAll('[data-map-ui-radio="true"]')
-
-    await inputs[1].setValue(true)
-
-    expect(wrapper.vm.value).toBe('list')
-    expect((inputs[0].element as HTMLInputElement).checked).toBe(false)
-    expect((inputs[1].element as HTMLInputElement).checked).toBe(true)
-  })
-
-  it('does not emit updates for disabled button type radios', async () => {
-    const wrapper = mount(Radio, {
-      props: {
-        type: 'button',
-        modelValue: 'map',
-        value: 'list',
-        disabled: true
+      global: {
+        components: { Radio }
       }
     })
 
-    await wrapper.find('[data-map-ui-radio="true"]').trigger('change')
+    await wrapper.findAll('[data-map-ui-radio="true"]')[1].trigger('change')
 
     expect(wrapper.emitted('update:modelValue')).toBeUndefined()
     expect(wrapper.emitted('change')).toBeUndefined()
+  })
+
+  it('does not update when an option is disabled', async () => {
+    const wrapper = mount(RadioGroup, {
+      props: {
+        modelValue: 'map'
+      },
+      slots: {
+        default: `
+          <Radio value="map">地图</Radio>
+          <Radio value="list" disabled>列表</Radio>
+        `
+      },
+      global: {
+        components: { Radio }
+      }
+    })
+
+    await wrapper.findAll('[data-map-ui-radio="true"]')[1].trigger('change')
+
+    expect(wrapper.emitted('update:modelValue')).toBeUndefined()
+    expect(wrapper.emitted('change')).toBeUndefined()
+  })
+
+  it('inherits size from RadioGroup', () => {
+    const wrapper = mount(RadioGroup, {
+      props: {
+        modelValue: 'map',
+        size: 'lg'
+      },
+      slots: {
+        default: '<Radio value="map">地图</Radio>'
+      },
+      global: {
+        components: { Radio }
+      }
+    })
+
+    expect(wrapper.find('label span').classes()).toContain('size-6')
+  })
+
+  it('supports border mode on options', () => {
+    const wrapper = mount(RadioGroup, {
+      props: {
+        modelValue: 'map'
+      },
+      slots: {
+        default: '<Radio value="map" border>地图</Radio>'
+      },
+      global: {
+        components: { Radio }
+      }
+    })
+
+    expect(wrapper.find('label').classes()).toContain('border-brand-500')
+    expect(wrapper.find('label').classes()).toContain('min-h-9')
+  })
+
+  it('uses RadioGroup button type without rendering the circle dot', () => {
+    const wrapper = mount(RadioGroup, {
+      props: {
+        modelValue: 'map',
+        type: 'button'
+      },
+      slots: {
+        default: `
+          <Radio value="map">地图</Radio>
+          <Radio value="list">列表</Radio>
+        `
+      },
+      global: {
+        components: { Radio }
+      }
+    })
+
+    const selected = wrapper.find('.ui-radio-button')
+    expect(wrapper.classes()).toContain('ui-radio-group--button')
+    expect(wrapper.find('[data-map-ui-radio="true"]').exists()).toBe(true)
+    expect(wrapper.find('[aria-hidden="true"]').exists()).toBe(false)
+    expect(selected.classes()).toContain('rounded-md')
+    expect(selected.classes()).toContain('border-brand-500')
+    expect(selected.classes()).toContain('text-brand-500')
+  })
+
+  it('supports solid button style from RadioGroup', () => {
+    const wrapper = mount(RadioGroup, {
+      props: {
+        modelValue: 'map',
+        type: 'button',
+        buttonStyle: 'solid'
+      },
+      slots: {
+        default: '<Radio value="map">地图</Radio>'
+      },
+      global: {
+        components: { Radio }
+      }
+    })
+
+    expect(wrapper.find('.ui-radio-button').classes()).toContain('bg-brand-500')
+    expect(wrapper.find('.ui-radio-button').classes()).toContain('text-brand-50')
+  })
+
+  it('supports vertical button groups', () => {
+    const wrapper = mount(RadioGroup, {
+      props: {
+        modelValue: 'map',
+        type: 'button',
+        direction: 'vertical'
+      },
+      slots: {
+        default: `
+          <Radio value="map">地图</Radio>
+          <Radio value="list">列表</Radio>
+        `
+      },
+      global: {
+        components: { Radio }
+      }
+    })
+
+    expect(wrapper.attributes('data-direction')).toBe('vertical')
+    expect(wrapper.classes()).toContain('flex-col')
+    expect(wrapper.classes()).toContain('items-stretch')
+  })
+
+  it('generates a shared native name when RadioGroup name is omitted', () => {
+    const wrapper = mount(RadioGroup, {
+      props: {
+        modelValue: 'map'
+      },
+      slots: {
+        default: `
+          <Radio value="map">地图</Radio>
+          <Radio value="list">列表</Radio>
+        `
+      },
+      global: {
+        components: { Radio }
+      }
+    })
+    const inputs = wrapper.findAll('[data-map-ui-radio="true"]').map((input) => input.element as HTMLInputElement)
+
+    expect(inputs[0].name).toMatch(/^ui-radio-group-/)
+    expect(inputs[1].name).toBe(inputs[0].name)
   })
 
   it('exposes focus and blur methods', async () => {
     const wrapper = mount(Radio, {
       attachTo: document.body,
       props: {
-        modelValue: 'map',
-        value: 'map'
+        checked: true
       }
     })
     const input = wrapper.find('[data-map-ui-radio="true"]').element as HTMLInputElement

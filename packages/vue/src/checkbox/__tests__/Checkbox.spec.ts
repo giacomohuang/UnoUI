@@ -2,6 +2,7 @@ import { mount } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
 
 import Checkbox from '../Checkbox.vue'
+import CheckboxGroup from '../CheckboxGroup.vue'
 
 const getBox = (wrapper: ReturnType<typeof mount<typeof Checkbox>>) => wrapper.find('[data-map-ui-checkbox="true"]').element.parentElement as HTMLElement
 
@@ -18,7 +19,7 @@ describe('Checkbox', () => {
     expect(wrapper.find('[data-map-ui-checkbox="true"]').exists()).toBe(true)
   })
 
-  it('renders a white check mark when checked', () => {
+  it('renders a white check mark when checked as a standalone checkbox', () => {
     const wrapper = mount(Checkbox, {
       props: {
         checked: true
@@ -61,19 +62,17 @@ describe('Checkbox', () => {
     expect(wrapper.find('path').attributes('d')).toBe('M4 8H12')
   })
 
-  it('keeps indeterminate as a visual state and emits checked value on change', async () => {
+  it('keeps indeterminate as a visual state and emits the next checked value', async () => {
     const wrapper = mount(Checkbox, {
       props: {
-        modelValue: false,
         indeterminate: true
       }
     })
 
-    const input = wrapper.find<HTMLInputElement>('[data-map-ui-checkbox="true"]')
-    await input.setValue(true)
+    await wrapper.find('[data-map-ui-checkbox="true"]').setValue(true)
 
-    expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([true])
-    expect(wrapper.emitted('change')?.[0]?.[0]).toBeInstanceOf(Event)
+    expect(wrapper.emitted('change')?.[0]?.[0]).toBe(true)
+    expect(wrapper.emitted('change')?.[0]?.[1]).toBeInstanceOf(Event)
   })
 
   it('updates native indeterminate state when prop changes', async () => {
@@ -147,37 +146,138 @@ describe('Checkbox', () => {
     expect(box.classList).toContain('dark:border-zinc-600')
   })
 
-  it('does not emit updates when disabled', async () => {
-    const wrapper = mount(Checkbox, {
+  it('uses CheckboxGroup modelValue as selected state', async () => {
+    const wrapper = mount({
+      components: { Checkbox, CheckboxGroup },
+      data() {
+        return {
+          value: ['object:read']
+        }
+      },
+      template: `
+        <CheckboxGroup v-model="value" name="permissions">
+          <Checkbox value="object:read">读取</Checkbox>
+          <Checkbox value="object:write">写入</Checkbox>
+        </CheckboxGroup>
+      `
+    })
+    const inputs = wrapper.findAll('[data-map-ui-checkbox="true"]').map((input) => input.element as HTMLInputElement)
+
+    expect(inputs[0].checked).toBe(true)
+    expect(inputs[1].checked).toBe(false)
+    expect(inputs[0].name).toBe('permissions')
+    expect(inputs[1].name).toBe('permissions')
+
+    await wrapper.findAll('[data-map-ui-checkbox="true"]')[1].setValue(true)
+    expect(wrapper.vm.value).toEqual(['object:read', 'object:write'])
+
+    await wrapper.findAll('[data-map-ui-checkbox="true"]')[0].setValue(false)
+    expect(wrapper.vm.value).toEqual(['object:write'])
+  })
+
+  it('emits CheckboxGroup change with the next selected values', async () => {
+    const wrapper = mount(CheckboxGroup, {
       props: {
-        modelValue: true,
-        disabled: true
+        modelValue: ['read']
+      },
+      slots: {
+        default: `
+          <Checkbox value="read">读取</Checkbox>
+          <Checkbox value="write">写入</Checkbox>
+        `
+      },
+      global: {
+        components: { Checkbox }
       }
     })
 
-    await wrapper.find('[data-map-ui-checkbox="true"]').trigger('change')
+    await wrapper.findAll('[data-map-ui-checkbox="true"]')[1].setValue(true)
+
+    expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([['read', 'write']])
+    expect(wrapper.emitted('change')?.[0]?.[0]).toEqual(['read', 'write'])
+  })
+
+  it('does not update when CheckboxGroup is disabled', async () => {
+    const wrapper = mount(CheckboxGroup, {
+      props: {
+        modelValue: ['read'],
+        disabled: true
+      },
+      slots: {
+        default: `
+          <Checkbox value="read">读取</Checkbox>
+          <Checkbox value="write">写入</Checkbox>
+        `
+      },
+      global: {
+        components: { Checkbox }
+      }
+    })
+
+    await wrapper.findAll('[data-map-ui-checkbox="true"]')[1].trigger('change')
 
     expect(wrapper.emitted('update:modelValue')).toBeUndefined()
     expect(wrapper.emitted('change')).toBeUndefined()
   })
 
-  it('updates array model values with the input value', async () => {
-    const wrapper = mount(Checkbox, {
+  it('does not update when an option is disabled', async () => {
+    const wrapper = mount(CheckboxGroup, {
       props: {
-        modelValue: ['object:read'],
-        value: 'object:write'
+        modelValue: ['read']
+      },
+      slots: {
+        default: `
+          <Checkbox value="read">读取</Checkbox>
+          <Checkbox value="write" disabled>写入</Checkbox>
+        `
+      },
+      global: {
+        components: { Checkbox }
       }
     })
 
-    await wrapper.find('[data-map-ui-checkbox="true"]').setValue(true)
+    await wrapper.findAll('[data-map-ui-checkbox="true"]')[1].trigger('change')
 
-    expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([['object:read', 'object:write']])
+    expect(wrapper.emitted('update:modelValue')).toBeUndefined()
+    expect(wrapper.emitted('change')).toBeUndefined()
+  })
 
-    await wrapper.setProps({
-      modelValue: ['object:read', 'object:write']
+  it('inherits size from CheckboxGroup', () => {
+    const wrapper = mount(CheckboxGroup, {
+      props: {
+        modelValue: ['read'],
+        size: 'lg'
+      },
+      slots: {
+        default: '<Checkbox value="read">读取</Checkbox>'
+      },
+      global: {
+        components: { Checkbox }
+      }
     })
-    await wrapper.find('[data-map-ui-checkbox="true"]').setValue(false)
 
-    expect(wrapper.emitted('update:modelValue')?.[1]).toEqual([['object:read']])
+    const box = wrapper.find('[data-map-ui-checkbox="true"]').element.parentElement as HTMLElement
+    expect(box.classList).toContain('size-6')
+  })
+
+  it('supports vertical checkbox groups', () => {
+    const wrapper = mount(CheckboxGroup, {
+      props: {
+        modelValue: ['read'],
+        direction: 'vertical'
+      },
+      slots: {
+        default: `
+          <Checkbox value="read">读取</Checkbox>
+          <Checkbox value="write">写入</Checkbox>
+        `
+      },
+      global: {
+        components: { Checkbox }
+      }
+    })
+
+    expect(wrapper.attributes('data-direction')).toBe('vertical')
+    expect(wrapper.classes()).toContain('flex-col')
   })
 })

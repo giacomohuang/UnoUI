@@ -1,10 +1,27 @@
 import { cva } from 'class-variance-authority'
 import type { VariantProps } from 'class-variance-authority'
+import type { InjectionKey, Ref } from 'vue'
 
 export { default as Radio } from './Radio.vue'
+export { default as RadioGroup } from './RadioGroup.vue'
 
+export type RadioValue = string | number | boolean
+export type RadioSize = 'sm' | 'md' | 'lg'
 export type RadioType = 'radio' | 'button'
 export type RadioButtonStyle = 'outline' | 'solid'
+export type RadioGroupDirection = 'horizontal' | 'vertical'
+
+export interface RadioGroupContext {
+  modelValue: Readonly<Ref<RadioValue | undefined>>
+  disabled: Readonly<Ref<boolean>>
+  size: Readonly<Ref<RadioSize>>
+  type: Readonly<Ref<RadioType>>
+  buttonStyle: Readonly<Ref<RadioButtonStyle>>
+  name: Readonly<Ref<string | undefined>>
+  updateValue: (value: RadioValue, event: Event) => void
+}
+
+export const radioGroupContextKey: InjectionKey<RadioGroupContext> = Symbol('ui-radio-group-context')
 
 /** radio 定义管理端 Radio 组件圆点本体的样式变体组合。 */
 export const radio = cva('relative inline-flex shrink-0 items-center justify-center rounded-full border align-middle transition-colors duration-150', {
@@ -187,6 +204,45 @@ export const radioButton = cva('ui-radio-button relative z-0 inline-flex w-fit s
   }
 })
 
+/** radioGroup 定义 RadioGroup 根节点布局；button 模式不加 gap，由组内样式合并相邻边框。 */
+export const radioGroup = cva('ui-radio-group inline-flex w-fit align-middle', {
+  variants: {
+    type: {
+      radio: '',
+      button: 'ui-radio-group--button isolate'
+    },
+    direction: {
+      horizontal: 'flex-row items-center',
+      vertical: 'flex-col items-start'
+    },
+    size: {
+      sm: '',
+      md: '',
+      lg: ''
+    },
+    disabled: {
+      true: '',
+      false: ''
+    }
+  },
+  compoundVariants: [
+    { type: 'radio', direction: 'horizontal', size: 'sm', class: 'flex-wrap gap-x-4 gap-y-2' },
+    { type: 'radio', direction: 'horizontal', size: 'md', class: 'flex-wrap gap-x-5 gap-y-2' },
+    { type: 'radio', direction: 'horizontal', size: 'lg', class: 'flex-wrap gap-x-6 gap-y-2.5' },
+    { type: 'radio', direction: 'vertical', size: 'sm', class: 'gap-1.5' },
+    { type: 'radio', direction: 'vertical', size: 'md', class: 'gap-2' },
+    { type: 'radio', direction: 'vertical', size: 'lg', class: 'gap-2.5' },
+    { type: 'button', direction: 'vertical', class: 'items-stretch' }
+  ],
+  defaultVariants: {
+    type: 'radio',
+    direction: 'horizontal',
+    size: 'md',
+    disabled: false
+  }
+})
+
 /** RadioProps 是 radio 变体推导出的组件属性类型。 */
 export type RadioProps = VariantProps<typeof radio>
 export type RadioButtonProps = VariantProps<typeof radioButton>
+export type RadioGroupProps = VariantProps<typeof radioGroup>

@@ -9,7 +9,7 @@ Use this file as the first stop for component work. Load only the reference file
 | Setup, styles, UnoCSS preset, icons, theme, `configureUnoUI`                                   | `integration.md`       |
 | `Button`, `ButtonGroup`, `Tag`                                                                 | `buttons-tags.md`      |
 | `Input`, `Autocomplete`, `InputTag`, `InputI18n`, `InputOtp`                                   | `inputs.md`            |
-| `Checkbox`, `Radio`, `Switch`, `Select`                                                        | `selection.md`         |
+| `Checkbox`, `CheckboxGroup`, `Radio`, `RadioGroup`, `Switch`, `Select`                         | `selection.md`         |
 | `DatePicker`, `RangePicker`, `Slider`, `ColorPicker`                                           | `date-numeric.md`      |
 | `Form`, `FormItem`, validation rules/exposes                                                   | `form.md`              |
 | `Table`, `Pagination`, `Skeleton`, `Badge`, `BadgeRibbon`, `QRCode`, `MillerColumns`           | `data-display.md`      |
@@ -34,7 +34,7 @@ Use this file as the first stop for component work. Load only the reference file
 | `Alert`                                          | `@unoui/vue/alert`         | `feedback-overlays.md` |
 | `Badge`, `BadgeRibbon`                           | `@unoui/vue/badge`         | `data-display.md`      |
 | `Button`, `ButtonGroup`                          | `@unoui/vue/button`        | `buttons-tags.md`      |
-| `Checkbox`                                       | `@unoui/vue/checkbox`      | `selection.md`         |
+| `Checkbox`, `CheckboxGroup`                      | `@unoui/vue/checkbox`      | `selection.md`         |
 | `ColorPicker`                                    | `@unoui/vue/colorpicker`   | `date-numeric.md`      |
 | `DatePicker`, `RangePicker`                      | `@unoui/vue/datepicker`    | `date-numeric.md`      |
 | `Drawer`                                         | `@unoui/vue/drawer`        | `feedback-overlays.md` |
@@ -48,7 +48,7 @@ Use this file as the first stop for component work. Load only the reference file
 | `Pagination`                                     | `@unoui/vue/pagination`    | `data-display.md`      |
 | `Popconfirm`                                     | `@unoui/vue/popconfirm`    | `feedback-overlays.md` |
 | `QRCode`                                         | `@unoui/vue/qrcode`        | `data-display.md`      |
-| `Radio`                                          | `@unoui/vue/radio`         | `selection.md`         |
+| `Radio`, `RadioGroup`                            | `@unoui/vue/radio`         | `selection.md`         |
 | `Rate`                                           | `@unoui/vue/rate`          | `navigation-rating.md` |
 | `Skeleton`                                       | `@unoui/vue/skeleton`      | `data-display.md`      |
 | `Slider`                                         | `@unoui/vue/slider`        | `date-numeric.md`      |

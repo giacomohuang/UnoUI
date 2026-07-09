@@ -1,11 +1,13 @@
 # Selection Controls
 
-Use this file for `Checkbox`, `Radio`, `Switch`, and `Select`.
+Use this file for `Checkbox`, `CheckboxGroup`, `Radio`, `RadioGroup`, `Switch`, and `Select`.
 
 ## Contents
 
 - Checkbox
+- CheckboxGroup
 - Radio
+- RadioGroup
 - Switch
 - Select
 
@@ -14,7 +16,7 @@ Use this file for `Checkbox`, `Radio`, `Switch`, and `Select`.
 ```vue
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { Checkbox } from '@unoui/vue/checkbox'
+import { Checkbox, CheckboxGroup } from '@unoui/vue/checkbox'
 
 const checked = ref(true)
 const selected = ref(['apple'])
@@ -22,46 +24,60 @@ const allValues = ['apple', 'orange']
 const allChecked = computed(() => allValues.every((value) => selected.value.includes(value)))
 const indeterminate = computed(() => selected.value.length > 0 && !allChecked.value)
 
-function toggleAll(event) {
-  selected.value = event.target.checked ? [...allValues] : []
+function setChecked(value) {
+  checked.value = value
+}
+
+function toggleAll(value) {
+  selected.value = value ? [...allValues] : []
 }
 </script>
 
 <template>
-  <Checkbox v-model="checked">Accept</Checkbox>
+  <Checkbox :checked="checked" @change="setChecked">Accept</Checkbox>
   <Checkbox :checked="allChecked" :indeterminate="indeterminate" @change="toggleAll">All</Checkbox>
-  <Checkbox v-model="selected" value="apple">Apple</Checkbox>
-  <Checkbox v-model="selected" value="orange">Orange</Checkbox>
+  <CheckboxGroup v-model="selected" name="fruit">
+    <Checkbox value="apple">Apple</Checkbox>
+    <Checkbox value="orange">Orange</Checkbox>
+  </CheckboxGroup>
 </template>
 ```
 
-Props:
+CheckboxGroup props:
 
-- `modelValue`: `boolean | (string | number)[]`
-- `checked`: uncontrolled checked state
-- `indeterminate`: visual/native mixed state for partial selection; does not change `modelValue` by itself
-- `value`: option value for group usage
+- `modelValue`: `(string | number)[]`
+- `disabled`: disables the whole group
+- `size`: `sm | md | lg`; inherited by child checkboxes unless a child overrides it
+- `name`: native checkbox name inherited by children when provided
+- `direction`: `horizontal | vertical`
+
+Checkbox props:
+
+- `checked`: uncontrolled checked state for a standalone checkbox or computed check-all control
+- `indeterminate`: visual/native mixed state for partial selection; does not change `CheckboxGroup` by itself
+- `value`: selected value emitted to `CheckboxGroup`
 - `disabled`
-- `size`: `sm | md | lg`
+- `size`: `sm | md | lg`; overrides group size when provided
+- `name`: overrides group native name when provided
 
 Partial selection:
 
-- Use `indeterminate` for check-all patterns when some but not all child options are selected, matching Ant Design checkbox semantics.
+- Use `indeterminate` for check-all patterns when some but not all child options are selected.
 - Keep `checked` derived from “all options selected”; disabled unchecked options still mean the group is not fully selected.
 - Keep `indeterminate` derived from “some selected but not all”.
-- Clicking an indeterminate checkbox emits the next normal checked value; update the child array yourself in `change`.
+- Clicking an indeterminate checkbox emits the next normal checked boolean; update the child array yourself in `change`.
 - If a group includes disabled options, include them when deriving “all selected”; when toggling a parent checkbox, preserve disabled option values instead of silently selecting disabled unchecked items.
+- Keep the array `v-model` on `CheckboxGroup`; child `Checkbox` components only need `value`.
 
 Events:
 
-- `update:modelValue(value)`
-- `change(value)`
-- `input(value)`
-- `focus(FocusEvent)`, `blur(FocusEvent)`
+- `CheckboxGroup`: `update:modelValue(value[])`, `change(value[], Event)`
+- `Checkbox`: `change(checked, Event)`, `input(Event)`, `focus(FocusEvent)`, `blur(FocusEvent)`
 
 Slots:
 
-- `default`: content rendered after the checkbox box; the component root is a label, so clicking this content toggles the checkbox
+- `CheckboxGroup.default`: `Checkbox` options
+- `Checkbox.default`: content rendered after the checkbox box; the component root is a label, so clicking this content toggles the checkbox
 
 Expose:
 
@@ -72,54 +88,66 @@ Expose:
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
-import { Radio } from '@unoui/vue/radio'
+import { Radio, RadioGroup } from '@unoui/vue/radio'
 
 const kind = ref('a')
 </script>
 
 <template>
-  <Radio v-model="kind" value="a" name="kind">A</Radio>
-  <Radio v-model="kind" value="b" name="kind" border>B</Radio>
-  <div class="inline-flex">
-    <Radio v-model="kind" value="a" name="kind-buttons" type="button" button-style="solid">A</Radio>
-    <Radio v-model="kind" value="b" name="kind-buttons" type="button" button-style="solid">B</Radio>
-    <Radio v-model="kind" value="c" name="kind-buttons" type="button" button-style="solid">C</Radio>
-  </div>
+  <RadioGroup v-model="kind" name="kind">
+    <Radio value="a">A</Radio>
+    <Radio value="b" border>B</Radio>
+  </RadioGroup>
+
+  <RadioGroup v-model="kind" name="kind-buttons" type="button" button-style="solid">
+    <Radio value="a">A</Radio>
+    <Radio value="b">B</Radio>
+    <Radio value="c">C</Radio>
+  </RadioGroup>
 </template>
 ```
 
-Props:
+RadioGroup props:
 
 - `modelValue`: `string | number | boolean`
-- `checked`: uncontrolled checked state
-- `value`: selected value emitted to `modelValue`; default `true`
-- `disabled`
-- `size`: `sm | md | lg`
-- `border`
-- `type`: `radio | button`; use `button` for button-style radio while keeping native radio semantics
+- `disabled`: disables the whole group
+- `size`: `sm | md | lg`; inherited by child radios unless a child overrides it
+- `type`: `radio | button`; use `button` for segmented button-style radio
 - `buttonStyle`: `outline | solid`; only applies when `type="button"`
-- `name`
+- `name`: native radio name; generated automatically when omitted
+- `direction`: `horizontal | vertical`
+
+Radio props:
+
+- `checked`: uncontrolled checked state for a standalone radio
+- `value`: selected value emitted to `RadioGroup`; default `true`
+- `disabled`
+- `size`: `sm | md | lg`; overrides group size when provided
+- `border`
+- `type`: `radio | button`; overrides group type when provided
+- `buttonStyle`: `outline | solid`; overrides group button style when provided
+- `name`: overrides group native name when provided
 
 Button-style grouping:
 
-- Put adjacent `Radio type="button"` instances in an `inline-flex` or flex row without `gap`; adjacent button radios merge borders and keep only outer group corners.
-- Keep the same `name` and shared scalar `v-model` for all options in the same button group.
+- Use `RadioGroup type="button"` instead of hand-written `inline-flex` wrappers.
+- Adjacent button radios only merge borders inside `.ui-radio-group`, so standalone button radios keep complete rounded corners.
+- Keep the scalar `v-model` on `RadioGroup`; child `Radio` components only need `value`.
 
 Events:
 
-- `update:modelValue(value)`
-- `change(value)`
-- `input(Event)`: native input event passthrough
-- `focus(FocusEvent)`, `blur(FocusEvent)`
+- `RadioGroup`: `update:modelValue(value)`, `change(value, Event)`
+- `Radio`: `change(value, Event)`, `input(Event)`, `focus(FocusEvent)`, `blur(FocusEvent)`
 
 Slots:
 
-- `default`: radio label/content
+- `RadioGroup.default`: `Radio` options
+- `Radio.default`: radio label/content
 
 Expose:
 
-- `focus()`
-- `blur()`
+- `Radio.focus()`
+- `Radio.blur()`
 
 ## Switch
 

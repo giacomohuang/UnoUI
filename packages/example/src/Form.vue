@@ -75,11 +75,11 @@
                   <RangePicker v-model="formDemoModel.maintainRange" clearable :placeholder="['开始日期', '结束日期']" />
                 </FormItem>
                 <FormItem prop="visibility" label="访问范围">
-                  <div class="flex min-h-9 flex-wrap items-center gap-3">
-                    <Radio v-model="formDemoModel.visibility" value="public" name="form-visibility">公开</Radio>
-                    <Radio v-model="formDemoModel.visibility" value="internal" name="form-visibility">内部</Radio>
-                    <Radio v-model="formDemoModel.visibility" value="private" name="form-visibility">私有</Radio>
-                  </div>
+                  <RadioGroup v-model="formDemoModel.visibility" name="form-visibility" class="min-h-9">
+                    <Radio value="public">公开</Radio>
+                    <Radio value="internal">内部</Radio>
+                    <Radio value="private">私有</Radio>
+                  </RadioGroup>
                 </FormItem>
                 <FormItem prop="publishEnabled" label="自动发布">
                   <div class="flex min-h-9 items-center gap-3">
@@ -226,7 +226,7 @@ import { DatePicker, RangePicker } from "@unoui/vue/datepicker";
 import { Form, FormItem, formValidatorPatterns, type FormRules } from "@unoui/vue/form";
 import { Autocomplete, Input, InputTag } from "@unoui/vue/input";
 import { InputOtp } from "@unoui/vue/inputOtp";
-import { Radio } from "@unoui/vue/radio";
+import { Radio, RadioGroup } from "@unoui/vue/radio";
 import { Rate } from "@unoui/vue/rate";
 import { Select, type SelectOption } from "@unoui/vue/select";
 import { Switch } from "@unoui/vue/switch";

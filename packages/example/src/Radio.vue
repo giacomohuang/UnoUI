@@ -2,7 +2,7 @@
   <section id="showcase-radio" class="scroll-mt-6 rounded-lg border border-medium bg-primary">
     <div class="border-b border-medium px-4 py-3">
       <h2 class="text-base font-bold text-primary">Radio</h2>
-      <p class="mt-1 text-xs text-tertiary">单组件标量 v-model，多个 Radio 绑定同一个值即可组成单选组。</p>
+      <p class="mt-1 text-xs text-tertiary">RadioGroup 负责组级 v-model，Radio 表达单个选项。</p>
     </div>
     <div class="grid gap-5 p-4 text-sm text-secondary">
       <div class="grid gap-2 md:grid-cols-[72px_minmax(0,1fr)] md:items-center">
@@ -18,7 +18,9 @@
         <span class="pt-2 text-xs font-medium text-tertiary">状态</span>
         <div class="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
           <div class="flex min-h-9 items-center rounded-md bg-secondary/60 px-3">
-            <Radio v-model="radioStatusValue" value="controlled" name="radio-status">受控：{{ radioStatusValue }}</Radio>
+            <RadioGroup v-model="radioStatusValue" name="radio-status">
+              <Radio value="controlled">受控：{{ radioStatusValue }}</Radio>
+            </RadioGroup>
           </div>
           <div class="flex min-h-9 items-center rounded-md bg-secondary/60 px-3">
             <Radio checked value="default" name="radio-default">默认选中</Radio>
@@ -35,11 +37,11 @@
       <div class="grid gap-2 md:grid-cols-[72px_minmax(0,1fr)] md:items-start">
         <span class="pt-1.5 text-xs font-medium text-tertiary">组</span>
         <div class="grid gap-3">
-          <div class="flex flex-wrap items-center gap-x-6 gap-y-2">
-            <Radio v-for="option in radioModeOptions" :key="option.value" v-model="radioModeValue" name="radio-mode" :value="option.value" :disabled="option.disabled">
+          <RadioGroup v-model="radioModeValue" name="radio-mode">
+            <Radio v-for="option in radioModeOptions" :key="option.value" :value="option.value" :disabled="option.disabled">
               {{ option.label }}
             </Radio>
-          </div>
+          </RadioGroup>
           <div class="flex flex-wrap items-center gap-2 text-xs text-tertiary">
             <span>当前</span>
             <span class="rounded border border-medium bg-secondary px-2 py-1 text-secondary">{{ radioModeValue }}</span>
@@ -49,42 +51,35 @@
 
       <div class="grid gap-2 md:grid-cols-[72px_minmax(0,1fr)] md:items-start">
         <span class="pt-1.5 text-xs font-medium text-tertiary">边框</span>
-        <div class="flex flex-wrap items-center gap-2">
-          <Radio v-for="option in radioBorderOptions" :key="option.value" v-model="radioBorderValue" border name="radio-border" :value="option.value" :disabled="option.disabled">
+        <RadioGroup v-model="radioBorderValue" name="radio-border">
+          <Radio v-for="option in radioBorderOptions" :key="option.value" border :value="option.value" :disabled="option.disabled">
             {{ option.label }}
           </Radio>
-        </div>
+        </RadioGroup>
       </div>
 
       <div class="grid gap-2 md:grid-cols-[72px_minmax(0,1fr)] md:items-start">
         <span class="pt-1.5 text-xs font-medium text-tertiary">按钮</span>
         <div class="grid gap-3">
-          <div class="inline-flex w-fit items-center">
-            <Radio v-for="option in radioButtonOptions" :key="option.value" v-model="radioButtonValue" type="button" name="radio-button-outline" :value="option.value" :disabled="option.disabled">
+          <RadioGroup v-model="radioButtonValue" type="button" name="radio-button-outline">
+            <Radio v-for="option in radioButtonOptions" :key="option.value" :value="option.value" :disabled="option.disabled">
               {{ option.label }}
             </Radio>
-          </div>
-          <div class="inline-flex w-fit items-center">
-            <Radio
-              v-for="option in radioButtonOptions"
-              :key="`solid-${option.value}`"
-              v-model="radioButtonSolidValue"
-              type="button"
-              button-style="solid"
-              name="radio-button-solid"
-              :value="option.value"
-              :disabled="option.disabled"
-            >
+          </RadioGroup>
+          <RadioGroup v-model="radioButtonSolidValue" type="button" button-style="solid" name="radio-button-solid">
+            <Radio v-for="option in radioButtonOptions" :key="`solid-${option.value}`" :value="option.value" :disabled="option.disabled">
               {{ option.label }}
             </Radio>
-          </div>
+          </RadioGroup>
         </div>
       </div>
 
       <div class="grid gap-2 md:grid-cols-[72px_minmax(0,1fr)] md:items-start">
         <span class="pt-2 text-xs font-medium text-tertiary">方法</span>
         <div class="flex flex-wrap items-center gap-3 rounded-md bg-secondary/60 px-3 py-3">
-          <Radio ref="radioFocusRef" v-model="radioFocusValue" type="button" button-style="solid" name="radio-focus" value="focus">可聚焦</Radio>
+          <RadioGroup v-model="radioFocusValue" type="button" button-style="solid" name="radio-focus">
+            <Radio ref="radioFocusRef" value="focus">可聚焦</Radio>
+          </RadioGroup>
           <Button size="sm" variant="outline" icon="i-lucide:focus" @click="radioFocusRef?.focus()">聚焦</Button>
           <Button size="sm" variant="outline" icon="i-lucide:circle-slash" @click="radioFocusRef?.blur()">失焦</Button>
           <span class="text-xs text-tertiary">当前：{{ radioFocusValue }}</span>
@@ -95,7 +90,7 @@
     <!-- API 参数 -->
     <div class="border-t border-medium">
       <div class="border-b border-medium px-4 py-3">
-        <h3 class="text-sm font-bold text-secondary">API 参数</h3>
+        <h3 class="text-sm font-bold text-secondary">API 参数 — Radio</h3>
       </div>
       <div class="p-4">
         <Tabs v-model="radioApiTab" size="sm">
@@ -110,6 +105,25 @@
           </TabPane>
           <TabPane name="exposes" label="Exposes">
             <ParamTable :columns="exposedColumns" :rows="radioExposes" />
+          </TabPane>
+        </Tabs>
+      </div>
+    </div>
+
+    <div class="border-t border-medium">
+      <div class="border-b border-medium px-4 py-3">
+        <h3 class="text-sm font-bold text-secondary">API 参数 — RadioGroup</h3>
+      </div>
+      <div class="p-4">
+        <Tabs v-model="radioGroupApiTab" size="sm">
+          <TabPane name="props" label="Props">
+            <ParamTable :columns="propsColumns" :rows="radioGroupProps" />
+          </TabPane>
+          <TabPane name="emits" label="Emits">
+            <ParamTable :columns="emitsColumns" :rows="radioGroupEmits" />
+          </TabPane>
+          <TabPane name="slots" label="Slots">
+            <ParamTable :columns="slotsColumns" :rows="radioGroupSlots" />
           </TabPane>
         </Tabs>
       </div>
@@ -131,10 +145,10 @@
 import { ref } from 'vue'
 
 import { Button } from '@unoui/vue/button'
-import { Radio } from '@unoui/vue/radio'
+import { Radio, RadioGroup } from '@unoui/vue/radio'
 import { Tabs, TabPane } from '@unoui/vue/tab'
 import { propsColumns, emitsColumns, slotsColumns, exposedColumns } from '@/data/shared'
-import { radioProps, radioEmits, radioSlots, radioExposes, radioCodeExample } from '@/data/radio'
+import { radioProps, radioGroupProps, radioEmits, radioGroupEmits, radioSlots, radioGroupSlots, radioExposes, radioCodeExample } from '@/data/radio'
 import ParamTable from '@/components/ParamTable.vue'
 import CodeBlock from '@/components/CodeBlock.vue'
 
@@ -146,6 +160,7 @@ interface RadioExpose {
 }
 
 const radioApiTab = ref('props')
+const radioGroupApiTab = ref('props')
 const radioFocusRef = ref<RadioExpose | null>(null)
 const radioSizes: RadioSize[] = ['sm', 'md', 'lg']
 const radioStatusValue = ref('controlled')
