@@ -7,6 +7,8 @@
     "build": "pnpm --filter @unoui/vue build",
     "build:ex": "pnpm --filter @unoui/example build",
     "dev:ex": "pnpm --filter @unoui/example dev",
+    "skills:check": "scripts/install-codex-skills.sh --check",
+    "skills:install": "scripts/install-codex-skills.sh",
     "test:unit": "pnpm --filter @unoui/vue test:unit",
     "typecheck": "pnpm --filter @unoui/vue typecheck && pnpm --filter @unoui/example typecheck"
   },

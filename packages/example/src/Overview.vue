@@ -240,6 +240,7 @@ const componentGroups = [
       { label: "Input", path: "/ui/input" },
       { label: "InputOtp", path: "/ui/input-otp" },
       { label: "DatePicker", path: "/ui/datepicker" },
+      { label: "TimePicker", path: "/ui/timepicker" },
       { label: "ColorPicker", path: "/ui/colorpicker" },
       { label: "Checkbox", path: "/ui/checkbox" },
       { label: "Radio", path: "/ui/radio" },

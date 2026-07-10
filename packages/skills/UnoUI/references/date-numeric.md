@@ -1,11 +1,13 @@
 # Date And Numeric Inputs
 
-Use this file for `DatePicker`, `RangePicker`, `Slider`, and `ColorPicker`.
+Use this file for `DatePicker`, `RangePicker`, `TimePicker`, `TimeRangePicker`, `Slider`, and `ColorPicker`.
 
 ## Contents
 
 - DatePicker
 - RangePicker
+- TimePicker
+- TimeRangePicker
 - Slider
 - ColorPicker
 
@@ -100,6 +102,108 @@ Events:
 Expose:
 
 - `focus()`, `blur()`, `clear()`
+
+Slots:
+
+- None
+
+## TimePicker
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue'
+import { TimePicker, TimeRangePicker } from '@unoui/vue/timepicker'
+
+const time = ref('10:30:00')
+const minute = ref('09:15')
+const range = ref(['09:00:00', '18:00:00'])
+const overnight = ref(['22:30:00', '02:15:00'])
+</script>
+
+<template>
+  <TimePicker v-model="time" clearable />
+  <TimePicker v-model="minute" format="HH:mm" value-format="HH:mm" :minute-step="15" />
+  <TimePicker v-model="time" use12-hours need-confirm />
+  <TimeRangePicker v-model="range" clearable />
+  <TimeRangePicker v-model="overnight" />
+</template>
+```
+
+Props:
+
+- `modelValue`: `string | number | Date | Dayjs | null`
+- `format`, `valueFormat`
+- `placeholder`
+- `size`: `sm | md | lg`
+- `disabled`, `clearable`
+- `hourStep`, `minuteStep`, `secondStep`
+- `use12Hours`, `showSecond`
+- `disabledTime(time: Dayjs)`, `hideDisabledOptions`
+- `needConfirm`, `showNow`
+- `suffixIcon`, `clearIcon`
+- `teleportedWidth`, `name`
+
+Events:
+
+- `update:modelValue(value)`
+- `change(value, timeString)`
+- `clear()`
+- `ok(value, timeString)`
+- `visible-change(boolean)`
+- `focus(FocusEvent)`, `blur(FocusEvent)`
+
+Expose:
+
+- `focus()`, `blur()`, `clear(event?)`
+
+Slots:
+
+- None
+
+## TimeRangePicker
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue'
+import { TimeRangePicker } from '@unoui/vue/timepicker'
+
+const range = ref(['09:00:00', '18:00:00'])
+const overnight = ref(['22:30:00', '02:15:00'])
+</script>
+
+<template>
+  <TimeRangePicker v-model="range" clearable />
+  <TimeRangePicker v-model="overnight" />
+  <TimeRangePicker v-model="range" format="HH:mm" value-format="HH:mm" :minute-step="15" />
+</template>
+```
+
+Props:
+
+- `modelValue`: `[TimePickerModelValue, TimePickerModelValue] | null`
+- `format`, `valueFormat`
+- `placeholder`: `[string, string]`
+- `separatorIcon`
+- `size`, `disabled`, `clearable`
+- `hourStep`, `minuteStep`, `secondStep`
+- `use12Hours`, `showSecond`
+- `disabledTime(time: Dayjs, side: 'start' | 'end')`, `hideDisabledOptions`
+- `suffixIcon`, `clearIcon`
+- `teleportedWidth`, `name`
+
+Events:
+
+- `update:modelValue(value)`
+- `change(value, [startString, endString], info)`
+- `clear()`
+- `ok(value, [startString, endString], info)`
+- `calendar-change(value, [startString, endString], info)`
+- `visible-change(boolean)`
+- `focus(FocusEvent)`, `blur(FocusEvent)`
+
+Expose:
+
+- `focus()`, `blur()`, `clear(event?)`
 
 Slots:
 

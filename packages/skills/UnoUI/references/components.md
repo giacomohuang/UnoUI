@@ -10,7 +10,7 @@ Use this file as the first stop for component work. Load only the reference file
 | `Button`, `ButtonGroup`, `Tag`                                                                 | `buttons-tags.md`      |
 | `Input`, `Autocomplete`, `InputTag`, `InputI18n`, `InputOtp`                                   | `inputs.md`            |
 | `Checkbox`, `CheckboxGroup`, `Radio`, `RadioGroup`, `Switch`, `Select`                         | `selection.md`         |
-| `DatePicker`, `RangePicker`, `Slider`, `ColorPicker`                                           | `date-numeric.md`      |
+| `DatePicker`, `RangePicker`, `TimePicker`, `TimeRangePicker`, `Slider`, `ColorPicker`          | `date-numeric.md`      |
 | `Form`, `FormItem`, validation rules/exposes                                                   | `form.md`              |
 | `Table`, `Pagination`, `Skeleton`, `Badge`, `BadgeRibbon`, `QRCode`, `MillerColumns`           | `data-display.md`      |
 | `Alert`, `message`, `MessageContainer`, `Modal`, `Drawer`, `Tooltip`, `Popconfirm`, `Dropdown` | `feedback-overlays.md` |
@@ -37,6 +37,7 @@ Use this file as the first stop for component work. Load only the reference file
 | `Checkbox`, `CheckboxGroup`                      | `@unoui/vue/checkbox`      | `selection.md`         |
 | `ColorPicker`                                    | `@unoui/vue/colorpicker`   | `date-numeric.md`      |
 | `DatePicker`, `RangePicker`                      | `@unoui/vue/datepicker`    | `date-numeric.md`      |
+| `TimePicker`, `TimeRangePicker`                  | `@unoui/vue/timepicker`    | `date-numeric.md`      |
 | `Drawer`                                         | `@unoui/vue/drawer`        | `feedback-overlays.md` |
 | `Dropdown`                                       | `@unoui/vue/dropdown`      | `feedback-overlays.md` |
 | `Form`, `FormItem`, `createFormRule`             | `@unoui/vue/form`          | `form.md`              |
