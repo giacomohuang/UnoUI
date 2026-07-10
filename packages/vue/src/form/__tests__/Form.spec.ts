@@ -20,9 +20,10 @@ describe('Form', () => {
     expect(formItem({ inline: true, labelPosition: 'top' })).toContain('flex-col')
     expect(formItemContent()).toContain('justify-center')
     expect(formItemContent({ labelPosition: 'right', size: 'md' })).toContain('min-h-[calc(2rem+3px)]')
-    expect(formItemContent({ labelPosition: 'top', size: 'md' })).toContain('min-h-0')
-    expect(formItemContent({ labelPosition: 'top', size: 'md' })).toContain('justify-start')
-    expect(formItemContent({ labelPosition: 'top', size: 'md' })).not.toContain('min-h-[calc(2rem+3px)]')
+    expect(formItemContent({ labelPosition: 'top', size: 'md' })).toContain('justify-center')
+    expect(formItemContent({ labelPosition: 'top', size: 'md' })).toContain('min-h-[calc(2rem+3px)]')
+    expect(formItemContent({ labelPosition: 'top', size: 'md' })).not.toContain('min-h-0')
+    expect(formItemContent({ labelPosition: 'top', size: 'md' })).not.toContain('justify-start')
     expect(formItemLabel({ required: true, requiredPosition: 'left' })).toContain("before:content-['*']")
     expect(formItemLabel({ labelPosition: 'right', size: 'md' })).toContain('min-h-[calc(2rem+3px)]')
     expect(formItemLabel({ labelPosition: 'right', size: 'md' })).toContain('items-center')
@@ -233,5 +234,30 @@ describe('Form', () => {
     expect(content.classes()).toContain('justify-center')
     expect(content.classes()).toContain('min-h-[calc(2rem+3px)]')
     expect(wrapper.findComponent(Switch).exists()).toBe(true)
+  })
+
+  it('keeps top-label compact controls on the same control baseline', () => {
+    const wrapper = mount(
+      defineComponent({
+        components: { Form, FormItem, Switch },
+        setup() {
+          const model = reactive({ enabled: true })
+          return { model }
+        },
+        template: `
+          <Form :model="model" label-position="top">
+            <FormItem prop="enabled" label="启用">
+              <Switch v-model="model.enabled" />
+            </FormItem>
+          </Form>
+        `
+      })
+    )
+
+    const content = wrapper.find('[id="ui-form-item-enabled-content"]')
+    expect(content.classes()).toContain('justify-center')
+    expect(content.classes()).toContain('min-h-[calc(2rem+3px)]')
+    expect(content.classes()).not.toContain('min-h-0')
+    expect(content.classes()).not.toContain('justify-start')
   })
 })

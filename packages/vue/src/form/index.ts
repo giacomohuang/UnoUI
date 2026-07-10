@@ -277,7 +277,7 @@ export const formItemContent = cva("flex min-w-0 flex-col justify-center", {
     labelPosition: {
       left: "",
       right: "",
-      top: "min-h-0 justify-start",
+      top: "",
     },
     size: {
       sm: "text-sm",
@@ -286,9 +286,9 @@ export const formItemContent = cva("flex min-w-0 flex-col justify-center", {
     },
   },
   compoundVariants: [
-    { labelPosition: ["left", "right"], size: "sm", class: "min-h-[calc(1.75rem+7px)]" },
-    { labelPosition: ["left", "right"], size: "md", class: "min-h-[calc(2rem+3px)]" },
-    { labelPosition: ["left", "right"], size: "lg", class: "min-h-[calc(2.25rem)]" },
+    { labelPosition: ["left", "right", "top"], size: "sm", class: "min-h-[calc(1.75rem+7px)]" },
+    { labelPosition: ["left", "right", "top"], size: "md", class: "min-h-[calc(2rem+3px)]" },
+    { labelPosition: ["left", "right", "top"], size: "lg", class: "min-h-[calc(2.25rem)]" },
   ],
   defaultVariants: {
     labelPosition: "right",
