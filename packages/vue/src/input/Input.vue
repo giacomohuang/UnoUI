@@ -463,6 +463,29 @@ defineExpose({
 </template>
 
 <style scoped>
+[data-ui-input='true'] {
+  --ui-input-autofill-background: var(--color-bg-primary);
+  --ui-input-autofill-color: var(--color-text-primary);
+}
+
+/* 覆盖浏览器自动填充底色，避免原生 input 与前后缀区域产生色块断层。 */
+input[data-ui-input-control='true']:autofill {
+  color: var(--ui-input-autofill-color);
+  caret-color: var(--ui-input-autofill-color);
+  box-shadow: 0 0 0 1000px var(--ui-input-autofill-background) inset;
+}
+
+input[data-ui-input-control='true']:-webkit-autofill,
+input[data-ui-input-control='true']:-webkit-autofill:hover,
+input[data-ui-input-control='true']:-webkit-autofill:focus,
+input[data-ui-input-control='true']:-webkit-autofill:active {
+  color: var(--ui-input-autofill-color);
+  -webkit-text-fill-color: var(--ui-input-autofill-color);
+  caret-color: var(--ui-input-autofill-color);
+  box-shadow: 0 0 0 1000px var(--ui-input-autofill-background) inset;
+  -webkit-box-shadow: 0 0 0 1000px var(--ui-input-autofill-background) inset;
+}
+
 input[data-ui-input-control='true']::-ms-clear,
 input[data-ui-input-control='true']::-ms-reveal {
   display: none;

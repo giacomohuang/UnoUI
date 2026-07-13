@@ -69,6 +69,19 @@ describe('Input', () => {
     expect(input.attributes('type')).toBe('text')
   })
 
+  it('forwards autocomplete to the native autofill target', () => {
+    const wrapper = mount(Input, {
+      props: {
+        modelValue: 'admin',
+        autocomplete: 'username'
+      }
+    })
+    const input = wrapper.find('[data-ui-input-control="true"]')
+
+    expect(input.element.tagName).toBe('INPUT')
+    expect(input.attributes('autocomplete')).toBe('username')
+  })
+
   it('renders textarea and word limit for multiline input', () => {
     const wrapper = mount(Input, {
       props: {
