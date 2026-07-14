@@ -82,6 +82,7 @@ const dropdownRef = useTemplateRef('dropdownRef')
 const menuContainerRef = useTemplateRef('menuContainerRef')
 const menuRef = useTemplateRef('menuRef')
 const activeIndex = ref(-1)
+const keyboardNavigationActive = ref(false)
 const menuTop = ref<number | null>(null)
 const menuScrollMaxHeight = ref(props.maxHeight)
 const menuMeasuredWidth = ref<number | null>(null)
@@ -437,6 +438,7 @@ const isItemSelected = (item: DropdownItem) => {
 }
 
 watch(isOpen, (val) => {
+  keyboardNavigationActive.value = false
   emit('openChange', val, { source: latestOpenChangeSource })
   emit('visible-change', val)
   emit('visibleChange', val)
@@ -473,6 +475,13 @@ watch(isOpen, (val) => {
 })
 
 watch(
+  () => props.items,
+  () => {
+    keyboardNavigationActive.value = false
+  }
+)
+
+watch(
   () => [props.items, props.width, props.minWidth, props.maxHeight, props.placement, props.align],
   () => {
     activeIndex.value = getIndexByValue(value.value)
@@ -490,14 +499,19 @@ const handleKeyDown = (e: KeyboardEvent) => {
   e.preventDefault()
   e.stopPropagation()
   if (e.code === 'ArrowDown') {
+    keyboardNavigationActive.value = true
     activeIndex.value = (activeIndex.value + 1) % itemCount
   } else if (e.code === 'ArrowUp') {
+    keyboardNavigationActive.value = true
     activeIndex.value = (activeIndex.value - 1 + itemCount) % itemCount
   } else if (e.code === 'PageDown') {
+    keyboardNavigationActive.value = true
     activeIndex.value = Math.min(activeIndex.value + 5, itemCount - 1)
   } else if (e.code === 'PageUp') {
+    keyboardNavigationActive.value = true
     activeIndex.value = Math.max(activeIndex.value - 5, 0)
   } else if (e.code === 'Enter' || e.code === 'Space') {
+    keyboardNavigationActive.value = true
     if (activeIndex.value >= 0) {
       handleItemClick(items[activeIndex.value])
       return true
@@ -520,6 +534,11 @@ const handleKeyDown = (e: KeyboardEvent) => {
   }
 
   return true
+}
+
+const handleItemMouseEnter = (index: number) => {
+  activeIndex.value = index
+  keyboardNavigationActive.value = false
 }
 
 const handleItemClick = (item: DropdownItem) => {
@@ -610,8 +629,16 @@ defineExpose({
           <slot name="header" />
           <slot v-if="$slots.default" />
           <SimpleBar v-else ref="menuRef" tabindex="-1" role="menu" @keydown="handleKeyDown" class="outline-none" :style="menuContentStyle">
-            <div v-for="(item, index) in items" :key="index" class="dropdown-item-wrapper" :class="{ 'is-active': index === activeIndex, 'is-selected': isItemSelected(item), 'pointer-events-none opacity-50': item.disabled }" :data-selected="isItemSelected(item) ? 'true' : undefined" @click="handleItemClick(item)">
-              <slot name="item" :item="item" :index="index" :active="index === activeIndex" :selected="isItemSelected(item)" />
+            <div
+              v-for="(item, index) in items"
+              :key="index"
+              class="dropdown-item-wrapper"
+              :class="{ 'is-active': keyboardNavigationActive && index === activeIndex, 'is-selected': isItemSelected(item), 'pointer-events-none opacity-50': item.disabled }"
+              :data-selected="isItemSelected(item) ? 'true' : undefined"
+              @mouseenter="handleItemMouseEnter(index)"
+              @click="handleItemClick(item)"
+            >
+              <slot name="item" :item="item" :index="index" :active="keyboardNavigationActive && index === activeIndex" :selected="isItemSelected(item)" />
             </div>
           </SimpleBar>
           <slot name="footer" />

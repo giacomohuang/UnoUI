@@ -2,10 +2,9 @@
 import { clsx } from 'clsx'
 import { computed, nextTick, onMounted, onUnmounted, ref, useAttrs, useSlots, watch, type CSSProperties } from 'vue'
 
+import { selectInner, selectOption, selectWrapper, type SelectModelValue, type SelectOption, type SelectProps, type SelectValue } from '.'
 import { Dropdown } from '../dropdown'
 import { Tag } from '../tag'
-
-import { selectInner, selectOption, selectWrapper, type SelectModelValue, type SelectOption, type SelectProps, type SelectValue } from '.'
 
 defineOptions({
   inheritAttrs: false
@@ -424,8 +423,18 @@ defineExpose({
   --at-apply: '!bg-brand/10';
 }
 
+.ui-select-dropdown .dropdown-item-wrapper.is-selected:hover,
+.ui-select-dropdown .dropdown-item-wrapper.is-selected:hover > * {
+  --at-apply: '!bg-brand/15';
+}
+
+.ui-select-dropdown .dropdown-item-wrapper.is-active:not(.is-selected),
+.ui-select-dropdown .dropdown-item-wrapper.is-active:not(.is-selected) > * {
+  --at-apply: '!bg-brand/10';
+}
+
 .ui-select-dropdown .dropdown-item-wrapper.is-selected.is-active,
 .ui-select-dropdown .dropdown-item-wrapper.is-selected.is-active > * {
-  --at-apply: '!bg-brand/20 ring-1 ring-inset ring-brand/25';
+  --at-apply: '!bg-brand/20';
 }
 </style>

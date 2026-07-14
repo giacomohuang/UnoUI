@@ -84,22 +84,22 @@ export const selectOption = cva('flex min-h-9 cursor-pointer items-center gap-2 
     {
       selected: true,
       active: false,
-      class: 'bg-brand/10 hover:bg-brand/20'
+      class: 'bg-brand/10 hover:bg-brand/15'
     },
     {
       selected: true,
       active: true,
-      class: 'bg-brand/20 ring-1 ring-inset ring-brand/25 hover:bg-brand/20'
+      class: 'bg-brand/20 hover:bg-brand/20'
     },
     {
       selected: false,
       active: false,
-      class: 'hover:bg-secondary'
+      class: 'hover:bg-secondary/70'
     },
     {
       selected: false,
       active: true,
-      class: 'bg-secondary'
+      class: 'bg-brand/10'
     }
   ],
   defaultVariants: {

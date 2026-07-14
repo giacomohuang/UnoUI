@@ -136,6 +136,36 @@ describe('Dropdown', () => {
     wrapper.unmount()
   })
 
+  it('returns to pointer hover styling when the mouse enters an item', async () => {
+    const wrapper = mount(Dropdown, {
+      props: {
+        open: true,
+        items,
+        valueKey: 'value',
+        contentClass: 'dropdown-input-source-test'
+      },
+      slots: {
+        trigger: '<button>open</button>',
+        item: '<div class="hover:bg-secondary px-3 py-2">item</div>'
+      },
+      attachTo: document.body
+    })
+    await nextTick()
+
+    ;(wrapper.vm as unknown as { handleKeyDown: (event: KeyboardEvent) => boolean }).handleKeyDown(new KeyboardEvent('keydown', { code: 'ArrowDown', key: 'ArrowDown', bubbles: true }))
+    await nextTick()
+
+    const menu = document.body.querySelector('.dropdown-input-source-test') as HTMLElement
+    expect(menu.querySelector('.dropdown-item-wrapper.is-active')).not.toBeNull()
+
+    const itemElements = menu.querySelectorAll('.dropdown-item-wrapper')
+    itemElements[1]?.dispatchEvent(new MouseEvent('mouseenter'))
+    await nextTick()
+
+    expect(menu.querySelector('.dropdown-item-wrapper.is-active')).toBeNull()
+    wrapper.unmount()
+  })
+
   it('opens from hover trigger and emits openChange source', async () => {
     vi.useFakeTimers()
     const wrapper = mount(Dropdown, {

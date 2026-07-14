@@ -98,7 +98,7 @@ describe('Select', () => {
     wrapper.unmount()
   })
 
-  it('keeps selected option background when the dropdown active item is selected', async () => {
+  it('opens with a soft selected background and no keyboard outline', async () => {
     const wrapper = mount(Select, {
       props: {
         modelValue: 'button',
@@ -113,12 +113,36 @@ describe('Select', () => {
     const selectedItem = document.body.querySelector('.ui-select-dropdown .dropdown-item-wrapper') as HTMLElement
     const selectedContent = selectedItem.firstElementChild as HTMLElement
     expect(selectedItem.classList).toContain('is-selected')
-    expect(selectedItem.classList).toContain('is-active')
+    expect(selectedItem.classList).not.toContain('is-active')
     expect(selectedItem.dataset.selected).toBe('true')
     expect(selectedContent.dataset.uiSelectOptionSelected).toBe('true')
-    expect(selectedContent.className).toContain('bg-brand/20')
-    expect(selectedContent.className).toContain('ring-brand/25')
+    expect(selectedContent.className).toContain('bg-brand/10')
+    expect(selectedContent.className).toContain('hover:bg-brand/15')
+    expect(selectedContent.className).not.toContain('ring-1')
+    expect(selectedContent.className).not.toContain('ring-brand/25')
     expect(selectedContent.className).not.toContain('hover:bg-secondary')
+    wrapper.unmount()
+  })
+
+  it('uses neutral pointer hover and a light brand keyboard highlight for unselected options', async () => {
+    const wrapper = mount(Select, {
+      props: {
+        options
+      },
+      attachTo: document.body
+    })
+
+    const trigger = wrapper.find('[data-ui-select="true"]')
+    await trigger.trigger('click')
+    await flushPromises()
+    await trigger.trigger('keydown', { key: 'ArrowDown', code: 'ArrowDown' })
+    await flushPromises()
+
+    const inactiveContent = document.body.querySelectorAll('.ui-select-dropdown .dropdown-item-wrapper')[1]?.firstElementChild as HTMLElement
+    const activeContent = document.body.querySelector('.ui-select-dropdown .dropdown-item-wrapper.is-active:not(.is-selected)')?.firstElementChild as HTMLElement
+    expect(inactiveContent.className).toContain('hover:bg-secondary/70')
+    expect(activeContent.className).toContain('bg-brand/10')
+    expect(activeContent.className).not.toContain('text-brand')
     wrapper.unmount()
   })
 
@@ -142,7 +166,8 @@ describe('Select', () => {
     const activeSelectedContent = activeSelectedItem.firstElementChild as HTMLElement
     expect(activeSelectedItem.dataset.selected).toBe('true')
     expect(activeSelectedContent.className).toContain('bg-brand/20')
-    expect(activeSelectedContent.className).toContain('ring-brand/25')
+    expect(activeSelectedContent.className).not.toContain('ring-1')
+    expect(activeSelectedContent.className).not.toContain('ring-brand/25')
     expect(activeSelectedContent.className).not.toContain('bg-secondary')
     wrapper.unmount()
   })
