@@ -122,12 +122,14 @@ Expose:
 ```vue
 <Skeleton variant="table" :rows="6" :columns="5" />
 <Skeleton variant="columns" show-info-panel />
+<Skeleton variant="article" :rows="6" padded />
 ```
 
 Props:
 
-- `variant`: `line | list | grid | table | columns`
-- `rows`, `columns`, `infoRows`
+- `variant`: `line | list | grid | article | table | columns`
+- `rows`: item rows, or body-line count in `article` mode
+- `columns`, `infoRows`
 - `width`, `height`, `minHeight`
 - `itemHeight`
 - `columnWidth`, `infoPanelWidth`

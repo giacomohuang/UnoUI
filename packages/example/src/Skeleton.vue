@@ -3,10 +3,36 @@
     <div class="border-b border-medium px-4 py-3">
       <h2 class="text-base font-bold text-primary">Skeleton</h2>
     </div>
-    <div class="grid gap-4 p-4">
-      <Skeleton variant="line" width="220px" height="12px" />
-      <Skeleton variant="list" :rows="3" item-height="34px" />
-      <Skeleton variant="grid" :rows="4" column-width="96px" />
+    <div class="divide-y divide-light">
+      <section class="grid gap-3 p-4">
+        <h3 class="font-mono text-xs font-bold text-tertiary">line</h3>
+        <Skeleton variant="line" width="220px" height="12px" />
+      </section>
+
+      <section class="grid gap-3 p-4">
+        <h3 class="font-mono text-xs font-bold text-tertiary">list</h3>
+        <Skeleton variant="list" :rows="3" item-height="34px" />
+      </section>
+
+      <section class="grid gap-3 p-4">
+        <h3 class="font-mono text-xs font-bold text-tertiary">grid</h3>
+        <Skeleton variant="grid" :rows="4" column-width="96px" />
+      </section>
+
+      <section class="grid gap-3 p-4">
+        <h3 class="font-mono text-xs font-bold text-tertiary">article</h3>
+        <Skeleton variant="article" :rows="6" />
+      </section>
+
+      <section class="grid gap-3 p-4">
+        <h3 class="font-mono text-xs font-bold text-tertiary">table</h3>
+        <Skeleton variant="table" :rows="4" :columns="4" />
+      </section>
+
+      <section class="grid gap-3 p-4">
+        <h3 class="font-mono text-xs font-bold text-tertiary">columns</h3>
+        <Skeleton variant="columns" :rows="4" :columns="3" column-width="13rem" min-height="240px" item-height="40px" />
+      </section>
     </div>
 
     <!-- API 参数 -->

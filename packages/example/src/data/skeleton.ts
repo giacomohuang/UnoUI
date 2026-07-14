@@ -1,8 +1,8 @@
 import type { ParamTableRow } from '@/components/ParamTable.vue'
 
 export const skeletonProps: ParamTableRow[] = [
-  { name: 'variant', type: `'line' | 'list' | 'grid' | 'table' | 'columns'`, default: `'table'`, desc: '骨架屏布局变体' },
-  { name: 'rows', type: 'number', default: '6', desc: '行数（table/grid/list 模式）' },
+  { name: 'variant', type: `'line' | 'list' | 'grid' | 'article' | 'table' | 'columns'`, default: `'table'`, desc: '骨架屏布局变体' },
+  { name: 'rows', type: 'number', default: '6', desc: '行数（table/grid/list 模式）或正文行数（article 模式）' },
   { name: 'columns', type: 'number', default: '5', desc: '列数（table/grid 模式）' },
   { name: 'infoRows', type: 'number', default: '3', desc: '信息面板行数' },
   { name: 'width', type: 'string', default: `'100%'`, desc: '整体宽度' },
@@ -28,6 +28,9 @@ import { Skeleton } from '@unoui/vue/skeleton'
 
   <!-- 网格骨架屏 -->
   <Skeleton variant="grid" :rows="3" :columns="3" />
+
+  <!-- 文章骨架屏 -->
+  <Skeleton variant="article" :rows="6" padded />
 
   <!-- 带信息面板 -->
   <Skeleton variant="columns" :rows="5" :columns="2"

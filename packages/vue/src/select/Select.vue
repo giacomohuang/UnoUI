@@ -417,24 +417,4 @@ defineExpose({
 .ui-select-dropdown {
   transition-property: opacity, box-shadow, border-color, background-color;
 }
-
-.ui-select-dropdown .dropdown-item-wrapper.is-selected,
-.ui-select-dropdown .dropdown-item-wrapper.is-selected > * {
-  --at-apply: '!bg-brand/10';
-}
-
-.ui-select-dropdown .dropdown-item-wrapper.is-selected:hover,
-.ui-select-dropdown .dropdown-item-wrapper.is-selected:hover > * {
-  --at-apply: '!bg-brand/15';
-}
-
-.ui-select-dropdown .dropdown-item-wrapper.is-active:not(.is-selected),
-.ui-select-dropdown .dropdown-item-wrapper.is-active:not(.is-selected) > * {
-  --at-apply: '!bg-brand/10';
-}
-
-.ui-select-dropdown .dropdown-item-wrapper.is-selected.is-active,
-.ui-select-dropdown .dropdown-item-wrapper.is-selected.is-active > * {
-  --at-apply: '!bg-brand/20';
-}
 </style>

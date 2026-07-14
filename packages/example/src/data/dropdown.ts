@@ -45,21 +45,17 @@ const items = [
   { label: '已锁定', value: 'lock', disabled: true }
 ]
 const selected = ref('')
-
-function handleSelect(item: { label: string; value: string }) {
-  selected.value = item.value
-}
 </script>
 
 <template>
-  <Dropdown :items="items" trigger="hover" placement="bottomRight" arrow @select="handleSelect">
+  <Dropdown v-model:value="selected" :items="items" value-key="value" trigger="hover" placement="bottomRight" arrow>
     <template #trigger>
       <Button icon="i-lucide:chevron-down">操作</Button>
     </template>
-    <template #item="{ item, active }">
-      <div class="flex items-center gap-2 px-3 py-2"
-           :class="active ? 'bg-secondary' : ''">
+    <template #item="{ item, selected }">
+      <div class="flex items-center justify-between gap-2 px-3 py-2">
         <span>{{ item.label }}</span>
+        <span v-if="selected" class="i-lucide:check size-4" />
       </div>
     </template>
     <template #footer>

@@ -9,7 +9,7 @@
           <Button variant="outline" icon="i-lucide:chevron-down" :class="open ? 'text-brand!' : ''">单选：{{ dropdownValue }}</Button>
         </template>
         <template #item="{ item, selected }">
-          <div class="flex min-h-9 cursor-pointer items-center justify-between gap-3 px-3 py-2 text-sm transition-colors hover:bg-secondary" :class="selected ? 'bg-brand/10 text-brand' : 'text-primary'">
+          <div class="flex min-h-9 cursor-pointer items-center justify-between gap-3 px-3 py-2 text-sm">
             <span>{{ getDropdownLabel(item) }}</span>
             <span v-if="selected" class="i-lucide:check size-4"></span>
           </div>
@@ -21,7 +21,7 @@
           <Button variant="mono" icon="i-lucide:list-checks" :class="open ? 'text-brand!' : ''">多选：{{ dropdownMultiValue.length }}</Button>
         </template>
         <template #item="{ item, selected }">
-          <div class="flex min-h-9 cursor-pointer items-center gap-2 px-3 py-2 text-sm transition-colors hover:bg-secondary" :class="selected ? 'bg-brand/10 text-brand' : 'text-primary'">
+          <div class="flex min-h-9 cursor-pointer items-center gap-2 px-3 py-2 text-sm">
             <span class="flex size-4 items-center justify-center rounded border border-medium bg-primary">
               <span v-if="selected" class="i-lucide:check size-3 text-brand"></span>
             </span>
@@ -38,8 +38,8 @@
         <template #trigger="{ open }">
           <Button variant="outline" icon="i-lucide:mouse-pointer-click" :class="open ? 'text-brand!' : ''">悬停触发</Button>
         </template>
-        <template #item="{ item, active }">
-          <div class="flex min-h-9 cursor-pointer items-center gap-3 px-3 py-2 text-sm text-primary transition-colors hover:bg-secondary" :class="active ? 'bg-secondary' : ''">
+        <template #item="{ item }">
+          <div class="flex min-h-9 cursor-pointer items-center gap-3 px-3 py-2 text-sm">
             <span class="i-lucide:sparkles size-4 shrink-0 text-brand"></span>
             <span>{{ getDropdownLabel(item) }}</span>
           </div>
@@ -50,8 +50,8 @@
         <template #trigger="{ open }">
           <Button variant="mono" icon="i-lucide:mouse-pointer-2" :class="open ? 'text-brand!' : ''">右键菜单</Button>
         </template>
-        <template #item="{ item, active }">
-          <div class="flex min-h-9 cursor-pointer items-center justify-between gap-3 px-3 py-2 text-sm text-primary transition-colors hover:bg-secondary" :class="active ? 'bg-secondary' : ''">
+        <template #item="{ item }">
+          <div class="flex min-h-9 cursor-pointer items-center justify-between gap-3 px-3 py-2 text-sm">
             <span>{{ getDropdownLabel(item) }}</span>
             <span class="text-xs text-tertiary">{{ getDropdownValue(item) }}</span>
           </div>
@@ -62,8 +62,8 @@
         <template #trigger="{ open }">
           <Button variant="outline" icon="i-lucide:arrow-up-right" :class="open ? 'text-brand!' : ''">上方右对齐</Button>
         </template>
-        <template #item="{ item, active }">
-          <div class="flex min-h-9 cursor-pointer items-center gap-3 px-3 py-2 text-sm text-primary transition-colors hover:bg-secondary" :class="active ? 'bg-secondary' : ''">
+        <template #item="{ item }">
+          <div class="flex min-h-9 cursor-pointer items-center gap-3 px-3 py-2 text-sm">
             <span>{{ getDropdownLabel(item) }}</span>
           </div>
         </template>
@@ -79,8 +79,8 @@
           <template #trigger="{ open }">
             <Button size="sm" variant="outline" :class="open ? 'text-brand!' : ''">{{ placement.label }}</Button>
           </template>
-          <template #item="{ item, active }">
-            <div class="flex min-h-8 cursor-pointer items-center px-3 py-1.5 text-sm text-primary transition-colors hover:bg-secondary" :class="active ? 'bg-secondary' : ''">
+          <template #item="{ item }">
+            <div class="flex min-h-8 cursor-pointer items-center px-3 py-1.5 text-sm">
               {{ getDropdownLabel(item) }}
             </div>
           </template>
@@ -121,12 +121,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-
 import { Button } from '@unoui/vue/button'
 import { Dropdown } from '@unoui/vue/dropdown'
 import { Tabs, TabPane } from '@unoui/vue/tab'
 import { Tag } from '@unoui/vue/tag'
+import { ref } from 'vue'
+
 import CodeBlock from '@/components/CodeBlock.vue'
 import ParamTable from '@/components/ParamTable.vue'
 import { dropdownProps, dropdownEmits, dropdownSlots, dropdownCodeExample } from '@/data/dropdown'

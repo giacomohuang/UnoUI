@@ -9,6 +9,13 @@
     <div v-for="row in rowItems" :key="row" class="aspect-square animate-pulse rounded-xl bg-secondary dark:bg-white/8" />
   </div>
 
+  <div v-else-if="variant === 'article'" data-ui-skeleton="article" class="grid w-full gap-5" :class="paddingClass" :style="{ width }">
+    <div data-ui-skeleton-article-title="true" class="h-7 w-3/5 max-w-2xl animate-pulse rounded-full bg-tertiary/90 dark:bg-white/12" />
+    <div class="grid gap-3">
+      <div v-for="row in rowItems" :key="row" data-ui-skeleton-article-line="true" class="h-4 max-w-full animate-pulse rounded-full bg-secondary dark:bg-white/8" :style="{ width: getArticleLineWidth(row) }" />
+    </div>
+  </div>
+
   <div v-else-if="variant === 'columns'" class="flex justify-between overflow-hidden w-full bg-white dark:bg-black border rounded-xl border-stone-200 dark:border-stone-700 shadow-gray-50" :style="{ minHeight, width }">
     <div class="min-w-0 overflow-hidden" :style="columnsViewportStyle">
       <div class="flex">
@@ -68,7 +75,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-type SkeletonVariant = 'line' | 'list' | 'grid' | 'table' | 'columns'
+type SkeletonVariant = 'line' | 'list' | 'grid' | 'article' | 'table' | 'columns'
 
 const props = withDefaults(
   defineProps<{
@@ -119,5 +126,10 @@ const getCellWidth = (columnIndex: number) => {
 const getColumnRowWidth = (rowIndex: number, columnIndex: number) => {
   const widths = ['68%', '82%', '56%', '74%', '62%', '88%', '50%']
   return widths[(rowIndex + columnIndex) % widths.length]
+}
+
+const getArticleLineWidth = (rowIndex: number) => {
+  const widths = ['100%', '96%', '88%', '100%', '92%', '72%']
+  return widths[rowIndex % widths.length]
 }
 </script>

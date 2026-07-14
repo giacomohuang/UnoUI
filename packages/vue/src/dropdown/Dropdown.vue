@@ -668,12 +668,37 @@ defineExpose({
   transform: scaleY(1);
 }
 
+:deep(.dropdown-item-wrapper),
+:deep(.dropdown-item-wrapper > *) {
+  --at-apply: '!text-primary';
+  transition-property: color, background-color;
+  transition-duration: 150ms;
+}
+
+:deep(.dropdown-item-wrapper:not(.is-selected):hover),
+:deep(.dropdown-item-wrapper:not(.is-selected):hover > *) {
+  --at-apply: '!bg-secondary/70';
+}
+
+:deep(.dropdown-item-wrapper.is-selected),
+:deep(.dropdown-item-wrapper.is-selected > *) {
+  --at-apply: '!bg-brand/10 !text-brand';
+}
+
+:deep(.dropdown-item-wrapper.is-selected:hover),
+:deep(.dropdown-item-wrapper.is-selected:hover > *) {
+  --at-apply: '!bg-brand/15';
+}
+
 :deep(.dropdown-item-wrapper.is-active:not(.is-selected)),
 :deep(.dropdown-item-wrapper.is-active:not(.is-selected) > *) {
-  background-color: rgba(0, 0, 0, 0.05) !important;
+  --at-apply: '!bg-brand/10';
 }
-:root.dark :deep(.dropdown-item-wrapper.is-active:not(.is-selected)),
-:root.dark :deep(.dropdown-item-wrapper.is-active:not(.is-selected) > *) {
-  background-color: rgba(255, 255, 255, 0.1) !important;
+
+:deep(.dropdown-item-wrapper.is-selected.is-active),
+:deep(.dropdown-item-wrapper.is-selected.is-active > *) {
+  --at-apply: '!bg-brand/20';
+  box-shadow: none !important;
+  outline: none !important;
 }
 </style>

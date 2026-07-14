@@ -166,6 +166,41 @@ describe('Dropdown', () => {
     wrapper.unmount()
   })
 
+  it('keeps selected and keyboard active item states independent', async () => {
+    const wrapper = mount(Dropdown, {
+      props: {
+        open: true,
+        items,
+        value: 'short',
+        valueKey: 'value',
+        contentClass: 'dropdown-state-test'
+      },
+      slots: {
+        trigger: '<button>open</button>',
+        item: '<div class="dropdown-state-content px-3 py-2">item</div>'
+      },
+      attachTo: document.body
+    })
+    await nextTick()
+
+    const menu = document.body.querySelector('.dropdown-state-test') as HTMLElement
+    const selectedItem = menu.querySelector('.dropdown-item-wrapper.is-selected') as HTMLElement
+    expect(selectedItem.classList).not.toContain('is-active')
+
+    const handleKeyDown = (wrapper.vm as unknown as { handleKeyDown: (event: KeyboardEvent) => boolean }).handleKeyDown
+    handleKeyDown(new KeyboardEvent('keydown', { code: 'ArrowDown', key: 'ArrowDown', bubbles: true }))
+    await nextTick()
+
+    expect(menu.querySelector('.dropdown-item-wrapper.is-active:not(.is-selected)')).not.toBeNull()
+    expect(selectedItem.classList).not.toContain('is-active')
+
+    handleKeyDown(new KeyboardEvent('keydown', { code: 'ArrowUp', key: 'ArrowUp', bubbles: true }))
+    await nextTick()
+
+    expect(selectedItem.classList).toContain('is-active')
+    wrapper.unmount()
+  })
+
   it('opens from hover trigger and emits openChange source', async () => {
     vi.useFakeTimers()
     const wrapper = mount(Dropdown, {

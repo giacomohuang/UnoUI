@@ -265,9 +265,10 @@ Props:
 - `focusOnOpen`
 - `fullWidth`: make the trigger wrapper `w-full min-w-0`; use for form-control-like dropdown triggers
 
-Keyboard state:
+Item states:
 
-- Dropdown owns the keyboard active row state; item slot content may use hover classes, but the active row background remains the priority while navigating with arrow keys.
+- Dropdown owns pointer-hover, keyboard-active, and selected row colors; item slots should define content and layout without adding state backgrounds.
+- Pointer hover uses a neutral background, keyboard-active uses a light brand background, selected uses brand text plus a light brand background, and selected plus keyboard-active uses a stronger brand background without an outline.
 
 Models:
 
