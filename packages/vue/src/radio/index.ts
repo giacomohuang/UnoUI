@@ -126,7 +126,7 @@ export const radioLabel = cva('inline-flex w-fit items-center align-middle trans
 })
 
 /** radioButton 定义 Radio 按钮形态的外层标签样式。 */
-export const radioButton = cva('ui-radio-button relative z-0 inline-flex w-fit shrink-0 items-center justify-center whitespace-nowrap rounded-md border font-medium align-middle outline-none transition-colors duration-150 hover:z-1 focus-within:(z-2 ring-2 ring-brand-400/30 ring-offset-1 ring-offset-primary)', {
+export const radioButton = cva('ui-radio-button relative z-0 inline-flex w-fit shrink-0 items-center justify-center whitespace-nowrap rounded-md border font-medium align-middle outline-none transition-[background-color,color] duration-150 focus-within:(ring-2 ring-brand-400/30 ring-offset-1 ring-offset-primary)', {
   variants: {
     size: {
       sm: 'min-h-8 px-3 text-sm/5',
@@ -151,7 +151,7 @@ export const radioButton = cva('ui-radio-button relative z-0 inline-flex w-fit s
       buttonStyle: 'outline',
       checked: true,
       disabled: false,
-      class: 'z-1 border-brand-500 bg-primary text-brand-500 dark:border-brand-400 dark:text-brand-400'
+      class: 'border-brand-500 bg-primary text-brand-500 dark:border-brand-400 dark:text-brand-400'
     },
     {
       buttonStyle: 'outline',
@@ -163,7 +163,7 @@ export const radioButton = cva('ui-radio-button relative z-0 inline-flex w-fit s
       buttonStyle: 'outline',
       checked: true,
       disabled: true,
-      class: 'z-1 border-zinc-300 bg-primary text-tertiary dark:border-zinc-600'
+      class: 'border-zinc-300 bg-primary text-tertiary dark:border-zinc-600'
     },
     {
       buttonStyle: 'outline',
@@ -175,7 +175,7 @@ export const radioButton = cva('ui-radio-button relative z-0 inline-flex w-fit s
       buttonStyle: 'solid',
       checked: true,
       disabled: false,
-      class: 'z-1 border-brand-500 bg-brand-500 text-brand-50 dark:border-brand-400 dark:bg-brand-500'
+      class: 'border-brand-500 bg-brand-500 text-brand-50 dark:border-brand-400 dark:bg-brand-500'
     },
     {
       buttonStyle: 'solid',
@@ -187,7 +187,7 @@ export const radioButton = cva('ui-radio-button relative z-0 inline-flex w-fit s
       buttonStyle: 'solid',
       checked: true,
       disabled: true,
-      class: 'z-1 border-zinc-400 bg-zinc-400 text-white dark:border-zinc-600 dark:bg-zinc-700'
+      class: 'border-zinc-400 bg-zinc-400 text-white dark:border-zinc-600 dark:bg-zinc-700'
     },
     {
       buttonStyle: 'solid',

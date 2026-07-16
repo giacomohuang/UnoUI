@@ -171,12 +171,20 @@ describe('Radio', () => {
     })
 
     const selected = wrapper.find('.ui-radio-button')
+    const unselected = wrapper.findAll('.ui-radio-button')[1]
     expect(wrapper.classes()).toContain('ui-radio-group--button')
     expect(wrapper.find('[data-map-ui-radio="true"]').exists()).toBe(true)
     expect(wrapper.find('[aria-hidden="true"]').exists()).toBe(false)
+    expect(selected.attributes('data-checked')).toBe('true')
+    expect(selected.attributes('data-disabled')).toBe('false')
+    expect(unselected.attributes('data-checked')).toBe('false')
     expect(selected.classes()).toContain('rounded-md')
     expect(selected.classes()).toContain('border-brand-500')
     expect(selected.classes()).toContain('text-brand-500')
+    expect(selected.classes()).toContain('transition-[background-color,color]')
+    expect(selected.classes()).not.toContain('transition-colors')
+    expect(selected.classes()).not.toContain('z-1')
+    expect(unselected.classes()).not.toContain('hover:z-1')
   })
 
   it('supports solid button style from RadioGroup', () => {

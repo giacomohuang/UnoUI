@@ -89,6 +89,20 @@ provide(radioGroupContextKey, {
 </template>
 
 <style scoped>
+/* 合并后的 1px 边框会重叠，显式层级可避免交互态按 DOM 顺序抢占边框。 */
+.ui-radio-group--button :deep(> .ui-radio-button[data-checked='true']) {
+  z-index: 1;
+}
+
+.ui-radio-group--button :deep(> .ui-radio-button[data-disabled='false']:hover),
+.ui-radio-group--button :deep(> .ui-radio-button[data-disabled='false']:active) {
+  z-index: 2;
+}
+
+.ui-radio-group--button :deep(> .ui-radio-button:focus-within) {
+  z-index: 3;
+}
+
 .ui-radio-group--button[data-direction='horizontal'] :deep(> .ui-radio-button:has(+ .ui-radio-button)) {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;

@@ -139,7 +139,12 @@ defineExpose({
 </script>
 
 <template>
-  <label :class="labelClass" :style="getUiAttrStyle(attrs)">
+  <label
+    :class="labelClass"
+    :data-checked="resolvedType === 'button' ? isChecked : undefined"
+    :data-disabled="resolvedType === 'button' ? resolvedDisabled : undefined"
+    :style="getUiAttrStyle(attrs)"
+  >
     <input
       v-if="resolvedType === 'button'"
       ref="inputRef"
