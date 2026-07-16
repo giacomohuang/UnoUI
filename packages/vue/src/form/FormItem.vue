@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import type { ValidateOption } from 'async-validator'
 import { clsx } from 'clsx'
-import { computed, getCurrentInstance, inject, onBeforeUnmount, onMounted, ref, shallowRef, toRaw, useAttrs, watch } from 'vue'
-import type { CSSProperties } from 'vue'
+import { cloneVNode, computed, defineComponent, getCurrentInstance, inject, nextTick, onBeforeUnmount, onMounted, ref, shallowRef, toRaw, useAttrs, useSlots, watch } from 'vue'
+import type { CSSProperties, VNode } from 'vue'
 
 import { getUiExposeAttrs } from '../attrs'
+import { Tooltip } from '../tooltip'
 
 import { formContextKey, formItem, formItemContent, formItemLabel, formItemMessage, normalizeFormProp, validateFormValue, type FormItemContext, type FormItemRule, type FormLabelPosition, type FormProp, type FormSize, type FormValidateStatus, type FormValidateTrigger } from '.'
 
@@ -18,6 +19,8 @@ const props = withDefaults(
     prop?: FormProp
     /** label 是字段标签文本，可选。 */
     label?: string
+    /** info 是显示在 label 旁的信息提示内容。 */
+    info?: string
     /** rules 是字段局部规则，会与 Form.rules[prop] 合并。 */
     rules?: FormItemRule
     /** required 可单独控制必填星号；未设置时从规则推导。 */
@@ -28,6 +31,8 @@ const props = withDefaults(
     validateStatus?: FormValidateStatus
     /** showMessage 是否显示本字段错误消息，默认继承 Form。 */
     showMessage?: boolean
+    /** validateTrigger 覆盖 Form 的自动校验时机；空数组表示仅显式校验。 */
+    validateTrigger?: FormValidateTrigger | FormValidateTrigger[]
     /** labelWidth 覆盖 Form.labelWidth。 */
     labelWidth?: string | number
     /** reserveLabelSpace 控制无 label 时是否保留标签列，默认继承 Form。 */
@@ -40,11 +45,13 @@ const props = withDefaults(
   {
     prop: undefined,
     label: '',
+    info: '',
     rules: undefined,
     required: undefined,
     error: '',
     validateStatus: '',
     showMessage: undefined,
+    validateTrigger: undefined,
     labelWidth: undefined,
     reserveLabelSpace: undefined,
     labelPosition: undefined,
@@ -53,6 +60,7 @@ const props = withDefaults(
 )
 
 const attrs = useAttrs()
+const slots = useSlots()
 const instance = getCurrentInstance()
 const form = inject(formContextKey, undefined)
 const validateState = ref<FormValidateStatus>('')
@@ -68,6 +76,10 @@ const currentLabelWidth = computed(() => {
   return typeof width === 'number' ? `${width}px` : width
 })
 const currentShowMessage = computed(() => props.showMessage ?? form?.showMessage.value ?? true)
+const currentValidateTriggers = computed<FormValidateTrigger[]>(() => {
+  const triggers = props.validateTrigger ?? form?.validateTrigger.value ?? ['change', 'blur']
+  return Array.isArray(triggers) ? triggers : [triggers]
+})
 const fieldRules = computed(() => form?.getFieldRules(props.prop, props.rules) ?? [])
 const isRequired = computed(() => props.required ?? fieldRules.value.some((rule) => rule.required))
 const showRequiredAsterisk = computed(() => isRequired.value && !(form?.hideRequiredAsterisk.value ?? false))
@@ -150,11 +162,12 @@ function shouldValidateByTrigger(ruleTrigger: FormValidateTrigger | FormValidate
 
 async function validate(trigger?: FormValidateTrigger, options: ValidateOption = {}) {
   const rules = fieldRules.value.filter((rule) => shouldValidateByTrigger(rule.trigger, trigger))
-  if (!props.prop || rules.length === 0) {
+  if (!props.prop || fieldRules.value.length === 0) {
     validateState.value = ''
     validateMessage.value = ''
     return { valid: true }
   }
+  if (rules.length === 0) return { valid: true }
 
   validateState.value = 'validating'
   const result = await validateFormValue(props.prop, form?.getFieldValue(props.prop), rules, options)
@@ -163,6 +176,45 @@ async function validate(trigger?: FormValidateTrigger, options: ValidateOption =
   form?.emitValidate(props.prop, result.valid, validateMessage.value)
   return result
 }
+
+const scheduledValidateTriggers = new Set<FormValidateTrigger>()
+
+function scheduleValidate(trigger: FormValidateTrigger) {
+  if (!currentValidateTriggers.value.includes(trigger) || scheduledValidateTriggers.has(trigger)) return
+  scheduledValidateTriggers.add(trigger)
+  void nextTick(() => {
+    scheduledValidateTriggers.delete(trigger)
+    void validate(trigger)
+  })
+}
+
+function cloneControlVNode(vnode: VNode) {
+  if (typeof vnode.type === 'symbol') return vnode
+  const listeners =
+    typeof vnode.type === 'string'
+      ? {
+          onInput: () => scheduleValidate('change'),
+          onChange: () => scheduleValidate('change'),
+          onBlur: () => scheduleValidate('blur')
+        }
+      : {
+          'onUpdate:modelValue': () => scheduleValidate('change'),
+          onBlur: () => scheduleValidate('blur')
+        }
+  return cloneVNode(vnode, listeners, true)
+}
+
+const FormItemControl = defineComponent({
+  name: 'UnoUIFormItemControl',
+  setup() {
+    return () =>
+      slots.default?.({
+        validate,
+        validateState: shownValidateState.value,
+        validateMessage: shownValidateMessage.value
+      })?.map(cloneControlVNode)
+  }
+})
 
 function resetField() {
   if (props.prop && form && localInitialValueReady.value) form.setFieldValue(props.prop, cloneInitialFieldValue(localInitialValue.value))
@@ -222,12 +274,26 @@ defineExpose({
     <slot name="label" :label="label">
       <label v-if="label" :id="labelId" :for="contentId" :class="labelClass">
         <span class="min-w-0 whitespace-normal break-words text-inherit">{{ label }}</span>
+        <span v-if="info || $slots.info" class="ml-1 inline-flex shrink-0">
+          <Tooltip :title="info" :trigger="['hover', 'focus']" :mouse-enter-delay="0">
+            <span
+              class="i-lucide:info size-3.5 cursor-help rounded-sm text-tertiary outline-none transition-colors hover:text-secondary focus-visible:text-secondary focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-1"
+              data-ui-form-item-info="true"
+              role="img"
+              tabindex="0"
+              :aria-label="info || `${label}说明`"
+            ></span>
+            <template #title>
+              <slot name="info">{{ info }}</slot>
+            </template>
+          </Tooltip>
+        </span>
       </label>
       <div v-else-if="shouldReserveLabelSpace" aria-hidden="true"></div>
     </slot>
 
     <div :id="contentId" :class="contentClass" :aria-labelledby="labelId">
-      <slot :validate="validate" :validate-state="shownValidateState" :validate-message="shownValidateMessage"></slot>
+      <FormItemControl />
       <slot v-if="currentShowMessage && shownValidateMessage" name="error" :error="shownValidateMessage" :validate-state="shownValidateState">
         <div :class="messageClass">{{ shownValidateMessage }}</div>
       </slot>

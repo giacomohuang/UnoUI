@@ -5,7 +5,7 @@ import { computed, nextTick, provide, ref, shallowRef, toRef, useAttrs, watch } 
 import type { CSSProperties } from 'vue'
 
 import { getUiExposeAttrs } from '../attrs'
-import { defaultFormValidateMessages, formContextKey, formRoot, getValueByPath, normalizeFormProp, normalizeRules, setValueByPath, type FormContext, type FormItemContext, type FormItemRule, type FormLabelPosition, type FormProp, type FormRules, type FormSize, type FormValidateCallback } from '.'
+import { defaultFormValidateMessages, formContextKey, formRoot, getValueByPath, normalizeFormProp, normalizeRules, setValueByPath, type FormContext, type FormItemContext, type FormItemRule, type FormLabelPosition, type FormProp, type FormRules, type FormSize, type FormValidateCallback, type FormValidateTrigger } from '.'
 
 defineOptions({
   inheritAttrs: false
@@ -33,6 +33,8 @@ const props = withDefaults(
     disabled?: boolean
     /** showMessage 是否显示 FormItem 错误消息。 */
     showMessage?: boolean
+    /** validateTrigger 设置字段默认自动校验时机；空数组表示仅显式校验。 */
+    validateTrigger?: FormValidateTrigger | FormValidateTrigger[]
     /** validateOnRuleChange 是否在 rules 变化时重新校验。 */
     validateOnRuleChange?: boolean
     /** requireAsteriskPosition 设置必填星号位置。 */
@@ -51,6 +53,7 @@ const props = withDefaults(
     size: 'md',
     disabled: false,
     showMessage: true,
+    validateTrigger: () => ['change', 'blur'],
     validateOnRuleChange: true,
     requireAsteriskPosition: 'left',
     hideRequiredAsterisk: false
@@ -167,6 +170,7 @@ provide<FormContext>(formContextKey, {
   reserveLabelSpace: toRef(props, 'reserveLabelSpace'),
   itemGap: toRef(props, 'itemGap'),
   showMessage: toRef(props, 'showMessage'),
+  validateTrigger: toRef(props, 'validateTrigger'),
   requireAsteriskPosition: toRef(props, 'requireAsteriskPosition'),
   hideRequiredAsterisk: toRef(props, 'hideRequiredAsterisk'),
   validateOnRuleChange: toRef(props, 'validateOnRuleChange'),

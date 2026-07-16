@@ -1,10 +1,11 @@
-import { mount } from '@vue/test-utils'
+import { flushPromises, mount } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
 import { defineComponent, reactive, ref } from 'vue'
 
 import { Button } from '../../button'
 import { Input } from '../../input'
 import { Switch } from '../../switch'
+import { Tooltip } from '../../tooltip'
 import Form from '../Form.vue'
 import FormItem from '../FormItem.vue'
 import { createFormRule, formItem, formItemContent, formItemLabel, formRoot, formValidatorPatterns } from '../index'
@@ -158,6 +159,97 @@ describe('Form', () => {
     expect(wrapper.text()).not.toContain('请输入名称')
   })
 
+  it('validates direct controls on configured change and blur triggers', async () => {
+    const wrapper = mount(
+      defineComponent({
+        components: { Form, FormItem, Input },
+        setup() {
+          const model = reactive({ name: '入口', code: 'CODE' })
+          const rules = {
+            name: [{ required: true, message: '请输入名称', trigger: 'change' }],
+            code: [{ required: true, message: '请输入编码', trigger: 'blur' }]
+          }
+          return { model, rules }
+        },
+        template: `
+          <Form :model="model" :rules="rules">
+            <FormItem prop="name" label="名称"><Input v-model="model.name" /></FormItem>
+            <FormItem prop="code" label="编码"><Input v-model="model.code" /></FormItem>
+          </Form>
+        `
+      })
+    )
+
+    const inputs = wrapper.findAll('input')
+    await inputs[0].setValue('')
+    await flushPromises()
+    expect(wrapper.text()).toContain('请输入名称')
+
+    await inputs[1].setValue('')
+    await flushPromises()
+    expect(wrapper.text()).not.toContain('请输入编码')
+
+    await inputs[1].trigger('blur')
+    await flushPromises()
+    expect(wrapper.text()).toContain('请输入编码')
+  })
+
+  it('supports submit-only validation with an empty form validate trigger', async () => {
+    const wrapper = mount(
+      defineComponent({
+        components: { Form, FormItem, Input },
+        setup() {
+          const formRef = ref<InstanceType<typeof Form>>()
+          const model = reactive({ name: '入口' })
+          const rules = { name: [{ required: true, message: '请输入名称' }] }
+          return { formRef, model, rules }
+        },
+        template: `
+          <Form ref="formRef" :model="model" :rules="rules" :validate-trigger="[]">
+            <FormItem prop="name" label="名称"><Input v-model="model.name" /></FormItem>
+          </Form>
+        `
+      })
+    )
+
+    const input = wrapper.find('input')
+    await input.setValue('')
+    await input.trigger('blur')
+    await flushPromises()
+    expect(wrapper.text()).not.toContain('请输入名称')
+
+    const form = wrapper.vm.$refs.formRef as InstanceType<typeof Form>
+    expect(await form.validate()).toBe(false)
+    expect(wrapper.text()).toContain('请输入名称')
+  })
+
+  it('lets FormItem override the form validate trigger', async () => {
+    const wrapper = mount(
+      defineComponent({
+        components: { Form, FormItem, Input },
+        setup() {
+          const model = reactive({ name: '入口' })
+          const rules = { name: [{ required: true, message: '请输入名称' }] }
+          return { model, rules }
+        },
+        template: `
+          <Form :model="model" :rules="rules" validate-trigger="change">
+            <FormItem prop="name" label="名称" validate-trigger="blur"><Input v-model="model.name" /></FormItem>
+          </Form>
+        `
+      })
+    )
+
+    const input = wrapper.find('input')
+    await input.setValue('')
+    await flushPromises()
+    expect(wrapper.text()).not.toContain('请输入名称')
+
+    await input.trigger('blur')
+    await flushPromises()
+    expect(wrapper.text()).toContain('请输入名称')
+  })
+
   it('reserves empty label space only when requested', () => {
     const wrapper = mount(
       defineComponent({
@@ -209,6 +301,57 @@ describe('Form', () => {
     expect(labelText.classes()).not.toContain('truncate')
     expect(labelText.classes()).toContain('whitespace-normal')
     expect(labelText.classes()).toContain('break-words')
+  })
+
+  it('shows an accessible info tooltip beside the built-in label', async () => {
+    const wrapper = mount(FormItem, {
+      props: {
+        label: '项目 ID',
+        info: '用于接口调用的唯一标识'
+      },
+      slots: {
+        default: '<input />'
+      }
+    })
+
+    const tooltip = wrapper.findComponent(Tooltip)
+    const icon = wrapper.find('[data-ui-form-item-info="true"]')
+
+    expect(tooltip.props('title')).toBe('用于接口调用的唯一标识')
+    expect(tooltip.props('trigger')).toEqual(['hover', 'focus'])
+    expect(icon.attributes('role')).toBe('img')
+    expect(icon.attributes('tabindex')).toBe('0')
+    expect(icon.attributes('aria-label')).toBe('用于接口调用的唯一标识')
+
+    await tooltip.find('[data-ui-tooltip-trigger="true"]').trigger('focusin')
+    await wrapper.vm.$nextTick()
+
+    expect(document.body.querySelector('[role="tooltip"]')?.textContent).toContain('用于接口调用的唯一标识')
+    wrapper.unmount()
+  })
+
+  it('uses the info slot for complex tooltip content without requiring the info prop', async () => {
+    const wrapper = mount(FormItem, {
+      props: {
+        label: '自动发布'
+      },
+      slots: {
+        default: '<input />',
+        info: '<strong data-test="complex-info">审核通过后自动发布</strong>'
+      }
+    })
+
+    const tooltip = wrapper.findComponent(Tooltip)
+    const icon = wrapper.find('[data-ui-form-item-info="true"]')
+
+    expect(tooltip.exists()).toBe(true)
+    expect(icon.attributes('aria-label')).toBe('自动发布说明')
+
+    await tooltip.find('[data-ui-tooltip-trigger="true"]').trigger('focusin')
+    await wrapper.vm.$nextTick()
+
+    expect(document.body.querySelector('[data-test="complex-info"]')?.textContent).toBe('审核通过后自动发布')
+    wrapper.unmount()
   })
 
   it('centers compact controls like switches against the form label row', () => {

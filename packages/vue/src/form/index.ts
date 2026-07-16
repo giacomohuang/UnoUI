@@ -49,6 +49,7 @@ export interface FormContext {
   reserveLabelSpace: Ref<boolean>;
   itemGap: Ref<string | number>;
   showMessage: Ref<boolean>;
+  validateTrigger: Ref<FormValidateTrigger | FormValidateTrigger[]>;
   requireAsteriskPosition: Ref<"left" | "right">;
   hideRequiredAsterisk: Ref<boolean>;
   validateOnRuleChange: Ref<boolean>;

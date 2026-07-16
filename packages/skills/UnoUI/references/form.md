@@ -55,6 +55,7 @@ Props:
 - `size`: `sm | md | lg`
 - `disabled`
 - `showMessage`: default `true`
+- `validateTrigger`: `blur | change | (blur | change)[]`; defaults to `['change', 'blur']`; use an empty array to validate only through explicit `validate()` / `validateField()` calls
 - `validateOnRuleChange`: default `true`
 - `requireAsteriskPosition`: `left | right`
 - `hideRequiredAsterisk`
@@ -84,11 +85,13 @@ Props:
 
 - `prop`: `string | string[]`; supports dot paths
 - `label`
+- `info`: renders an info icon beside the built-in label and shows the content in a hover/focus tooltip
 - `rules`: `FormRule | FormRule[]`
 - `required`: overrides rule required state
 - `error`
 - `validateStatus`: empty string, `success`, `error`, or `validating`
 - `showMessage`
+- `validateTrigger`: overrides the parent Form trigger for this field; an empty array disables automatic validation
 - `labelWidth`
 - `reserveLabelSpace`
 - `labelPosition`
@@ -98,6 +101,7 @@ Slots:
 
 - `default="{ validate, validateState, validateMessage }"`
 - `label="{ label }"`
+- `info`: custom rich Tooltip content; providing this slot shows the info icon without requiring the `info` prop
 - `error="{ error, validateState }"`
 
 Expose:
@@ -111,6 +115,13 @@ Expose:
 Events:
 
 - None
+
+Trigger rules:
+
+- `Form.validateTrigger` supplies the default automatic validation events.
+- `FormItem.validateTrigger` overrides the Form setting for one field.
+- A rule's `trigger` filters which automatic event runs that rule.
+- Explicit `Form.validate()` and `Form.validateField()` ignore automatic triggers and always evaluate all applicable rules.
 
 ## Rule Helpers
 

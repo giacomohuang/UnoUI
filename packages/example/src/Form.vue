@@ -24,7 +24,7 @@
                 <FormItem prop="name" label="名称">
                   <Input v-model="formDemoModel.name" placeholder="请输入项目名称" clearable prefix-icon="i-lucide:building-2" />
                 </FormItem>
-                <FormItem prop="projectId" label="项目 ID">
+                <FormItem prop="projectId" label="项目 ID" info="用于接口调用的唯一标识，仅支持字母、数字、下划线和短横线。">
                   <Input v-model="formDemoModel.projectId" placeholder="letters_numbers-01" clearable />
                 </FormItem>
                 <FormItem prop="email" label="邮箱">
@@ -82,8 +82,13 @@
                   </RadioGroup>
                 </FormItem>
                 <FormItem prop="publishEnabled" label="自动发布">
-                  <div class="flex min-h-9 items-center gap-3">
-                    <Button size="sm" variant="outline" icon="i-lucide:info">说明</Button>
+                  <template #info>
+                    <div class="grid gap-1">
+                      <strong>自动发布规则</strong>
+                      <span>配置通过校验后，将在发布日期自动生效。</span>
+                    </div>
+                  </template>
+                  <div class="flex min-h-9 items-center">
                     <Switch v-model="formDemoModel.publishEnabled" active-text="开" inactive-text="关" />
                   </div>
                 </FormItem>
