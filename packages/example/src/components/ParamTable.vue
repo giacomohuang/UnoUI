@@ -1,6 +1,6 @@
 <template>
-  <div class="param-table overflow-x-auto">
-    <table class="w-full min-w-[480px] border-collapse text-sm">
+  <div class="param-table w-full min-w-0 max-w-full overflow-x-auto">
+    <table class="w-full min-w-[480px] border-collapse text-sm" :style="minTableWidth ? { minWidth: minTableWidth } : undefined">
       <thead>
         <tr class="border-b border-medium bg-secondary/60">
           <th v-for="col in columns" :key="col.key" class="px-3 py-2.5 text-left text-xs font-bold uppercase text-tertiary" :style="col.width ? { width: col.width } : {}">
@@ -51,5 +51,7 @@ defineProps<{
   columns: ParamTableColumn[]
   /** rows 是表格数据行。 */
   rows: ParamTableRow[]
+  /** minTableWidth 为内容较长的 API 表设置更宽的横向滚动区域。 */
+  minTableWidth?: string
 }>()
 </script>

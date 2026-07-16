@@ -43,8 +43,9 @@
         <div class="grid gap-2 rounded-md border border-medium bg-secondary/40 p-3">
           <h3 class="text-sm font-bold text-secondary">日期范围</h3>
           <RangePicker v-model="dateRangePair" clearable />
+          <RangePicker v-model="datetimeRangePair" show-time clearable value-format="YYYY-MM-DD HH:mm:ss" />
           <RangePicker v-model="limitedDateRangePair" min-date="2026-06-01" max-date="2026-06-30" :placeholder="['开始', '结束']" />
-          <div class="text-xs text-tertiary">范围：{{ dateRangePair.join(' ~ ') || '空' }}</div>
+          <div class="text-xs text-tertiary">范围：{{ datetimeRangePair.join(' ~ ') || '空' }}</div>
         </div>
 
         <div class="grid gap-2 rounded-md border border-medium bg-secondary/40 p-3">
@@ -134,6 +135,7 @@ const monthValue = ref('2026-06')
 const yearValue = ref('2026')
 const limitedMonthValue = ref('2026-06')
 const dateRangePair = ref<[string, string]>(['2026-06-01', '2026-06-24'])
+const datetimeRangePair = ref<[string, string]>(['2026-06-01 08:30:00', '2026-06-24 18:00:00'])
 const limitedDateRangePair = ref<[string, string]>(['2026-06-10', '2026-06-20'])
 const monthRangePair = ref<[string, string]>(['2026-03', '2026-09'])
 const yearRangePair = ref<[string, string]>(['2024', '2026'])

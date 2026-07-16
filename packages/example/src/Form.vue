@@ -210,6 +210,28 @@
       </div>
     </div>
 
+    <div class="border-t border-medium">
+      <div class="border-b border-medium px-4 py-3">
+        <h3 class="text-sm font-bold text-secondary">API 类型说明</h3>
+      </div>
+      <div class="grid min-w-0 gap-6 p-4">
+        <div class="min-w-0">
+          <h4 class="text-sm font-bold text-secondary">FormRule</h4>
+          <p class="mt-1 text-xs text-tertiary">继承 async-validator 的 RuleItem，并增加 trigger 和 preset 字段。</p>
+          <div class="mt-3">
+            <ParamTable :columns="formRuleColumns" :rows="formRuleFields" min-table-width="960px" />
+          </div>
+        </div>
+        <div class="min-w-0">
+          <h4 class="text-sm font-bold text-secondary">关联类型</h4>
+          <p class="mt-1 text-xs text-tertiary">Props 表中出现的 Form 专用类型均在此展开。</p>
+          <div class="mt-3">
+            <ParamTable :columns="formTypeColumns" :rows="formTypes" min-table-width="960px" />
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- 示例代码 -->
     <div class="border-t border-medium">
       <div class="border-b border-medium px-4 py-3">
@@ -239,7 +261,18 @@ import { Tabs, TabPane } from "@unoui/vue/tab";
 import { Tag } from "@unoui/vue/tag";
 import CodeBlock from "@/components/CodeBlock.vue";
 import ParamTable from "@/components/ParamTable.vue";
-import { formProps, formEmits, formSlots, formItemProps, formItemSlots, formCodeExample } from "@/data/form";
+import {
+  formProps,
+  formEmits,
+  formSlots,
+  formItemProps,
+  formItemSlots,
+  formRuleColumns,
+  formRuleFields,
+  formTypeColumns,
+  formTypes,
+  formCodeExample,
+} from "@/data/form";
 import { propsColumns, emitsColumns, slotsColumns } from "@/data/shared";
 
 const formApiTab = ref("props");

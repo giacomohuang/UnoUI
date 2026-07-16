@@ -39,13 +39,14 @@ export const datePickerExposes: ParamTableRow[] = [
 export const rangePickerProps: ParamTableRow[] = [
   { name: 'modelValue', type: '[DatePickerModelValue, DatePickerModelValue] | null', default: 'undefined', desc: '受控范围值' },
   { name: 'picker', type: `'date' | 'month' | 'year'`, default: `'date'`, desc: '面板类型，支持日期、月份、年份范围' },
-  { name: 'format', type: 'string', default: '按 picker 自动选择', desc: '展示格式' },
+  { name: 'format', type: 'string', default: '按 picker 自动选择', desc: '展示格式；showTime 时默认包含时间' },
   { name: 'valueFormat', type: 'string', default: 'undefined', desc: '提交字符串格式，未传时优先保持传入值类型' },
   { name: 'placeholder', type: '[string, string]', default: '按 picker 自动生成', desc: '起止占位文案' },
   { name: 'separatorIcon', type: 'string', default: `'i-ant-design:swap-right-outlined'`, desc: '范围连接图标类名' },
   { name: 'size', type: `'sm' | 'md' | 'lg'`, default: `'md'`, desc: '尺寸' },
   { name: 'disabled', type: 'boolean', default: 'false', desc: '是否禁用交互' },
   { name: 'clearable', type: 'boolean', default: 'false', desc: '是否允许一键清空' },
+  { name: 'showTime', type: 'boolean | DatePickerShowTimeOptions', default: 'false', desc: '是否显示起止时间，可配置格式和时分秒步长' },
   { name: 'disabledDate', type: '(date: Dayjs) => boolean', default: 'undefined', desc: '禁用不可选日期' },
   { name: 'minDate', type: 'DatePickerModelValue', default: 'undefined', desc: '最小可选日期' },
   { name: 'maxDate', type: 'DatePickerModelValue', default: 'undefined', desc: '最大可选日期' },
@@ -59,6 +60,7 @@ export const rangePickerEmits: ParamTableRow[] = [
   { name: 'update:modelValue', params: '[value, value] | null', desc: '受控值更新' },
   { name: 'change', params: 'value, [startString, endString]', desc: '完整范围选中或清空时触发' },
   { name: 'clear', params: '—', desc: '点击清空按钮时触发' },
+  { name: 'ok', params: 'value, [startString, endString]', desc: '日期时间范围点击确定时触发' },
   { name: 'calendar-change', params: 'value, [startString, endString]', desc: '面板内临时范围变化时触发' },
   { name: 'visible-change', params: 'boolean', desc: '下拉面板可见性变化时触发' },
   { name: 'panel-change', params: '[Dayjs, Dayjs]', desc: '左右面板切换时触发' },
@@ -76,6 +78,7 @@ const datetime = ref('2026-06-24 10:30:00')
 const month = ref('2026-06')
 const year = ref('2026')
 const range = ref(['2026-06-01', '2026-06-24'])
+const datetimeRange = ref(['2026-06-01 08:30:00', '2026-06-24 18:00:00'])
 const iconRange = ref(['2026-07-01', '2026-07-18'])
 const disabledDate = (value: dayjs.Dayjs) => value.day() === 0
 </script>
@@ -106,6 +109,7 @@ const disabledDate = (value: dayjs.Dayjs) => value.day() === 0
 
   <!-- 范围选择 -->
   <RangePicker v-model="range" clearable />
+  <RangePicker v-model="datetimeRange" show-time value-format="YYYY-MM-DD HH:mm:ss" />
   <RangePicker v-model="range" picker="month" />
   <RangePicker
     v-model="iconRange"

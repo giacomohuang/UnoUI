@@ -1,4 +1,16 @@
-import type { ParamTableRow } from '@/components/ParamTable.vue'
+import type { ParamTableColumn, ParamTableRow } from '@/components/ParamTable.vue'
+
+export const formRuleColumns: ParamTableColumn[] = [
+  { key: 'name', title: '字段名', width: '150px' },
+  { key: 'type', title: '类型', mono: true, width: '55%' },
+  { key: 'desc', title: '说明' }
+]
+
+export const formTypeColumns: ParamTableColumn[] = [
+  { key: 'name', title: '类型名', width: '220px' },
+  { key: 'definition', title: '完整定义', mono: true, width: '55%' },
+  { key: 'desc', title: '说明' }
+]
 
 export const formProps: ParamTableRow[] = [
   { name: 'model', type: 'Values', default: 'undefined', desc: '表单数据对象' },
@@ -48,6 +60,37 @@ export const formItemSlots: ParamTableRow[] = [
   { name: 'label', scoped: '{ label }', desc: '自定义标签内容' },
   { name: 'info', scoped: '—', desc: '自定义标签旁 Tooltip 的复杂内容' },
   { name: 'error', scoped: '{ error, validateState }', desc: '自定义错误提示区域' }
+]
+
+export const formRuleFields: ParamTableRow[] = [
+  { name: 'type', type: `'string' | 'number' | 'boolean' | 'method' | 'regexp' | 'integer' | 'float' | 'array' | 'object' | 'enum' | 'date' | 'url' | 'hex' | 'email' | 'pattern' | 'any'`, desc: '期望的数据类型' },
+  { name: 'required', type: 'boolean', desc: '是否必填' },
+  { name: 'pattern', type: 'RegExp | string', desc: '值必须匹配的正则表达式' },
+  { name: 'min', type: 'number', desc: '字符串或数组的最小长度，或数字的最小值' },
+  { name: 'max', type: 'number', desc: '字符串或数组的最大长度，或数字的最大值' },
+  { name: 'len', type: 'number', desc: '字符串或数组的精确长度，或数字的精确值' },
+  { name: 'enum', type: 'Array<string | number | boolean | null | undefined>', desc: 'type 为 enum 时允许的值列表' },
+  { name: 'whitespace', type: 'boolean', desc: '字符串是否禁止仅包含空白字符' },
+  { name: 'fields', type: 'Record<string, RuleItem | RuleItem[]>', desc: 'object 或 array 子字段的 async-validator 规则' },
+  { name: 'defaultField', type: 'RuleItem | RuleItem[]', desc: 'array 或 object 中未单独声明子字段时使用的规则' },
+  { name: 'options', type: 'ValidateOption', desc: '传给 async-validator 的规则级校验选项' },
+  { name: 'transform', type: '(value: any) => any', desc: '校验前转换当前值' },
+  { name: 'message', type: 'string | ((value?: string) => string)', desc: '规则校验失败时的提示信息' },
+  { name: 'validator', type: '(rule, value, callback, source, options) => boolean | Error | string | Array<Error | string> | void', desc: '自定义同步校验器；也可通过 callback 返回错误' },
+  { name: 'asyncValidator', type: '(rule, value, callback, source, options) => void | Promise<void>', desc: '自定义异步校验器' },
+  { name: 'trigger', type: 'FormValidateTrigger | FormValidateTrigger[]', desc: '该规则参与自动校验的触发时机；显式 validate() 不受此项限制' },
+  { name: 'preset', type: 'FormRulePreset', desc: '使用 UnoUI 内置正则；同一规则显式提供的 pattern 或 message 会覆盖 preset 默认值' }
+]
+
+export const formTypes: ParamTableRow[] = [
+  { name: 'Values', definition: 'Record<string, any>', desc: 'async-validator 使用的表单数据对象' },
+  { name: 'FormValidateTrigger', definition: `'blur' | 'change' | (string & {})`, desc: '内置 blur、change，并允许控件提供自定义字符串触发器' },
+  { name: 'FormValidateTrigger | FormValidateTrigger[]', definition: `('blur' | 'change' | (string & {})) | Array<'blur' | 'change' | (string & {})>`, desc: '可传一个触发时机或多个触发时机；传 [] 表示关闭自动校验' },
+  { name: 'FormRulePreset', definition: `'email' | 'phoneCN' | 'url' | 'ipv4' | 'idCardCN' | 'postalCodeCN' | 'integer' | 'positiveInteger' | 'number' | 'decimal2' | 'alpha' | 'alphaNum' | 'projectId' | 'slug' | 'hexColor' | 'chinese' | 'password'`, desc: 'UnoUI 当前提供的内置正则名称' },
+  { name: 'FormItemRule', definition: 'FormRule | FormRule[]', desc: '单条字段规则或按顺序执行的规则数组' },
+  { name: 'FormRules<T>', definition: 'Partial<Record<keyof T | string, FormItemRule>>', desc: '表单级规则对象；key 对应 model 字段或嵌套字段路径' },
+  { name: 'FormProp', definition: 'string | string[]', desc: '字段路径；可使用 "user.name" 或 ["user", "name"]' },
+  { name: 'FormValidateStatus', definition: `'' | 'validating' | 'success' | 'error'`, desc: '字段当前校验状态' }
 ]
 
 export const formCodeExample = `<script setup>

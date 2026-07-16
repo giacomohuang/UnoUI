@@ -69,10 +69,12 @@ import { ref } from 'vue'
 import { RangePicker } from '@unoui/vue/datepicker'
 
 const range = ref(['2026-06-01', '2026-06-24'])
+const datetimeRange = ref(['2026-06-01 08:30:00', '2026-06-24 18:00:00'])
 </script>
 
 <template>
   <RangePicker v-model="range" clearable />
+  <RangePicker v-model="datetimeRange" show-time value-format="YYYY-MM-DD HH:mm:ss" />
   <RangePicker v-model="range" picker="month" />
 </template>
 ```
@@ -85,6 +87,7 @@ Props:
 - `placeholder`: `[string, string]`
 - `separatorIcon`
 - `size`, `disabled`, `clearable`
+- `showTime`: boolean or time options; date ranges are confirmed before submission
 - `disabledDate`, `minDate`, `maxDate`
 - `suffixIcon`, `clearIcon`
 - `teleportedWidth`, `name`
@@ -94,6 +97,7 @@ Events:
 - `update:modelValue(value)`
 - `change(value, [startString, endString])`
 - `clear()`
+- `ok(value, [startString, endString])`
 - `calendar-change(value, [startString, endString])`
 - `visible-change(boolean)`
 - `panel-change([Dayjs, Dayjs])`

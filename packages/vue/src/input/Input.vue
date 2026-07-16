@@ -129,6 +129,7 @@ const controlRef = useTemplateRef<InputExposeElement>('controlRef')
 const focused = ref(false)
 const passwordVisible = ref(false)
 const composing = ref(false)
+const numberInputDraft = ref<string | null>(null)
 const hasPrepend = !!slots.prepend
 const hasAppend = !!slots.append
 
@@ -142,6 +143,7 @@ const hasPrefix = () => !!slots.prefix || !!props.prefix || !!props.prefixIcon |
 const hasSuffix = () => !!slots.suffix || !!props.suffix || !!props.suffixIcon || hasPasswordToggle() || showClearButton() || showWordLimitInline()
 const normalizedValue = computed(() => (props.modelValue === undefined || props.modelValue === null ? '' : String(props.modelValue)))
 const displayValue = computed(() => (props.formatter ? props.formatter(normalizedValue.value) : normalizedValue.value))
+const controlValue = computed(() => (isNumber() && numberInputDraft.value !== null ? numberInputDraft.value : displayValue.value))
 const valueLength = computed(() => normalizedValue.value.length)
 
 const nativeType = computed(() => {
@@ -233,6 +235,7 @@ const setControlValue = async () => {
 }
 
 watch(displayValue, () => {
+  if (focused.value && numberInputDraft.value !== null) return
   if (!composing.value) void setControlValue()
 })
 
@@ -241,13 +244,21 @@ const emitValue = (value: InputModelValue, event: Event) => {
   emit('input', value, event)
 }
 
+const handleBeforeInput = (event: InputEvent) => {
+  if (!isNumber() || props.disabled || props.readonly || !event.data?.includes('。')) return
+  event.preventDefault()
+  document.execCommand('insertText', false, event.data.replaceAll('。', '.'))
+}
+
 const handleInput = (event: Event) => {
   if (props.disabled) return
+  const control = event.target as InputExposeElement
+  if (isNumber() && control.tagName === 'INPUT') numberInputDraft.value = control.value
   if (composing.value) {
-    emit('input', normalizeInputValue((event.target as InputExposeElement).value), event)
+    emit('input', normalizeInputValue(control.value), event)
     return
   }
-  emitValue(normalizeInputValue((event.target as InputExposeElement).value), event)
+  emitValue(normalizeInputValue(control.value), event)
 }
 
 const handleChange = (event: Event) => {
@@ -262,6 +273,7 @@ const handleFocus = (event: FocusEvent) => {
 
 const handleBlur = (event: FocusEvent) => {
   focused.value = false
+  numberInputDraft.value = null
   emit('blur', event)
   void setControlValue()
 }
@@ -272,12 +284,15 @@ const handleCompositionStart = () => {
 
 const handleCompositionEnd = (event: CompositionEvent) => {
   composing.value = false
-  emitValue(normalizeInputValue((event.target as InputExposeElement).value), event)
+  const control = event.target as InputExposeElement
+  if (isNumber() && control.tagName === 'INPUT') numberInputDraft.value = control.value
+  emitValue(normalizeInputValue(control.value), event)
 }
 
 const clear = () => {
   if (props.disabled || props.readonly) return
   const value = ''
+  numberInputDraft.value = null
   emit('update:modelValue', value)
   emit('input', value, new Event('input'))
   emit('clear')
@@ -314,6 +329,7 @@ const getCurrentNumber = () => {
 const updateNumberFromDrag = (value: number, event: PointerEvent) => {
   const nextValue = applyPrecision(value)
   const modelValue = formatNumberForModel(nextValue)
+  numberInputDraft.value = null
   if (numberDragSession) numberDragSession.lastValue = nextValue
   emit('update:modelValue', modelValue)
   emit('input', modelValue, event)
@@ -410,7 +426,7 @@ defineExpose({
         data-ui-input-control="true"
         :name="name"
         :type="nativeType"
-        :value="displayValue"
+        :value="controlValue"
         :step="isNumber() ? step : undefined"
         :min="isNumber() ? min : undefined"
         :max="isNumber() ? max : undefined"
@@ -420,6 +436,7 @@ defineExpose({
         :readonly="readonly"
         :autocomplete="autocomplete"
         :class="getControlClass()"
+        @beforeinput="handleBeforeInput"
         @input="handleInput"
         @change="handleChange"
         @focus="handleFocus"

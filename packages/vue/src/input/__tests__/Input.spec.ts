@@ -1,5 +1,6 @@
 import { mount } from '@vue/test-utils'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it, vi } from 'vitest'
+import { nextTick } from 'vue'
 
 import { inputControl, inputGroup, inputWrapper } from '../index'
 import Input from '../Input.vue'
@@ -126,6 +127,80 @@ describe('Input', () => {
     await wrapper.find('input').setValue('12.345')
 
     expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([10])
+  })
+
+  it('keeps an invalid number draft while focused and syncs it on blur', async () => {
+    const wrapper = mount({
+      components: { Input },
+      data: () => ({ amount: 1 }),
+      template: '<Input v-model="amount" type="number" :min="0" :max="10" />'
+    })
+    const input = wrapper.find('input')
+
+    await input.trigger('focus')
+    await input.setValue('12')
+
+    expect(input.element.value).toBe('12')
+    expect(input.element.validity.rangeOverflow).toBe(true)
+    expect((wrapper.vm as { amount: number }).amount).toBe(10)
+
+    await input.trigger('blur')
+    await nextTick()
+
+    expect(input.element.value).toBe('10')
+  })
+
+  it('keeps the number draft when precision normalizes the model while focused', async () => {
+    const wrapper = mount({
+      components: { Input },
+      data: () => ({ amount: 123.45 }),
+      template: '<Input v-model="amount" type="number" :step="0.01" :precision="2" />'
+    })
+    const input = wrapper.find('input')
+
+    await input.trigger('focus')
+    await input.setValue('1237.456')
+
+    expect(input.element.value).toBe('1237.456')
+    expect((wrapper.vm as { amount: number }).amount).toBe(1237.46)
+
+    await input.trigger('blur')
+    await nextTick()
+
+    expect(input.element.value).toBe('1237.46')
+  })
+
+  it('converts a full-width period before native number input filters it', () => {
+    const numberWrapper = mount(Input, {
+      props: {
+        modelValue: '1',
+        type: 'number'
+      }
+    })
+    const textWrapper = mount(Input, {
+      props: {
+        modelValue: '1'
+      }
+    })
+    const originalExecCommand = document.execCommand
+    const execCommand = vi.fn(() => true)
+    document.execCommand = execCommand
+
+    try {
+      const numberEvent = new InputEvent('beforeinput', { bubbles: true, cancelable: true, data: '。', inputType: 'insertText' })
+      numberWrapper.find('input').element.dispatchEvent(numberEvent)
+
+      expect(numberEvent.defaultPrevented).toBe(true)
+      expect(execCommand).toHaveBeenCalledWith('insertText', false, '.')
+
+      const textEvent = new InputEvent('beforeinput', { bubbles: true, cancelable: true, data: '。', inputType: 'insertText' })
+      textWrapper.find('input').element.dispatchEvent(textEvent)
+
+      expect(textEvent.defaultPrevented).toBe(false)
+      expect(execCommand).toHaveBeenCalledTimes(1)
+    } finally {
+      document.execCommand = originalExecCommand
+    }
   })
 
   it('updates number values by horizontal drag', async () => {
