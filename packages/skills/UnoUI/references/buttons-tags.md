@@ -85,6 +85,7 @@ import { Tag } from '@unoui/vue/tag'
 
 <template>
   <Tag color="green">Active</Tag>
+  <Tag color="purple" variant="soft" radius="round">Group</Tag>
   <Tag color="red" variant="plain" closable @close="remove">Removed</Tag>
   <Tag radius="round" color="brand">Pill</Tag>
 </template>
@@ -92,8 +93,8 @@ import { Tag } from '@unoui/vue/tag'
 
 Props:
 
-- `color`: `brand | blue | red | green | gray | yellow | orange`; default `brand`
-- `variant`: `light | dark | plain`; default `light`
+- `color`: `brand | blue | cyan | teal | green | lime | yellow | orange | red | pink | purple | indigo | gray`; default `brand`
+- `variant`: `soft | light | dark | plain`; default `light`; `soft` uses a borderless tinted background with higher-contrast text
 - `size`: `sm | md | lg`; default `sm`
 - `radius`: `none | sm | md | lg | round`; default `md`
 - `closable`: show close button

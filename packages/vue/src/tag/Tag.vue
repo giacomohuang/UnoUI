@@ -20,7 +20,7 @@ import { tag, type TagProps } from '.'
 
 /**
  * Tag 是管理端轻量标签组件，统一语义色、尺寸和圆角。
- * variant 参考 Element Plus Tag 的 dark、light、plain 三种效果。
+ * variant 提供 dark、light、plain 和无描边柔和底色 soft 四种效果。
  */
 withDefaults(
   defineProps<{

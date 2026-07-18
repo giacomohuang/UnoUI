@@ -22,7 +22,7 @@
               target="_blank"
               rel="noopener noreferrer"
               aria-label="打开 UnoUI GitHub 仓库"
-              class="inline-flex size-9 shrink-0 items-center justify-center rounded border border-medium bg-primary text-secondary transition-colors hover:border-brand-400/70 hover:bg-secondary hover:text-brand"
+              class="inline-flex shrink-0 items-center justify-center rounded-md border border-medium bg-primary p-1.5 text-secondary transition-colors hover:border-brand-400/70 hover:bg-secondary hover:text-brand"
             >
               <span class="i-lucide:github size-4"></span>
             </a>

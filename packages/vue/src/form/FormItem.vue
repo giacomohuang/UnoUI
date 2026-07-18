@@ -117,6 +117,7 @@ const labelClass = computed(() =>
     requiredPosition: form?.requireAsteriskPosition.value ?? 'left'
   })
 )
+const infoClass = computed(() => clsx('ml-1 inline-flex shrink-0 items-center', currentLabelPosition.value === 'top' && 'h-[1lh] self-start'))
 const contentClass = computed(() => clsx(formItemContent({ labelPosition: currentLabelPosition.value, size: currentSize.value }), !props.label && currentLabelPosition.value !== 'top' && (shouldReserveLabelSpace.value ? 'col-start-2' : 'col-span-full')))
 const messageClass = computed(() => formItemMessage({ status: shownValidateState.value }))
 
@@ -274,7 +275,7 @@ defineExpose({
     <slot name="label" :label="label">
       <label v-if="label" :id="labelId" :for="contentId" :class="labelClass">
         <span class="min-w-0 whitespace-normal break-words text-inherit">{{ label }}</span>
-        <span v-if="info || $slots.info" class="ml-1 inline-flex shrink-0">
+        <span v-if="info || $slots.info" :class="infoClass" data-ui-form-item-info-wrapper="true">
           <Tooltip :title="info" :trigger="['hover', 'focus']" :mouse-enter-delay="0">
             <span
               class="i-lucide:info size-3.5 cursor-help rounded-sm text-tertiary outline-none transition-colors hover:text-secondary focus-visible:text-secondary focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-1"

@@ -330,6 +330,24 @@ describe('Form', () => {
     wrapper.unmount()
   })
 
+  it('centers a top-label info icon within the first text line', () => {
+    const wrapper = mount(FormItem, {
+      props: {
+        label: '领取后延迟生效',
+        info: '领取后按配置时间生效',
+        labelPosition: 'top'
+      },
+      slots: {
+        default: '<input />'
+      }
+    })
+
+    const infoWrapper = wrapper.find('[data-ui-form-item-info-wrapper="true"]')
+    expect(infoWrapper.classes()).toContain('items-center')
+    expect(infoWrapper.classes()).toContain('h-[1lh]')
+    expect(infoWrapper.classes()).toContain('self-start')
+  })
+
   it('uses the info slot for complex tooltip content without requiring the info prop', async () => {
     const wrapper = mount(FormItem, {
       props: {

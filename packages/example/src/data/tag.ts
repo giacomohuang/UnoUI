@@ -1,8 +1,8 @@
 import type { ParamTableRow } from '@/components/ParamTable.vue'
 
 export const tagProps: ParamTableRow[] = [
-  { name: 'color', type: `'brand' | 'blue' | 'red' | 'green' | 'gray' | 'yellow' | 'orange'`, default: `'brand'`, desc: '标签色彩语义' },
-  { name: 'variant', type: `'light' | 'dark' | 'plain'`, default: `'light'`, desc: '标签视觉变体' },
+  { name: 'color', type: `'brand' | 'blue' | 'cyan' | 'teal' | 'green' | 'lime' | 'yellow' | 'orange' | 'red' | 'pink' | 'purple' | 'indigo' | 'gray'`, default: `'brand'`, desc: '标签色彩语义' },
+  { name: 'variant', type: `'soft' | 'light' | 'dark' | 'plain'`, default: `'light'`, desc: '标签视觉变体，soft 为无描边柔和底色' },
   { name: 'size', type: `'sm' | 'md' | 'lg'`, default: `'sm'`, desc: '尺寸' },
   { name: 'radius', type: `'none' | 'sm' | 'md' | 'lg' | 'round'`, default: `'md'`, desc: '圆角尺寸' },
   { name: 'closable', type: 'boolean', default: 'false', desc: '是否可关闭' },
@@ -26,13 +26,21 @@ import { Tag } from '@unoui/vue/tag'
   <!-- 颜色 -->
   <Tag color="brand">品牌</Tag>
   <Tag color="blue">信息</Tag>
+  <Tag color="cyan">青色</Tag>
+  <Tag color="teal">青绿</Tag>
   <Tag color="red">危险</Tag>
   <Tag color="green">成功</Tag>
+  <Tag color="lime">青柠</Tag>
   <Tag color="yellow">警告</Tag>
   <Tag color="orange">橙色</Tag>
+  <Tag color="pink">粉色</Tag>
+  <Tag color="purple">紫色</Tag>
+  <Tag color="indigo">靛蓝</Tag>
   <Tag color="gray">灰色</Tag>
 
   <!-- 变体 -->
+  <Tag color="purple" variant="soft" radius="round">集团</Tag>
+  <Tag color="blue" variant="soft" radius="round">园区</Tag>
   <Tag color="brand" variant="dark">深色</Tag>
   <Tag color="brand" variant="light">浅色</Tag>
   <Tag color="brand" variant="plain">描边</Tag>

@@ -2,15 +2,22 @@
   <section id="showcase-tag" class="scroll-mt-6 rounded-lg border border-medium bg-primary">
     <div class="border-b border-medium px-4 py-3">
       <h2 class="text-base font-bold text-primary">Tag</h2>
-      <p class="mt-1 text-xs text-tertiary">展示颜色、效果、尺寸和圆角，效果参考 Element Plus Tag 的 dark、light、plain。</p>
+      <p class="mt-1 text-xs text-tertiary">展示完整色谱、视觉变体、尺寸和圆角。</p>
+    </div>
+    <div class="flex flex-wrap items-center gap-3 border-b border-medium px-4 py-3">
+      <Tag color="purple" variant="soft" size="md" radius="round">集团</Tag>
+      <Tag color="blue" variant="soft" size="md" radius="round">园区</Tag>
+      <Tag color="green" variant="soft" size="md" radius="round">已启用</Tag>
+      <Tag color="orange" variant="soft" size="md" radius="round">待处理</Tag>
+      <Tag color="red" variant="soft" size="md" radius="round">异常</Tag>
     </div>
     <div class="overflow-x-auto p-4">
-      <div class="min-w-[940px] overflow-hidden rounded-md border border-medium">
-        <div class="grid grid-cols-[132px_repeat(7,minmax(110px,1fr))] bg-secondary text-xs font-bold uppercase text-tertiary">
+      <div class="overflow-hidden rounded-md border border-medium" :style="{ minWidth: tagGridMinWidth }">
+        <div class="grid bg-secondary text-xs font-bold uppercase text-tertiary" :style="{ gridTemplateColumns: tagGridColumns }">
           <div class="border-r border-medium px-3 py-2">variant / color</div>
           <div v-for="color in tagColors" :key="`tag-head-${color}`" class="border-r border-medium px-3 py-2 last:border-r-0">{{ color }}</div>
         </div>
-        <div v-for="variant in tagVariants" :key="`tag-row-${variant}`" class="grid grid-cols-[132px_repeat(7,minmax(110px,1fr))] border-t border-medium">
+        <div v-for="variant in tagVariants" :key="`tag-row-${variant}`" class="grid border-t border-medium" :style="{ gridTemplateColumns: tagGridColumns }">
           <div class="flex items-center border-r border-medium bg-secondary/60 px-3 py-3 text-sm font-bold text-secondary">{{ variant }}</div>
           <div v-for="color in tagColors" :key="`tag-${variant}-${color}`" class="flex min-h-14 items-center border-r border-medium px-3 py-3 last:border-r-0">
             <Tag :variant="variant" :color="color" size="md" radius="md">{{ color }}</Tag>
@@ -80,8 +87,10 @@ type TagSize = NonNullable<TagProps['size']>
 type TagRadius = NonNullable<TagProps['radius']>
 
 const tagApiTab = ref('props')
-const tagColors: TagColor[] = ['brand', 'blue', 'red', 'green', 'gray', 'yellow', 'orange']
-const tagVariants: TagVariant[] = ['light', 'dark', 'plain']
+const tagColors: TagColor[] = ['brand', 'blue', 'cyan', 'teal', 'green', 'lime', 'yellow', 'orange', 'red', 'pink', 'purple', 'indigo', 'gray']
+const tagVariants: TagVariant[] = ['soft', 'light', 'dark', 'plain']
 const tagSizes: TagSize[] = ['sm', 'md', 'lg']
 const tagRadii: TagRadius[] = ['none', 'sm', 'md', 'lg', 'round']
+const tagGridColumns = `132px repeat(${tagColors.length}, minmax(100px, 1fr))`
+const tagGridMinWidth = `${132 + tagColors.length * 100}px`
 </script>
