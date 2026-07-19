@@ -4,10 +4,9 @@ import { clsx } from 'clsx'
 import { cloneVNode, computed, defineComponent, getCurrentInstance, inject, nextTick, onBeforeUnmount, onMounted, ref, shallowRef, toRaw, useAttrs, useSlots, watch } from 'vue'
 import type { CSSProperties, VNode } from 'vue'
 
+import { formContextKey, formItem, formItemContent, formItemLabel, formItemMessage, normalizeFormProp, validateFormValue, type FormItemContext, type FormItemRule, type FormLabelPosition, type FormProp, type FormSize, type FormValidateStatus, type FormValidateTrigger } from '.'
 import { getUiExposeAttrs } from '../attrs'
 import { Tooltip } from '../tooltip'
-
-import { formContextKey, formItem, formItemContent, formItemLabel, formItemMessage, normalizeFormProp, validateFormValue, type FormItemContext, type FormItemRule, type FormLabelPosition, type FormProp, type FormSize, type FormValidateStatus, type FormValidateTrigger } from '.'
 
 defineOptions({
   inheritAttrs: false
@@ -88,7 +87,7 @@ const hasOwnReserveLabelSpace = computed(() => {
   return !!vnodeProps && ('reserveLabelSpace' in vnodeProps || 'reserve-label-space' in vnodeProps)
 })
 const currentReserveLabelSpace = computed(() => (hasOwnReserveLabelSpace.value ? props.reserveLabelSpace : (form?.reserveLabelSpace.value ?? true)))
-const shouldReserveLabelSpace = computed(() => !props.label && currentLabelPosition.value !== 'top' && currentReserveLabelSpace.value)
+const shouldReserveLabelSpace = computed(() => !props.label && currentReserveLabelSpace.value && (currentLabelPosition.value !== 'top' || (form?.inline.value ?? false)))
 const shownValidateState = computed(() => props.validateStatus || (props.error ? 'error' : validateState.value))
 const shownValidateMessage = computed(() => props.error || validateMessage.value)
 const labelId = computed(() => (props.label ? `ui-form-item-${normalizeFormProp(props.prop) ?? Math.random().toString(36).slice(2)}-label` : undefined))
@@ -118,6 +117,7 @@ const labelClass = computed(() =>
   })
 )
 const infoClass = computed(() => clsx('ml-1 inline-flex shrink-0 items-center', currentLabelPosition.value === 'top' && 'h-[1lh] self-start'))
+const emptyLabelClass = computed(() => currentLabelPosition.value === 'top' && 'h-[1lh] shrink-0')
 const contentClass = computed(() => clsx(formItemContent({ labelPosition: currentLabelPosition.value, size: currentSize.value }), !props.label && currentLabelPosition.value !== 'top' && (shouldReserveLabelSpace.value ? 'col-start-2' : 'col-span-full')))
 const messageClass = computed(() => formItemMessage({ status: shownValidateState.value }))
 
@@ -209,11 +209,13 @@ const FormItemControl = defineComponent({
   name: 'UnoUIFormItemControl',
   setup() {
     return () =>
-      slots.default?.({
-        validate,
-        validateState: shownValidateState.value,
-        validateMessage: shownValidateMessage.value
-      })?.map(cloneControlVNode)
+      slots
+        .default?.({
+          validate,
+          validateState: shownValidateState.value,
+          validateMessage: shownValidateMessage.value
+        })
+        ?.map(cloneControlVNode)
   }
 })
 
@@ -290,7 +292,7 @@ defineExpose({
           </Tooltip>
         </span>
       </label>
-      <div v-else-if="shouldReserveLabelSpace" aria-hidden="true"></div>
+      <div v-else-if="shouldReserveLabelSpace" :class="emptyLabelClass" aria-hidden="true"></div>
     </slot>
 
     <div :id="contentId" :class="contentClass" :aria-labelledby="labelId">

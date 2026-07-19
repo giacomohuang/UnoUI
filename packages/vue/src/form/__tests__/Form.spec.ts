@@ -280,6 +280,30 @@ describe('Form', () => {
     expect(wrapper.find('[data-test="override-action"] > :last-child').classes()).toContain('col-span-full')
   })
 
+  it('aligns unlabeled actions with controls in inline top-label forms', () => {
+    const wrapper = mount(
+      defineComponent({
+        components: { Form, FormItem, Button, Input },
+        template: `
+          <Form inline label-position="top">
+            <FormItem label="关键词"><Input /></FormItem>
+            <FormItem data-test="aligned-action"><Button>查询</Button></FormItem>
+            <FormItem :reserve-label-space="false" data-test="unaligned-action"><Button>重置</Button></FormItem>
+          </Form>
+          <Form label-position="top">
+            <FormItem data-test="block-action"><Button>提交</Button></FormItem>
+          </Form>
+        `
+      })
+    )
+
+    const alignedAction = wrapper.find('[data-test="aligned-action"]')
+    expect(alignedAction.classes()).toContain('flex-col')
+    expect(alignedAction.find('[aria-hidden="true"]').classes()).toContain('h-[1lh]')
+    expect(wrapper.find('[data-test="unaligned-action"] > [aria-hidden="true"]').exists()).toBe(false)
+    expect(wrapper.find('[data-test="block-action"] > [aria-hidden="true"]').exists()).toBe(false)
+  })
+
   it('wraps long labels instead of truncating them', () => {
     const wrapper = mount(
       defineComponent({
