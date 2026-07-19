@@ -1,11 +1,12 @@
 # Data Display
 
-Use this file for `Table`, `Pagination`, `Skeleton`, `Badge`, `BadgeRibbon`, `QRCode`, and `MillerColumns`.
+Use this file for `Table`, `Pagination`, `Progress`, `Skeleton`, `Badge`, `BadgeRibbon`, `QRCode`, and `MillerColumns`.
 
 ## Contents
 
 - Table
 - Pagination
+- Progress
 - Skeleton
 - Badge
 - BadgeRibbon
@@ -112,6 +113,40 @@ Events:
 Slots:
 
 - None
+
+Expose:
+
+- None
+
+## Progress
+
+```vue
+<Progress :percent="68" status="active" />
+<Progress type="circle" :percent="75" />
+<Progress type="dashboard" :percent="72" />
+```
+
+Props:
+
+- `percent`: number, clamped to `0..100`
+- `type`: `line | circle | dashboard`
+- `status`: `normal | active | success | exception`; defaults to `success` at 100%
+- `showInfo`, `format`
+- `strokeColor`: CSS color, step color array, or `{ from, to, direction? }` gradient
+- `railColor`, `strokeLinecap`, `strokeWidth`
+- `size`: `sm | md | lg | xl | xxl`
+- `success`: `{ percent, strokeColor? }`
+- `steps`: line step count
+- `gapDegree`, `gapPlacement`: dashboard gap geometry
+- semantic `classNames`, `styles`
+
+Events:
+
+- None
+
+Slots:
+
+- `info="{ percent, status, successPercent }"`
 
 Expose:
 

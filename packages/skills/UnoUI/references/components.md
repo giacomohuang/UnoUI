@@ -12,7 +12,7 @@ Use this file as the first stop for component work. Load only the reference file
 | `Checkbox`, `CheckboxGroup`, `Radio`, `RadioGroup`, `Switch`, `Select`                         | `selection.md`         |
 | `DatePicker`, `RangePicker`, `TimePicker`, `TimeRangePicker`, `Slider`, `ColorPicker`          | `date-numeric.md`      |
 | `Form`, `FormItem`, validation rules/exposes                                                   | `form.md`              |
-| `Table`, `Pagination`, `Skeleton`, `Badge`, `BadgeRibbon`, `QRCode`, `MillerColumns`           | `data-display.md`      |
+| `Table`, `Pagination`, `Progress`, `Skeleton`, `Badge`, `BadgeRibbon`, `QRCode`, `MillerColumns` | `data-display.md`      |
 | `Alert`, `message`, `MessageContainer`, `Modal`, `Drawer`, `Tooltip`, `Popconfirm`, `Dropdown` | `feedback-overlays.md` |
 | `Tabs`, `TabPane`, `Rate`                                                                      | `navigation-rating.md` |
 
@@ -48,6 +48,7 @@ Use this file as the first stop for component work. Load only the reference file
 | `Modal`                                          | `@unoui/vue/modal`         | `feedback-overlays.md` |
 | `Pagination`                                     | `@unoui/vue/pagination`    | `data-display.md`      |
 | `Popconfirm`                                     | `@unoui/vue/popconfirm`    | `feedback-overlays.md` |
+| `Progress`                                       | `@unoui/vue/progress`      | `data-display.md`      |
 | `QRCode`                                         | `@unoui/vue/qrcode`        | `data-display.md`      |
 | `Radio`, `RadioGroup`                            | `@unoui/vue/radio`         | `selection.md`         |
 | `Rate`                                           | `@unoui/vue/rate`          | `navigation-rating.md` |

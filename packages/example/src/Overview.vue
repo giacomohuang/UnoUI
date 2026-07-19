@@ -268,6 +268,7 @@ const componentGroups = [
       { label: "Table", path: "/ui/table" },
       { label: "Badge", path: "/ui/badge" },
       { label: "Tag", path: "/ui/tag" },
+      { label: "Progress", path: "/ui/progress" },
       { label: "QRCode", path: "/ui/qrcode" },
       { label: "Skeleton", path: "/ui/skeleton" },
       { label: "MillerColumns", path: "/ui/millercolumns" },

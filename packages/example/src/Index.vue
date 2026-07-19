@@ -119,6 +119,7 @@ const showcaseIndex: ShowcaseNavItem[] = [
   { slug: 'modal', label: 'Modal 弹窗', path: '/ui/modal', component: defineAsyncComponent(() => import('./Modal.vue')) },
   { slug: 'select', label: 'Select 选择器', path: '/ui/select', component: defineAsyncComponent(() => import('./Select.vue')) },
   { slug: 'pagination', label: 'Pagination 分页', path: '/ui/pagination', component: defineAsyncComponent(() => import('./Pagination.vue')) },
+  { slug: 'progress', label: 'Progress 进度条', path: '/ui/progress', component: defineAsyncComponent(() => import('./Progress.vue')) },
   { slug: 'drawer', label: 'Drawer 抽屉', path: '/ui/drawer', component: defineAsyncComponent(() => import('./Drawer.vue')) },
   { slug: 'message', label: 'Message 消息提示', path: '/ui/message', component: defineAsyncComponent(() => import('./Message.vue')) },
   { slug: 'tooltip', label: 'Tooltip 文字提示', path: '/ui/tooltip', component: defineAsyncComponent(() => import('./Tooltip.vue')) },
@@ -137,7 +138,7 @@ const showcaseGroups: ShowcaseNavGroup[] = [
   { title: '基础输入', icon: 'i-lucide:text-cursor-input', items: pickShowcaseItems(['input', 'input-otp', 'select', 'datepicker', 'timepicker', 'colorpicker', 'form', 'checkbox', 'radio', 'switch', 'slider', 'rate']) },
   { title: '操作导航', icon: 'i-lucide:mouse-pointer-click', items: pickShowcaseItems(['button', 'dropdown', 'tab', 'pagination']) },
   { title: '反馈浮层', icon: 'i-lucide:message-square-warning', items: pickShowcaseItems(['alert', 'message', 'tooltip', 'popconfirm', 'modal', 'drawer']) },
-  { title: '数据展示', icon: 'i-lucide:table-2', items: pickShowcaseItems(['badge', 'tag', 'qrcode', 'skeleton', 'millercolumns', 'table']) }
+  { title: '数据展示', icon: 'i-lucide:table-2', items: pickShowcaseItems(['badge', 'tag', 'progress', 'qrcode', 'skeleton', 'millercolumns', 'table']) }
 ]
 
 const overviewPage = showcaseIndex[0]

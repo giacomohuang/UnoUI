@@ -107,7 +107,7 @@ import { Select } from '@unoui/vue/select'
 | Form                  | `Form`, `FormItem`, `Input`, `Autocomplete`, `InputTag`, `InputI18n`, `InputOtp`              |
 | Selection             | `Checkbox`, `Radio`, `Switch`, `Select`                                                       |
 | Date and numeric      | `DatePicker`, `RangePicker`, `TimePicker`, `TimeRangePicker`, `Slider`, `ColorPicker`, `Rate` |
-| Data display          | `Table`, `Pagination`, `Skeleton`, `QRCode`, `MillerColumns`                                  |
+| Data display          | `Table`, `Pagination`, `Progress`, `Skeleton`, `QRCode`, `MillerColumns`                      |
 | Feedback and overlays | `Alert`, `message`, `Modal`, `Drawer`, `Tooltip`, `Popconfirm`, `Dropdown`                    |
 | Navigation            | `Tabs`, `TabPane`                                                                             |
 

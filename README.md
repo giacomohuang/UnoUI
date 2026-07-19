@@ -107,7 +107,7 @@ import { Select } from '@unoui/vue/select'
 | 表单       | `Form`, `FormItem`, `Input`, `Autocomplete`, `InputTag`, `InputI18n`, `InputOtp`              |
 | 选择       | `Checkbox`, `Radio`, `Switch`, `Select`                                                       |
 | 日期和数值 | `DatePicker`, `RangePicker`, `TimePicker`, `TimeRangePicker`, `Slider`, `ColorPicker`, `Rate` |
-| 数据展示   | `Table`, `Pagination`, `Skeleton`, `QRCode`, `MillerColumns`                                  |
+| 数据展示   | `Table`, `Pagination`, `Progress`, `Skeleton`, `QRCode`, `MillerColumns`                      |
 | 反馈和浮层 | `Alert`, `message`, `Modal`, `Drawer`, `Tooltip`, `Popconfirm`, `Dropdown`                    |
 | 导航       | `Tabs`, `TabPane`                                                                             |
 
