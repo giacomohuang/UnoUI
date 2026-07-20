@@ -58,7 +58,7 @@
 </template>
 
 <script setup lang="ts">
-import { Skeleton } from '@unoui/vue/skeleton'
+import { Skeleton } from '@mcistudio/unoui-vue/skeleton'
 
 import CodeBlock from '@/components/CodeBlock.vue'
 import ParamTable from '@/components/ParamTable.vue'

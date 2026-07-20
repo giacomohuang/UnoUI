@@ -37,8 +37,8 @@ export const millerColumnsSlots: ParamTableRow[] = [
 
 export const millerColumnsCodeExample = `<script setup lang="ts">
 import { ref } from 'vue'
-import { MillerColumns, type MillerColumnsId } from '@unoui/vue/millercolumns'
-import { Tag } from '@unoui/vue/tag'
+import { MillerColumns, type MillerColumnsId } from '@mcistudio/unoui-vue/millercolumns'
+import { Tag } from '@mcistudio/unoui-vue/tag'
 
 interface ResourceNode extends Record<string, unknown> {
   id: number

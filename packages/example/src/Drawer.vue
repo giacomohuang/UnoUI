@@ -110,11 +110,11 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-import { Button } from '@unoui/vue/button'
-import { Drawer, type DrawerDirection } from '@unoui/vue/drawer'
-import { Input } from '@unoui/vue/input'
-import { Select, type SelectOption } from '@unoui/vue/select'
-import { Tabs, TabPane } from '@unoui/vue/tab'
+import { Button } from '@mcistudio/unoui-vue/button'
+import { Drawer, type DrawerDirection } from '@mcistudio/unoui-vue/drawer'
+import { Input } from '@mcistudio/unoui-vue/input'
+import { Select, type SelectOption } from '@mcistudio/unoui-vue/select'
+import { Tabs, TabPane } from '@mcistudio/unoui-vue/tab'
 import { propsColumns, emitsColumns, slotsColumns } from '@/data/shared'
 import { drawerProps, drawerEmits, drawerSlots, drawerCodeExample } from '@/data/drawer'
 import ParamTable from '@/components/ParamTable.vue'

@@ -76,8 +76,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-import { InputOtp } from '@unoui/vue/inputOtp'
-import { Tabs, TabPane } from '@unoui/vue/tab'
+import { InputOtp } from '@mcistudio/unoui-vue/inputOtp'
+import { Tabs, TabPane } from '@mcistudio/unoui-vue/tab'
 import { propsColumns, emitsColumns, exposedColumns } from '@/data/shared'
 import { inputOtpCodeExample, inputOtpEmits, inputOtpExposes, inputOtpProps } from '@/data/inputOtp'
 import CodeBlock from '@/components/CodeBlock.vue'

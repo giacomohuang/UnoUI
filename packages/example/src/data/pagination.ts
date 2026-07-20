@@ -30,7 +30,7 @@ export const paginationEmits: ParamTableRow[] = [
 
 export const paginationCodeExample = `<script setup>
 import { ref } from 'vue'
-import { Pagination } from '@unoui/vue/pagination'
+import { Pagination } from '@mcistudio/unoui-vue/pagination'
 
 const currentPage = ref(1)
 const pageSize = ref(20)

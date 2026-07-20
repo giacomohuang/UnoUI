@@ -21,7 +21,7 @@ export const buttonEmits: ParamTableRow[] = [
 ]
 
 export const buttonCodeExample = `<script setup>
-import { Button, ButtonGroup } from '@unoui/vue/button'
+import { Button, ButtonGroup } from '@mcistudio/unoui-vue/button'
 </script>
 
 <template>

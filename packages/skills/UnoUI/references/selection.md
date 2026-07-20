@@ -16,7 +16,7 @@ Use this file for `Checkbox`, `CheckboxGroup`, `Radio`, `RadioGroup`, `Switch`, 
 ```vue
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import { Checkbox, CheckboxGroup } from '@unoui/vue/checkbox'
+import { Checkbox, CheckboxGroup } from '@mcistudio/unoui-vue/checkbox'
 
 const checked = ref(true)
 const selected = ref(['apple'])
@@ -88,7 +88,7 @@ Expose:
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
-import { Radio, RadioGroup } from '@unoui/vue/radio'
+import { Radio, RadioGroup } from '@mcistudio/unoui-vue/radio'
 
 const kind = ref('a')
 </script>
@@ -154,7 +154,7 @@ Expose:
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
-import { Switch } from '@unoui/vue/switch'
+import { Switch } from '@mcistudio/unoui-vue/switch'
 
 const enabled = ref(true)
 const status = ref('active')
@@ -205,7 +205,7 @@ Expose:
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
-import { Select, type SelectOption } from '@unoui/vue/select'
+import { Select, type SelectOption } from '@mcistudio/unoui-vue/select'
 
 const value = ref('')
 const multiple = ref<string[]>([])

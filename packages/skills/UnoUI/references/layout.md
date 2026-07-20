@@ -5,7 +5,7 @@ Use this reference for resizable panel layouts built with `Splitter` and `Splitt
 ## Imports
 
 ```ts
-import { Splitter, SplitterPanel, type SplitterOrientation, type SplitterPanelCollapsible, type SplitterSize } from '@unoui/vue/splitter'
+import { Splitter, SplitterPanel, type SplitterOrientation, type SplitterPanelCollapsible, type SplitterSize } from '@mcistudio/unoui-vue/splitter'
 ```
 
 ## Splitter
@@ -24,7 +24,7 @@ import { Splitter, SplitterPanel, type SplitterOrientation, type SplitterPanelCo
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
-import { Splitter, SplitterPanel, type SplitterSize } from '@unoui/vue/splitter'
+import { Splitter, SplitterPanel, type SplitterSize } from '@mcistudio/unoui-vue/splitter'
 
 const sizes = ref<SplitterSize[]>(['35%', '65%'])
 </script>

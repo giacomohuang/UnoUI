@@ -114,8 +114,8 @@
 import type { Dayjs } from 'dayjs'
 import { ref } from 'vue'
 
-import { DatePicker, RangePicker } from '@unoui/vue/datepicker'
-import { Tabs, TabPane } from '@unoui/vue/tab'
+import { DatePicker, RangePicker } from '@mcistudio/unoui-vue/datepicker'
+import { Tabs, TabPane } from '@mcistudio/unoui-vue/tab'
 import { propsColumns, emitsColumns, exposedColumns } from '@/data/shared'
 import { datePickerCodeExample, datePickerEmits, datePickerExposes, datePickerProps, rangePickerEmits, rangePickerProps } from '@/data/datepicker'
 import CodeBlock from '@/components/CodeBlock.vue'

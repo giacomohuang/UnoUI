@@ -47,7 +47,7 @@ Expose:
 ## message
 
 ```ts
-import { message } from '@unoui/vue/message'
+import { message } from '@mcistudio/unoui-vue/message'
 
 message.success('Saved')
 message.error({ message: 'Failed', duration: 0, showClose: true })

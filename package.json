@@ -1,16 +1,17 @@
 {
   "name": "unoui",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "pnpm --filter @unoui/vue build",
+    "build": "pnpm --filter @mcistudio/unoui-vue build",
     "build:ex": "pnpm --filter @unoui/example build",
     "dev:ex": "pnpm --filter @unoui/example dev",
+    "release": "node scripts/release.mjs",
     "skills:check": "scripts/install-codex-skills.sh --check",
     "skills:install": "scripts/install-codex-skills.sh",
-    "test:unit": "pnpm --filter @unoui/vue test:unit",
-    "typecheck": "pnpm --filter @unoui/vue typecheck && pnpm --filter @unoui/example typecheck"
+    "test:unit": "pnpm --filter @mcistudio/unoui-vue test:unit",
+    "typecheck": "pnpm --filter @mcistudio/unoui-vue typecheck && pnpm --filter @unoui/example typecheck"
   },
   "engines": {
     "node": "^20.19.0 || >=22.12.0"

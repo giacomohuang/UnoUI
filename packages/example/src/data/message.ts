@@ -21,7 +21,7 @@ export const messageMethods: ParamTableRow[] = [
 ]
 
 export const messageCodeExample = `<script setup>
-import { message } from '@unoui/vue/message'
+import { message } from '@mcistudio/unoui-vue/message'
 
 function showMessages() {
   // 字符串快捷调用

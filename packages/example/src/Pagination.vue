@@ -44,8 +44,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-import { Pagination } from '@unoui/vue/pagination'
-import { Tabs, TabPane } from '@unoui/vue/tab'
+import { Pagination } from '@mcistudio/unoui-vue/pagination'
+import { Tabs, TabPane } from '@mcistudio/unoui-vue/tab'
 import { propsColumns, emitsColumns } from '@/data/shared'
 import { paginationProps, paginationEmits, paginationCodeExample } from '@/data/pagination'
 import ParamTable from '@/components/ParamTable.vue'

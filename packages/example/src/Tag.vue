@@ -74,8 +74,8 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { Tag, type TagProps } from '@unoui/vue/tag'
-import { Tabs, TabPane } from '@unoui/vue/tab'
+import { Tag, type TagProps } from '@mcistudio/unoui-vue/tag'
+import { Tabs, TabPane } from '@mcistudio/unoui-vue/tab'
 import { propsColumns, emitsColumns, slotsColumns } from '@/data/shared'
 import { tagProps, tagEmits, tagSlots, tagCodeExample } from '@/data/tag'
 import ParamTable from '@/components/ParamTable.vue'

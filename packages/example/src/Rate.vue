@@ -121,9 +121,9 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-import { Button } from '@unoui/vue/button'
-import { Rate, type RateSize } from '@unoui/vue/rate'
-import { Tabs, TabPane } from '@unoui/vue/tab'
+import { Button } from '@mcistudio/unoui-vue/button'
+import { Rate, type RateSize } from '@mcistudio/unoui-vue/rate'
+import { Tabs, TabPane } from '@mcistudio/unoui-vue/tab'
 import { rateCodeExample, rateEmits, rateExposes, rateProps, rateSlots } from '@/data/rate'
 import { emitsColumns, exposedColumns, propsColumns, slotsColumns } from '@/data/shared'
 import CodeBlock from '@/components/CodeBlock.vue'

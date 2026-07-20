@@ -35,8 +35,8 @@ export const badgeRibbonSlots: ParamTableRow[] = [
 ]
 
 export const badgeCodeExample = `<script setup lang="ts">
-import { Badge, BadgeRibbon } from '@unoui/vue/badge'
-import { Button } from '@unoui/vue/button'
+import { Badge, BadgeRibbon } from '@mcistudio/unoui-vue/badge'
+import { Button } from '@mcistudio/unoui-vue/button'
 </script>
 
 <template>

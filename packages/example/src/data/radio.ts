@@ -48,7 +48,7 @@ export const radioExposes: ParamTableRow[] = [
 
 export const radioCodeExample = `<script setup>
 import { ref } from 'vue'
-import { Radio, RadioGroup } from '@unoui/vue/radio'
+import { Radio, RadioGroup } from '@mcistudio/unoui-vue/radio'
 
 const selected = ref('apple')
 const view = ref('map')

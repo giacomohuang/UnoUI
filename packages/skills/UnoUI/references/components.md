@@ -19,7 +19,7 @@ Use this file as the first stop for component work. Load only the reference file
 
 ## Shared Conventions
 
-- Prefer component subpath imports: `@unoui/vue/button`, `@unoui/vue/input`, `@unoui/vue/table`.
+- Prefer component subpath imports: `@mcistudio/unoui-vue/button`, `@mcistudio/unoui-vue/input`, `@mcistudio/unoui-vue/table`.
 - Use kebab-case in templates: `prefix-icon`, `show-word-limit`, `v-model:current-page`, `@visible-change`.
 - For value-like component state, default to Vue's standard `v-model` contract: `modelValue` plus `update:modelValue`. Do not introduce `value` / `update:value` / `v-model:value` unless the current component source already defines that named model.
 - Most form controls support `size="sm|md|lg"`.
@@ -32,32 +32,32 @@ Use this file as the first stop for component work. Load only the reference file
 
 | Component                                        | Import                     | Details                |
 | ------------------------------------------------ | -------------------------- | ---------------------- |
-| `Splitter`, `SplitterPanel`                      | `@unoui/vue/splitter`      | `layout.md`            |
-| `Alert`                                          | `@unoui/vue/alert`         | `feedback-overlays.md` |
-| `Badge`, `BadgeRibbon`                           | `@unoui/vue/badge`         | `data-display.md`      |
-| `Button`, `ButtonGroup`                          | `@unoui/vue/button`        | `buttons-tags.md`      |
-| `Checkbox`, `CheckboxGroup`                      | `@unoui/vue/checkbox`      | `selection.md`         |
-| `ColorPicker`                                    | `@unoui/vue/colorpicker`   | `date-numeric.md`      |
-| `DatePicker`, `RangePicker`                      | `@unoui/vue/datepicker`    | `date-numeric.md`      |
-| `TimePicker`, `TimeRangePicker`                  | `@unoui/vue/timepicker`    | `date-numeric.md`      |
-| `Drawer`                                         | `@unoui/vue/drawer`        | `feedback-overlays.md` |
-| `Dropdown`                                       | `@unoui/vue/dropdown`      | `feedback-overlays.md` |
-| `Form`, `FormItem`, `createFormRule`             | `@unoui/vue/form`          | `form.md`              |
-| `Input`, `Autocomplete`, `InputTag`, `InputI18n` | `@unoui/vue/input`         | `inputs.md`            |
-| `InputOtp`                                       | `@unoui/vue/inputOtp`      | `inputs.md`            |
-| `message`, `Message`, `MessageContainer`         | `@unoui/vue/message`       | `feedback-overlays.md` |
-| `MillerColumns`                                  | `@unoui/vue/millercolumns` | `data-display.md`      |
-| `Modal`                                          | `@unoui/vue/modal`         | `feedback-overlays.md` |
-| `Pagination`                                     | `@unoui/vue/pagination`    | `data-display.md`      |
-| `Popconfirm`                                     | `@unoui/vue/popconfirm`    | `feedback-overlays.md` |
-| `Progress`                                       | `@unoui/vue/progress`      | `data-display.md`      |
-| `QRCode`                                         | `@unoui/vue/qrcode`        | `data-display.md`      |
-| `Radio`, `RadioGroup`                            | `@unoui/vue/radio`         | `selection.md`         |
-| `Rate`                                           | `@unoui/vue/rate`          | `navigation-rating.md` |
-| `Skeleton`                                       | `@unoui/vue/skeleton`      | `data-display.md`      |
-| `Slider`                                         | `@unoui/vue/slider`        | `date-numeric.md`      |
-| `Switch`                                         | `@unoui/vue/switch`        | `selection.md`         |
-| `Tabs`, `TabPane`                                | `@unoui/vue/tab`           | `navigation-rating.md` |
-| `Table`, `TableColumn` types                     | `@unoui/vue/table`         | `data-display.md`      |
-| `Tag`                                            | `@unoui/vue/tag`           | `buttons-tags.md`      |
-| `Tooltip`                                        | `@unoui/vue/tooltip`       | `feedback-overlays.md` |
+| `Splitter`, `SplitterPanel`                      | `@mcistudio/unoui-vue/splitter`      | `layout.md`            |
+| `Alert`                                          | `@mcistudio/unoui-vue/alert`         | `feedback-overlays.md` |
+| `Badge`, `BadgeRibbon`                           | `@mcistudio/unoui-vue/badge`         | `data-display.md`      |
+| `Button`, `ButtonGroup`                          | `@mcistudio/unoui-vue/button`        | `buttons-tags.md`      |
+| `Checkbox`, `CheckboxGroup`                      | `@mcistudio/unoui-vue/checkbox`      | `selection.md`         |
+| `ColorPicker`                                    | `@mcistudio/unoui-vue/colorpicker`   | `date-numeric.md`      |
+| `DatePicker`, `RangePicker`                      | `@mcistudio/unoui-vue/datepicker`    | `date-numeric.md`      |
+| `TimePicker`, `TimeRangePicker`                  | `@mcistudio/unoui-vue/timepicker`    | `date-numeric.md`      |
+| `Drawer`                                         | `@mcistudio/unoui-vue/drawer`        | `feedback-overlays.md` |
+| `Dropdown`                                       | `@mcistudio/unoui-vue/dropdown`      | `feedback-overlays.md` |
+| `Form`, `FormItem`, `createFormRule`             | `@mcistudio/unoui-vue/form`          | `form.md`              |
+| `Input`, `Autocomplete`, `InputTag`, `InputI18n` | `@mcistudio/unoui-vue/input`         | `inputs.md`            |
+| `InputOtp`                                       | `@mcistudio/unoui-vue/inputOtp`      | `inputs.md`            |
+| `message`, `Message`, `MessageContainer`         | `@mcistudio/unoui-vue/message`       | `feedback-overlays.md` |
+| `MillerColumns`                                  | `@mcistudio/unoui-vue/millercolumns` | `data-display.md`      |
+| `Modal`                                          | `@mcistudio/unoui-vue/modal`         | `feedback-overlays.md` |
+| `Pagination`                                     | `@mcistudio/unoui-vue/pagination`    | `data-display.md`      |
+| `Popconfirm`                                     | `@mcistudio/unoui-vue/popconfirm`    | `feedback-overlays.md` |
+| `Progress`                                       | `@mcistudio/unoui-vue/progress`      | `data-display.md`      |
+| `QRCode`                                         | `@mcistudio/unoui-vue/qrcode`        | `data-display.md`      |
+| `Radio`, `RadioGroup`                            | `@mcistudio/unoui-vue/radio`         | `selection.md`         |
+| `Rate`                                           | `@mcistudio/unoui-vue/rate`          | `navigation-rating.md` |
+| `Skeleton`                                       | `@mcistudio/unoui-vue/skeleton`      | `data-display.md`      |
+| `Slider`                                         | `@mcistudio/unoui-vue/slider`        | `date-numeric.md`      |
+| `Switch`                                         | `@mcistudio/unoui-vue/switch`        | `selection.md`         |
+| `Tabs`, `TabPane`                                | `@mcistudio/unoui-vue/tab`           | `navigation-rating.md` |
+| `Table`, `TableColumn` types                     | `@mcistudio/unoui-vue/table`         | `data-display.md`      |
+| `Tag`                                            | `@mcistudio/unoui-vue/tag`           | `buttons-tags.md`      |
+| `Tooltip`                                        | `@mcistudio/unoui-vue/tooltip`       | `feedback-overlays.md` |

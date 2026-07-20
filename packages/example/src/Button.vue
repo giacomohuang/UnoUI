@@ -88,8 +88,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-import { Button, ButtonGroup, type ButtonProps } from '@unoui/vue/button'
-import { Tabs, TabPane } from '@unoui/vue/tab'
+import { Button, ButtonGroup, type ButtonProps } from '@mcistudio/unoui-vue/button'
+import { Tabs, TabPane } from '@mcistudio/unoui-vue/tab'
 import { propsColumns, emitsColumns, slotsColumns } from '@/data/shared'
 import { buttonProps, buttonEmits, buttonSlots, buttonCodeExample } from '@/data/button'
 import ParamTable from '@/components/ParamTable.vue'

@@ -32,8 +32,8 @@ export const tooltipSlots: ParamTableRow[] = [
 
 export const tooltipCodeExample = `<script setup lang="ts">
 import { ref } from 'vue'
-import { Button } from '@unoui/vue/button'
-import { Tooltip } from '@unoui/vue/tooltip'
+import { Button } from '@mcistudio/unoui-vue/button'
+import { Tooltip } from '@mcistudio/unoui-vue/tooltip'
 
 const open = ref(false)
 </script>

@@ -119,8 +119,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-import { Button, ButtonGroup } from '@unoui/vue/button'
-import { TabPane, Tabs, type TabPosition, type TabsType, type TabValue } from '@unoui/vue/tab'
+import { Button, ButtonGroup } from '@mcistudio/unoui-vue/button'
+import { TabPane, Tabs, type TabPosition, type TabsType, type TabValue } from '@mcistudio/unoui-vue/tab'
 import CodeBlock from '@/components/CodeBlock.vue'
 import ParamTable from '@/components/ParamTable.vue'
 import { propsColumns, emitsColumns, slotsColumns } from '@/data/shared'

@@ -186,12 +186,12 @@
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 
-import { Badge } from "@unoui/vue/badge";
-import { Button, ButtonGroup } from "@unoui/vue/button";
-import { Input } from "@unoui/vue/input";
-import { Slider } from "@unoui/vue/slider";
-import { Switch } from "@unoui/vue/switch";
-import { Tag, type TagProps } from "@unoui/vue/tag";
+import { Badge } from "@mcistudio/unoui-vue/badge";
+import { Button, ButtonGroup } from "@mcistudio/unoui-vue/button";
+import { Input } from "@mcistudio/unoui-vue/input";
+import { Slider } from "@mcistudio/unoui-vue/slider";
+import { Switch } from "@mcistudio/unoui-vue/switch";
+import { Tag, type TagProps } from "@mcistudio/unoui-vue/tag";
 import UnoUILogo from "@/components/UnoUILogo.vue";
 
 interface PreviewRow {

@@ -127,8 +127,8 @@
 </template>
 
 <script setup lang="ts">
-import { Tabs, TabPane } from '@unoui/vue/tab'
-import { TimePicker, TimeRangePicker } from '@unoui/vue/timepicker'
+import { Tabs, TabPane } from '@mcistudio/unoui-vue/tab'
+import { TimePicker, TimeRangePicker } from '@mcistudio/unoui-vue/timepicker'
 import type { Dayjs } from 'dayjs'
 import { ref } from 'vue'
 

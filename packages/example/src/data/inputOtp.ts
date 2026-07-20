@@ -30,7 +30,7 @@ export const inputOtpExposes: ParamTableRow[] = [
 
 export const inputOtpCodeExample = `<script setup lang="ts">
 import { ref } from 'vue'
-import { InputOtp } from '@unoui/vue/inputOtp'
+import { InputOtp } from '@mcistudio/unoui-vue/inputOtp'
 
 const code = ref('')
 const status = ref('等待输入')

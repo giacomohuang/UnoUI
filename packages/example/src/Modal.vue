@@ -68,10 +68,10 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-import { Button } from '@unoui/vue/button'
-import { Modal } from '@unoui/vue/modal'
-import { Tag } from '@unoui/vue/tag'
-import { Tabs, TabPane } from '@unoui/vue/tab'
+import { Button } from '@mcistudio/unoui-vue/button'
+import { Modal } from '@mcistudio/unoui-vue/modal'
+import { Tag } from '@mcistudio/unoui-vue/tag'
+import { Tabs, TabPane } from '@mcistudio/unoui-vue/tab'
 import { propsColumns, emitsColumns, slotsColumns } from '@/data/shared'
 import { modalProps, modalEmits, modalSlots, modalCodeExample } from '@/data/modal'
 import ParamTable from '@/components/ParamTable.vue'

@@ -8,7 +8,7 @@ export default defineConfig({
   plugins: [vue(), UnoCSS()],
   resolve: {
     alias: {
-      '@unoui/vue': fileURLToPath(new URL('./src/index.ts', import.meta.url))
+      '@mcistudio/unoui-vue': fileURLToPath(new URL('./src/index.ts', import.meta.url))
     }
   },
   test: {

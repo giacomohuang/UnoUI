@@ -10,7 +10,7 @@ importers:
 
   packages/example:
     dependencies:
-      '@unoui/vue':
+      '@mcistudio/unoui-vue':
         specifier: workspace:*
         version: link:../vue
       dayjs:

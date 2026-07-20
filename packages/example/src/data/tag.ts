@@ -19,7 +19,7 @@ export const tagSlots: ParamTableRow[] = [
 ]
 
 export const tagCodeExample = `<script setup>
-import { Tag } from '@unoui/vue/tag'
+import { Tag } from '@mcistudio/unoui-vue/tag'
 </script>
 
 <template>

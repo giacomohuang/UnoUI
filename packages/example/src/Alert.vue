@@ -82,9 +82,9 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-import { Alert, type AlertType } from '@unoui/vue/alert'
-import { Button } from '@unoui/vue/button'
-import { Tabs, TabPane } from '@unoui/vue/tab'
+import { Alert, type AlertType } from '@mcistudio/unoui-vue/alert'
+import { Button } from '@mcistudio/unoui-vue/button'
+import { Tabs, TabPane } from '@mcistudio/unoui-vue/tab'
 import CodeBlock from '@/components/CodeBlock.vue'
 import ParamTable from '@/components/ParamTable.vue'
 import { alertCodeExample, alertEmits, alertProps, alertSlots } from '@/data/alert'

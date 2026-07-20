@@ -44,7 +44,7 @@ export const selectSlots: ParamTableRow[] = [
 
 export const selectCodeExample = `<script setup>
 import { ref } from 'vue'
-import { Select, type SelectOption } from '@unoui/vue/select'
+import { Select, type SelectOption } from '@mcistudio/unoui-vue/select'
 
 const value = ref('')
 const multiple = ref<string[]>([])

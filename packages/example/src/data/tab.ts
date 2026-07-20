@@ -41,7 +41,7 @@ export const tabPaneSlots: ParamTableRow[] = [
 
 export const tabsCodeExample = `<script setup>
 import { ref } from 'vue'
-import { Tabs, TabPane } from '@unoui/vue/tab'
+import { Tabs, TabPane } from '@mcistudio/unoui-vue/tab'
 
 const active = ref('tab1')
 </script>

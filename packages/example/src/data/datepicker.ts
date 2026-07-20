@@ -71,7 +71,7 @@ export const rangePickerEmits: ParamTableRow[] = [
 export const datePickerCodeExample = `<script setup lang="ts">
 import { ref } from 'vue'
 import dayjs from 'dayjs'
-import { DatePicker, RangePicker } from '@unoui/vue/datepicker'
+import { DatePicker, RangePicker } from '@mcistudio/unoui-vue/datepicker'
 
 const date = ref('2026-06-24')
 const datetime = ref('2026-06-24 10:30:00')

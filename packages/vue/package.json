@@ -1,53 +1,73 @@
 {
-  "name": "@unoui/vue",
-  "version": "0.1.0",
-  "private": true,
-  "type": "module",
-  "description": "UnoCSS based Vue 3 UI primitives extracted from vmap admin.",
-  "sideEffects": [
-    "**/*.css",
-    "**/*.vue"
+  "name": "@mcistudio/unoui-vue",
+  "version": "1.0.0",
+  "description": "Vue 3 admin UI components powered by UnoCSS.",
+  "keywords": [
+    "components",
+    "ui",
+    "unocss",
+    "vue",
+    "vue3"
   ],
+  "homepage": "https://github.com/giacomohuang/UnoUI#readme",
+  "bugs": {
+    "url": "https://github.com/giacomohuang/UnoUI/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/giacomohuang/UnoUI.git",
+    "directory": "packages/vue"
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "type": "module",
+  "sideEffects": [
+    "./dist/style.css"
+  ],
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "exports": {
     ".": {
-      "types": "./src/index.ts",
-      "import": "./src/index.ts"
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
     },
-    "./style.css": "./src/style.css",
+    "./style.css": "./dist/style.css",
     "./attrs": {
-      "types": "./src/attrs.ts",
-      "import": "./src/attrs.ts"
+      "types": "./dist/attrs.d.ts",
+      "import": "./dist/attrs.js"
     },
     "./config": {
-      "types": "./src/config.ts",
-      "import": "./src/config.ts"
+      "types": "./dist/config.d.ts",
+      "import": "./dist/config.js"
     },
     "./uno": {
-      "types": "./src/uno.ts",
-      "import": "./src/uno.ts"
+      "types": "./dist/uno.d.ts",
+      "import": "./dist/uno.js"
     },
     "./colorpicker/color": {
-      "types": "./src/colorpicker/color.ts",
-      "import": "./src/colorpicker/color.ts"
+      "types": "./dist/colorpicker/color.d.ts",
+      "import": "./dist/colorpicker/color.js"
     },
     "./table/types": {
-      "types": "./src/table/types.ts",
-      "import": "./src/table/types.ts"
+      "types": "./dist/table/types.d.ts",
+      "import": "./dist/table/types.js"
     },
     "./*": {
-      "types": "./src/*/index.ts",
-      "import": "./src/*/index.ts"
+      "types": "./dist/*/index.d.ts",
+      "import": "./dist/*/index.js"
     },
     "./package.json": "./package.json"
   },
-  "main": "./src/index.ts",
-  "module": "./src/index.ts",
-  "types": "./src/index.ts",
-  "files": [
-    "src"
-  ],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "scripts": {
-    "build": "vue-tsc -b && vite build",
+    "build": "vue-tsc -b && vite build && pnpm build:types",
+    "build:types": "vue-tsc -p tsconfig.build.json",
     "dev": "vite",
     "lint": "oxlint",
     "lint:fix": "oxlint --fix",
@@ -62,10 +82,6 @@
     "clsx": "^2.1.1",
     "dayjs": "^1.11.21",
     "simplebar-vue": "^2.4.2"
-  },
-  "peerDependencies": {
-    "vue": "^3.5.0",
-    "vue-i18n": "^11.0.0"
   },
   "devDependencies": {
     "@tsconfig/node22": "^22.0.5",
@@ -86,6 +102,12 @@
     "vue": "^3.5.39",
     "vue-i18n": "^11.4.6",
     "vue-tsc": "^3.3.5"
+  },
+  "peerDependencies": {
+    "@unocss/preset-icons": "^66.7.3",
+    "unocss": "^66.7.3",
+    "vue": "^3.5.0",
+    "vue-i18n": "^11.0.0"
   },
   "engines": {
     "node": "^20.19.0 || >=22.12.0"

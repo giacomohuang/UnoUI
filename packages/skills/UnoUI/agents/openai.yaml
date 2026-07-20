@@ -1,4 +1,4 @@
 interface:
   display_name: "UnoUI Vue"
-  short_description: "Use @unoui/vue components correctly"
-  default_prompt: "Use $use-unoui-vue to integrate @unoui/vue components in this Vue project."
+  short_description: "Use @mcistudio/unoui-vue components correctly"
+  default_prompt: "Use $use-unoui-vue to integrate @mcistudio/unoui-vue components in this Vue project."

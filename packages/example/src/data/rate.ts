@@ -31,7 +31,7 @@ export const rateExposes: ParamTableRow[] = [
 
 export const rateCodeExample = `<script setup lang="ts">
 import { ref } from 'vue'
-import { Rate } from '@unoui/vue/rate'
+import { Rate } from '@mcistudio/unoui-vue/rate'
 
 const score = ref(3)
 const halfScore = ref(2.5)

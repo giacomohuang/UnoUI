@@ -112,8 +112,8 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 
-import { Checkbox, CheckboxGroup } from "@unoui/vue/checkbox";
-import { Tabs, TabPane } from "@unoui/vue/tab";
+import { Checkbox, CheckboxGroup } from "@mcistudio/unoui-vue/checkbox";
+import { Tabs, TabPane } from "@mcistudio/unoui-vue/tab";
 import { propsColumns, emitsColumns, slotsColumns } from "@/data/shared";
 import { checkboxProps, checkboxGroupProps, checkboxEmits, checkboxGroupEmits, checkboxSlots, checkboxGroupSlots, checkboxCodeExample } from "@/data/checkbox";
 import ParamTable from "@/components/ParamTable.vue";

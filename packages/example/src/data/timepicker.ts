@@ -80,7 +80,7 @@ export const timeRangePickerExposes: ParamTableRow[] = [
 
 export const timePickerCodeExample = `<script setup lang="ts">
 import { ref } from 'vue'
-import { TimePicker, TimeRangePicker } from '@unoui/vue/timepicker'
+import { TimePicker, TimeRangePicker } from '@mcistudio/unoui-vue/timepicker'
 
 const time = ref('10:30:00')
 const minute = ref('09:15')

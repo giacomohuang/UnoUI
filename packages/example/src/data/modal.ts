@@ -23,8 +23,8 @@ export const modalSlots: ParamTableRow[] = [
 
 export const modalCodeExample = `<script setup>
 import { ref } from 'vue'
-import { Modal } from '@unoui/vue/modal'
-import { Button } from '@unoui/vue/button'
+import { Modal } from '@mcistudio/unoui-vue/modal'
+import { Button } from '@mcistudio/unoui-vue/button'
 
 const visible = ref(false)
 </script>

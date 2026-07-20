@@ -22,7 +22,7 @@ export const progressProps: ParamTableRow[] = [
 export const progressSlots: ParamTableRow[] = [{ name: 'info', scoped: '{ percent, status, successPercent }', desc: '自定义百分比或状态内容' }]
 
 export const progressCodeExample = `<script setup lang="ts">
-import { Progress } from '@unoui/vue/progress'
+import { Progress } from '@mcistudio/unoui-vue/progress'
 </script>
 
 <template>

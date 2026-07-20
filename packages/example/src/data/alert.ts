@@ -29,8 +29,8 @@ export const alertSlots: ParamTableRow[] = [
 ]
 
 export const alertCodeExample = `<script setup lang="ts">
-import { Alert } from '@unoui/vue/alert'
-import { Button } from '@unoui/vue/button'
+import { Alert } from '@mcistudio/unoui-vue/alert'
+import { Button } from '@mcistudio/unoui-vue/button'
 </script>
 
 <template>

@@ -44,7 +44,7 @@ export const splitterExposes: ParamTableRow[] = [
 
 export const splitterCodeExample = `<script setup lang="ts">
 import { ref } from 'vue'
-import { Splitter, SplitterPanel, type SplitterSize } from '@unoui/vue/splitter'
+import { Splitter, SplitterPanel, type SplitterSize } from '@mcistudio/unoui-vue/splitter'
 
 const sizes = ref<SplitterSize[]>(['35%', '65%'])
 const splitterRef = ref<InstanceType<typeof Splitter> | null>(null)

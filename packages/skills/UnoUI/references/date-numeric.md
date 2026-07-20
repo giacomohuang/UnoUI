@@ -16,7 +16,7 @@ Use this file for `DatePicker`, `RangePicker`, `TimePicker`, `TimeRangePicker`, 
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
-import { DatePicker } from '@unoui/vue/datepicker'
+import { DatePicker } from '@mcistudio/unoui-vue/datepicker'
 
 const date = ref('2026-06-24')
 const datetime = ref('2026-06-24 10:30:00')
@@ -66,7 +66,7 @@ Slots:
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
-import { RangePicker } from '@unoui/vue/datepicker'
+import { RangePicker } from '@mcistudio/unoui-vue/datepicker'
 
 const range = ref(['2026-06-01', '2026-06-24'])
 const datetimeRange = ref(['2026-06-01 08:30:00', '2026-06-24 18:00:00'])
@@ -116,7 +116,7 @@ Slots:
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
-import { TimePicker, TimeRangePicker } from '@unoui/vue/timepicker'
+import { TimePicker, TimeRangePicker } from '@mcistudio/unoui-vue/timepicker'
 
 const time = ref('10:30:00')
 const minute = ref('09:15')
@@ -169,7 +169,7 @@ Slots:
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
-import { TimeRangePicker } from '@unoui/vue/timepicker'
+import { TimeRangePicker } from '@mcistudio/unoui-vue/timepicker'
 
 const range = ref(['09:00:00', '18:00:00'])
 const overnight = ref(['22:30:00', '02:15:00'])
@@ -218,7 +218,7 @@ Slots:
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
-import { Slider } from '@unoui/vue/slider'
+import { Slider } from '@mcistudio/unoui-vue/slider'
 
 const value = ref(36)
 const range = ref([20, 60])
@@ -266,7 +266,7 @@ Slots:
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
-import { ColorPicker, type ColorPickerValue } from '@unoui/vue/colorpicker'
+import { ColorPicker, type ColorPickerValue } from '@mcistudio/unoui-vue/colorpicker'
 
 const color = ref<ColorPickerValue>({
   mode: 'solid',

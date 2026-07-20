@@ -74,7 +74,7 @@
 import { computed, defineAsyncComponent, nextTick, ref, watch, type Component } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
-import { Button, ButtonGroup } from '@unoui/vue/button'
+import { Button, ButtonGroup } from '@mcistudio/unoui-vue/button'
 import UnoUILogo from '@/components/UnoUILogo.vue'
 import { useThemeStore } from './theme'
 

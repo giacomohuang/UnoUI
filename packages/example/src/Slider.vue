@@ -194,9 +194,9 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-import { Button } from '@unoui/vue/button'
-import { Slider, type SliderMarks, type SliderSize } from '@unoui/vue/slider'
-import { Tabs, TabPane } from '@unoui/vue/tab'
+import { Button } from '@mcistudio/unoui-vue/button'
+import { Slider, type SliderMarks, type SliderSize } from '@mcistudio/unoui-vue/slider'
+import { Tabs, TabPane } from '@mcistudio/unoui-vue/tab'
 import { sliderCodeExample, sliderEmits, sliderExposes, sliderProps, sliderSlots } from '@/data/slider'
 import { emitsColumns, exposedColumns, propsColumns, slotsColumns } from '@/data/shared'
 import CodeBlock from '@/components/CodeBlock.vue'

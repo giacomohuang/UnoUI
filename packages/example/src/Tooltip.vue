@@ -122,9 +122,9 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-import { Button } from '@unoui/vue/button'
-import { Tabs, TabPane } from '@unoui/vue/tab'
-import { Tooltip, type TooltipPlacement } from '@unoui/vue/tooltip'
+import { Button } from '@mcistudio/unoui-vue/button'
+import { Tabs, TabPane } from '@mcistudio/unoui-vue/tab'
+import { Tooltip, type TooltipPlacement } from '@mcistudio/unoui-vue/tooltip'
 import CodeBlock from '@/components/CodeBlock.vue'
 import ParamTable from '@/components/ParamTable.vue'
 import { emitsColumns, propsColumns, slotsColumns } from '@/data/shared'

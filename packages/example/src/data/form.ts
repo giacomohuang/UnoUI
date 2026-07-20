@@ -95,9 +95,9 @@ export const formTypes: ParamTableRow[] = [
 
 export const formCodeExample = `<script setup>
 import { ref } from 'vue'
-import { Form, FormItem, createFormRule } from '@unoui/vue/form'
-import { Input } from '@unoui/vue/input'
-import { Button } from '@unoui/vue/button'
+import { Form, FormItem, createFormRule } from '@mcistudio/unoui-vue/form'
+import { Input } from '@mcistudio/unoui-vue/input'
+import { Button } from '@mcistudio/unoui-vue/button'
 
 interface FormModel {
   name: string

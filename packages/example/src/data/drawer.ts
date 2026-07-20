@@ -37,8 +37,8 @@ export const drawerSlots: ParamTableRow[] = [
 
 export const drawerCodeExample = `<script setup>
 import { ref } from 'vue'
-import { Drawer } from '@unoui/vue/drawer'
-import { Button } from '@unoui/vue/button'
+import { Drawer } from '@mcistudio/unoui-vue/drawer'
+import { Button } from '@mcistudio/unoui-vue/button'
 
 const visible = ref(false)
 const parentVisible = ref(false)

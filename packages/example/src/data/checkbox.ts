@@ -39,7 +39,7 @@ export const checkboxGroupSlots: ParamTableRow[] = [
 
 export const checkboxCodeExample = `<script setup>
 import { computed, ref } from 'vue'
-import { Checkbox, CheckboxGroup } from '@unoui/vue/checkbox'
+import { Checkbox, CheckboxGroup } from '@mcistudio/unoui-vue/checkbox'
 
 const checked = ref(true)
 const fruits = ref(['apple', 'orange'])

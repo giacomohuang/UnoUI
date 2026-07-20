@@ -115,9 +115,9 @@
 </template>
 
 <script setup lang="ts">
-import { Button } from '@unoui/vue/button'
-import { Progress, type ProgressGradient, type ProgressSize } from '@unoui/vue/progress'
-import { Tabs, TabPane } from '@unoui/vue/tab'
+import { Button } from '@mcistudio/unoui-vue/button'
+import { Progress, type ProgressGradient, type ProgressSize } from '@mcistudio/unoui-vue/progress'
+import { Tabs, TabPane } from '@mcistudio/unoui-vue/tab'
 import { ref } from 'vue'
 
 import CodeBlock from '@/components/CodeBlock.vue'

@@ -108,8 +108,8 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 
-import { MillerColumns, type MillerColumnsId, type MillerColumnsSelectEvent } from '@unoui/vue/millercolumns'
-import { TabPane, Tabs } from '@unoui/vue/tab'
+import { MillerColumns, type MillerColumnsId, type MillerColumnsSelectEvent } from '@mcistudio/unoui-vue/millercolumns'
+import { TabPane, Tabs } from '@mcistudio/unoui-vue/tab'
 import CodeBlock from '@/components/CodeBlock.vue'
 import ParamTable from '@/components/ParamTable.vue'
 import { millerColumnsCodeExample, millerColumnsEmits, millerColumnsProps, millerColumnsSlots } from '@/data/millercolumns'

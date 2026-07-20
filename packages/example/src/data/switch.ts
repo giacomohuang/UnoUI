@@ -40,7 +40,7 @@ export const switchSlots: ParamTableRow[] = [
 
 export const switchCodeExample = `<script setup>
 import { ref } from 'vue'
-import { Switch } from '@unoui/vue/switch'
+import { Switch } from '@mcistudio/unoui-vue/switch'
 
 const value = ref(true)
 const loading = ref(false)

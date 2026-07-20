@@ -15,8 +15,8 @@ Use this file for `Form`, `FormItem`, validation rules, and exposed validation m
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
-import { Form, FormItem, createFormRule } from '@unoui/vue/form'
-import { Input } from '@unoui/vue/input'
+import { Form, FormItem, createFormRule } from '@mcistudio/unoui-vue/form'
+import { Input } from '@mcistudio/unoui-vue/input'
 
 const formRef = ref<InstanceType<typeof Form>>()
 const model = ref({ email: '' })
@@ -164,10 +164,10 @@ type FormValidateStatus = '' | 'validating' | 'success' | 'error'
 
 ## Rule Helpers
 
-Import rule helpers from `@unoui/vue/form`:
+Import rule helpers from `@mcistudio/unoui-vue/form`:
 
 ```ts
-import { createFormRule, type FormRules } from '@unoui/vue/form'
+import { createFormRule, type FormRules } from '@mcistudio/unoui-vue/form'
 ```
 
 Use `createFormRule(preset, rule)` for built-in validator patterns such as `email`; inspect `packages/vue/src/form/index.ts` when a preset list is needed.

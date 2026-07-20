@@ -15,7 +15,7 @@ export const colorPickerEmits: ParamTableRow[] = [
 
 export const colorPickerCodeExample = `<script setup lang="ts">
 import { ref } from 'vue'
-import { ColorPicker, type ColorPickerValue } from '@unoui/vue/colorpicker'
+import { ColorPicker, type ColorPickerValue } from '@mcistudio/unoui-vue/colorpicker'
 
 const solid = ref<ColorPickerValue>({
   mode: 'solid',

@@ -1,6 +1,6 @@
 ---
 name: use-unoui-vue
-description: Use when integrating or modifying @unoui/vue components in Vue 3 projects, including installing UnoUI, configuring UnoCSS with presetUnoUI, importing component styles, choosing the correct component subpath imports, wiring v-model/events/slots/exposed methods, and replacing local UI code with UnoUI primitives.
+description: Use when integrating or modifying @mcistudio/unoui-vue components in Vue 3 projects, including installing UnoUI, configuring UnoCSS with presetUnoUI, importing component styles, choosing the correct component subpath imports, wiring v-model/events/slots/exposed methods, and replacing local UI code with UnoUI primitives.
 ---
 
 # Use UnoUI Vue
@@ -10,18 +10,18 @@ description: Use when integrating or modifying @unoui/vue components in Vue 3 pr
 1. Inspect the target project before editing:
    - Confirm it uses Vue 3.
    - Check package manager and existing UnoCSS/Vite setup.
-   - Search for existing `@unoui/vue`, `presetUnoUI`, `style.css`, and local UI wrappers.
+   - Search for existing `@mcistudio/unoui-vue`, `presetUnoUI`, `style.css`, and local UI wrappers.
 
 2. Add runtime integration:
-   - Install/use `@unoui/vue` plus Vue peer dependencies already present in the app.
-   - Import `@unoui/vue/style.css` once in the app entry or global stylesheet.
-   - Configure UnoCSS with `presetUnoUI()` from `@unoui/vue/uno`.
+   - Install/use `@mcistudio/unoui-vue` plus Vue peer dependencies already present in the app.
+   - Import `@mcistudio/unoui-vue/style.css` once in the app entry or global stylesheet.
+   - Configure UnoCSS with `presetUnoUI()` from `@mcistudio/unoui-vue/uno`.
    - Ensure UnoCSS content scanning includes the app source and, in monorepos/local workspace use, the UnoUI package source.
 
 3. Use component subpath imports for clarity:
-   - Prefer `import { Button } from '@unoui/vue/button'` and similar subpaths.
-   - Use root import `@unoui/vue` only when a file intentionally groups many components.
-   - Import public types from the matching subpath, for example `TableColumn` from `@unoui/vue/table`.
+   - Prefer `import { Button } from '@mcistudio/unoui-vue/button'` and similar subpaths.
+   - Use root import `@mcistudio/unoui-vue` only when a file intentionally groups many components.
+   - Import public types from the matching subpath, for example `TableColumn` from `@mcistudio/unoui-vue/table`.
 
 4. Implement with the real API:
    - Prefer Vue's default model contract for value-like component state: use `v-model` in templates and implement/expect `modelValue` plus `update:modelValue` in components.

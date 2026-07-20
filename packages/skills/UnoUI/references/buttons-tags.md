@@ -6,7 +6,7 @@ Use this file for `Button`, `ButtonGroup`, and `Tag`.
 
 ```vue
 <script setup lang="ts">
-import { Button, ButtonGroup } from '@unoui/vue/button'
+import { Button, ButtonGroup } from '@mcistudio/unoui-vue/button'
 </script>
 
 <template>
@@ -48,7 +48,7 @@ Expose:
 
 ```vue
 <script setup lang="ts">
-import { Button, ButtonGroup } from '@unoui/vue/button'
+import { Button, ButtonGroup } from '@mcistudio/unoui-vue/button'
 </script>
 
 <template>
@@ -80,7 +80,7 @@ Expose:
 
 ```vue
 <script setup lang="ts">
-import { Tag } from '@unoui/vue/tag'
+import { Tag } from '@mcistudio/unoui-vue/tag'
 </script>
 
 <template>

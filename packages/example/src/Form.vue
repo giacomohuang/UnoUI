@@ -247,18 +247,18 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 
-import { Button } from "@unoui/vue/button";
-import { ColorPicker, type ColorPickerValue } from "@unoui/vue/colorpicker";
-import { DatePicker, RangePicker } from "@unoui/vue/datepicker";
-import { Form, FormItem, formValidatorPatterns, type FormRules } from "@unoui/vue/form";
-import { Autocomplete, Input, InputTag } from "@unoui/vue/input";
-import { InputOtp } from "@unoui/vue/inputOtp";
-import { Radio, RadioGroup } from "@unoui/vue/radio";
-import { Rate } from "@unoui/vue/rate";
-import { Select, type SelectOption } from "@unoui/vue/select";
-import { Switch } from "@unoui/vue/switch";
-import { Tabs, TabPane } from "@unoui/vue/tab";
-import { Tag } from "@unoui/vue/tag";
+import { Button } from "@mcistudio/unoui-vue/button";
+import { ColorPicker, type ColorPickerValue } from "@mcistudio/unoui-vue/colorpicker";
+import { DatePicker, RangePicker } from "@mcistudio/unoui-vue/datepicker";
+import { Form, FormItem, formValidatorPatterns, type FormRules } from "@mcistudio/unoui-vue/form";
+import { Autocomplete, Input, InputTag } from "@mcistudio/unoui-vue/input";
+import { InputOtp } from "@mcistudio/unoui-vue/inputOtp";
+import { Radio, RadioGroup } from "@mcistudio/unoui-vue/radio";
+import { Rate } from "@mcistudio/unoui-vue/rate";
+import { Select, type SelectOption } from "@mcistudio/unoui-vue/select";
+import { Switch } from "@mcistudio/unoui-vue/switch";
+import { Tabs, TabPane } from "@mcistudio/unoui-vue/tab";
+import { Tag } from "@mcistudio/unoui-vue/tag";
 import CodeBlock from "@/components/CodeBlock.vue";
 import ParamTable from "@/components/ParamTable.vue";
 import {

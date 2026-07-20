@@ -112,8 +112,8 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 
-import { ColorPicker, type ColorPickerSize, type ColorPickerValue } from '@unoui/vue/colorpicker'
-import { Tabs, TabPane } from '@unoui/vue/tab'
+import { ColorPicker, type ColorPickerSize, type ColorPickerValue } from '@mcistudio/unoui-vue/colorpicker'
+import { Tabs, TabPane } from '@mcistudio/unoui-vue/tab'
 import CodeBlock from '@/components/CodeBlock.vue'
 import ParamTable from '@/components/ParamTable.vue'
 import { colorPickerCodeExample, colorPickerEmits, colorPickerProps } from '@/data/colorpicker'

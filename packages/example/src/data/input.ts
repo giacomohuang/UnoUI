@@ -132,7 +132,7 @@ export const inputI18nProps: ParamTableRow[] = [
 
 export const inputCodeExample = `<script setup>
 import { ref } from 'vue'
-import { Autocomplete, Input, InputTag, InputI18n } from '@unoui/vue/input'
+import { Autocomplete, Input, InputTag, InputI18n } from '@mcistudio/unoui-vue/input'
 
 const text = ref('')
 const password = ref('')

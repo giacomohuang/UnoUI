@@ -43,8 +43,8 @@ export const popconfirmSlots: ParamTableRow[] = [
 
 export const popconfirmCodeExample = `<script setup lang="ts">
 import { ref } from 'vue'
-import { Button } from '@unoui/vue/button'
-import { Popconfirm } from '@unoui/vue/popconfirm'
+import { Button } from '@mcistudio/unoui-vue/button'
+import { Popconfirm } from '@mcistudio/unoui-vue/popconfirm'
 
 const open = ref(false)
 </script>

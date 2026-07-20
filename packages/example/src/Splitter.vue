@@ -149,9 +149,9 @@
 </template>
 
 <script setup lang="ts">
-import { Button } from '@unoui/vue/button'
-import { Splitter, SplitterPanel, type SplitterSize } from '@unoui/vue/splitter'
-import { TabPane, Tabs } from '@unoui/vue/tab'
+import { Button } from '@mcistudio/unoui-vue/button'
+import { Splitter, SplitterPanel, type SplitterSize } from '@mcistudio/unoui-vue/splitter'
+import { TabPane, Tabs } from '@mcistudio/unoui-vue/tab'
 import { ref } from 'vue'
 
 import CodeBlock from '@/components/CodeBlock.vue'

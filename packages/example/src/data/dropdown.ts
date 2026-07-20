@@ -35,8 +35,8 @@ export const dropdownSlots: ParamTableRow[] = [
 
 export const dropdownCodeExample = `<script setup>
 import { ref } from 'vue'
-import { Dropdown } from '@unoui/vue/dropdown'
-import { Button } from '@unoui/vue/button'
+import { Dropdown } from '@mcistudio/unoui-vue/dropdown'
+import { Button } from '@mcistudio/unoui-vue/button'
 
 const items = [
   { label: '新建项目', value: 'create' },

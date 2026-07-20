@@ -15,7 +15,7 @@ Use this file for `Input`, `Autocomplete`, `InputTag`, `InputI18n`, and `InputOt
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
-import { Input } from '@unoui/vue/input'
+import { Input } from '@mcistudio/unoui-vue/input'
 
 const text = ref('')
 const amount = ref(0)
@@ -65,7 +65,7 @@ Expose:
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
-import { Autocomplete, type AutocompleteSuggestion } from '@unoui/vue/input'
+import { Autocomplete, type AutocompleteSuggestion } from '@mcistudio/unoui-vue/input'
 
 const point = ref('')
 const options: AutocompleteSuggestion[] = [{ value: 'Main entrance' }]
@@ -106,7 +106,7 @@ Expose:
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
-import { InputTag } from '@unoui/vue/input'
+import { InputTag } from '@mcistudio/unoui-vue/input'
 
 const tags = ref<string[]>([])
 </script>
@@ -163,7 +163,7 @@ Expose:
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
-import { InputI18n } from '@unoui/vue/input'
+import { InputI18n } from '@mcistudio/unoui-vue/input'
 
 const nameI18n = ref<Record<string, string>>({})
 </script>
@@ -187,7 +187,7 @@ Props:
 - `autocomplete`: default `new-password`
 - `modalZIndex`
 
-Configure app-wide languages, locale, RTL languages, and translation adapter with `configureUnoUI()` from `@unoui/vue/config`; see `integration.md`.
+Configure app-wide languages, locale, RTL languages, and translation adapter with `configureUnoUI()` from `@mcistudio/unoui-vue/config`; see `integration.md`.
 
 Events:
 
@@ -211,7 +211,7 @@ Expose:
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
-import { InputOtp } from '@unoui/vue/inputOtp'
+import { InputOtp } from '@mcistudio/unoui-vue/inputOtp'
 
 const code = ref('')
 

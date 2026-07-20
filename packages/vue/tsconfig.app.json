@@ -9,13 +9,13 @@
     "incremental": true,
     "types": ["vite/client"],
     "paths": {
-      "@unoui/vue": ["./src/index.ts"],
-      "@unoui/vue/attrs": ["./src/attrs.ts"],
-      "@unoui/vue/config": ["./src/config.ts"],
-      "@unoui/vue/uno": ["./src/uno.ts"],
-      "@unoui/vue/colorpicker/color": ["./src/colorpicker/color.ts"],
-      "@unoui/vue/table/types": ["./src/table/types.ts"],
-      "@unoui/vue/*": ["./src/*/index.ts"]
+      "@mcistudio/unoui-vue": ["./src/index.ts"],
+      "@mcistudio/unoui-vue/attrs": ["./src/attrs.ts"],
+      "@mcistudio/unoui-vue/config": ["./src/config.ts"],
+      "@mcistudio/unoui-vue/uno": ["./src/uno.ts"],
+      "@mcistudio/unoui-vue/colorpicker/color": ["./src/colorpicker/color.ts"],
+      "@mcistudio/unoui-vue/table/types": ["./src/table/types.ts"],
+      "@mcistudio/unoui-vue/*": ["./src/*/index.ts"]
     },
     "strict": true,
     "noUnusedLocals": true,

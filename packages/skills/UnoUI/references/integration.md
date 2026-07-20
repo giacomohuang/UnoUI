@@ -1,6 +1,6 @@
 # UnoUI Vue Integration
 
-Use this reference when setting up `@unoui/vue` in a Vue 3 project or diagnosing missing styles, icons, theme tokens, or global language behavior.
+Use this reference when setting up `@mcistudio/unoui-vue` in a Vue 3 project or diagnosing missing styles, icons, theme tokens, or global language behavior.
 
 ## Contents
 
@@ -14,23 +14,23 @@ Use this reference when setting up `@unoui/vue` in a Vue 3 project or diagnosing
 
 ## Package Shape
 
-- Package name: `@unoui/vue`
+- Package name: `@mcistudio/unoui-vue`
 - Source package in this repository: `packages/vue`
-- Package currently declares `"private": true`; in other projects, verify whether it is available through the workspace, an internal registry, or a local path dependency before adding it.
-- Peer dependencies: `vue ^3.5.0`, `vue-i18n ^11.0.0`
+- Package visibility: public on npm
+- Peer dependencies: `vue ^3.5.0`, `vue-i18n ^11.0.0`, `unocss ^66.7.3`, `@unocss/preset-icons ^66.7.3`
 - Main exports:
-  - Root: `@unoui/vue`
-  - Styles: `@unoui/vue/style.css`
-  - UnoCSS preset: `@unoui/vue/uno`
-  - Global config: `@unoui/vue/config`
-  - Component subpaths: `@unoui/vue/button`, `@unoui/vue/input`, etc.
+  - Root: `@mcistudio/unoui-vue`
+  - Styles: `@mcistudio/unoui-vue/style.css`
+  - UnoCSS preset: `@mcistudio/unoui-vue/uno`
+  - Global config: `@mcistudio/unoui-vue/config`
+  - Component subpaths: `@mcistudio/unoui-vue/button`, `@mcistudio/unoui-vue/input`, etc.
 
 ## App Entry
 
 Import the base CSS exactly once:
 
 ```ts
-import '@unoui/vue/style.css'
+import '@mcistudio/unoui-vue/style.css'
 ```
 
 Place it in `main.ts`, `main.js`, or a single global stylesheet import. Do not import it repeatedly in leaf components.
@@ -41,25 +41,21 @@ Use `presetUnoUI()` so UnoUI semantic colors, icons, preflights, dark-mode selec
 
 ```ts
 import { defineConfig, transformerDirectives, transformerVariantGroup } from 'unocss'
-import { presetUnoUI } from '@unoui/vue/uno'
+import { presetUnoUI } from '@mcistudio/unoui-vue/uno'
 
 export default defineConfig({
   presets: [presetUnoUI()],
   transformers: [transformerDirectives(), transformerVariantGroup()],
   content: {
     pipeline: {
-      include: [
-        /\.(vue|svelte|[jt]sx|vine.ts|mdx?|astro|elm|php|phtml|marko|html)($|\?)/,
-        'src/**/*.{js,ts}',
-        'node_modules/@unoui/vue/src/**/*.{vue,js,ts}'
-      ],
+      include: [/\.(vue|svelte|[jt]sx|vine.ts|mdx?|astro|elm|php|phtml|marko|html)($|\?)/, 'src/**/*.{js,ts}', 'node_modules/@mcistudio/unoui-vue/dist/**/*.js'],
       exclude: ['uno.config.ts']
     }
   }
 })
 ```
 
-For a monorepo workspace where UnoUI is linked from source, replace the `node_modules` include with the actual relative path, for example `../UnoUI/packages/vue/src/**/*.{vue,js,ts}` or `../vue/src/**/*.{vue,js,ts}`.
+For a monorepo workspace where UnoUI is linked directly from source, replace the npm package `dist` include with the actual relative path, for example `../UnoUI/packages/vue/src/**/*.{vue,js,ts}` or `../vue/src/**/*.{vue,js,ts}`.
 
 ## Theme And Icons
 
@@ -73,7 +69,7 @@ For a monorepo workspace where UnoUI is linked from source, replace the `node_mo
 Use `configureUnoUI` when components need host app language, language options, RTL language keys, or translation service.
 
 ```ts
-import { configureUnoUI } from '@unoui/vue/config'
+import { configureUnoUI } from '@mcistudio/unoui-vue/config'
 
 configureUnoUI({
   locale: () => i18n.global.locale.value,
@@ -96,15 +92,15 @@ Defaults include many languages and `zh-CN` as the default locale. `InputI18n` u
 Prefer subpath imports because they make ownership and types clear:
 
 ```ts
-import { Button } from '@unoui/vue/button'
-import { Input, Autocomplete } from '@unoui/vue/input'
-import { Table, type TableColumn } from '@unoui/vue/table'
+import { Button } from '@mcistudio/unoui-vue/button'
+import { Input, Autocomplete } from '@mcistudio/unoui-vue/input'
+import { Table, type TableColumn } from '@mcistudio/unoui-vue/table'
 ```
 
 Use root imports only when a module intentionally collects many UnoUI components:
 
 ```ts
-import { Button, Input, Table } from '@unoui/vue'
+import { Button, Input, Table } from '@mcistudio/unoui-vue'
 ```
 
 Do not import `.vue` source files directly from package internals unless fixing UnoUI itself.
@@ -114,5 +110,5 @@ Do not import `.vue` source files directly from package internals unless fixing 
 - Typecheck target app after changes.
 - Run the app and inspect the page if styles, layout, overlay positioning, keyboard behavior, or theme switching are involved.
 - For missing classes, check UnoCSS content includes target files and UnoUI source.
-- For missing component CSS, check `@unoui/vue/style.css` is imported once.
+- For missing component CSS, check `@mcistudio/unoui-vue/style.css` is imported once.
 - For overlay controls (`Dropdown`, `Tooltip`, `Popconfirm`, `Select`, `DatePicker`), verify z-index and clipping in the actual page.

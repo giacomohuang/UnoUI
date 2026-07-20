@@ -16,7 +16,7 @@ export const skeletonProps: ParamTableRow[] = [
 ]
 
 export const skeletonCodeExample = `<script setup>
-import { Skeleton } from '@unoui/vue/skeleton'
+import { Skeleton } from '@mcistudio/unoui-vue/skeleton'
 </script>
 
 <template>

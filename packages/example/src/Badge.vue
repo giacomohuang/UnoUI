@@ -115,9 +115,9 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-import { Badge, BadgeRibbon, type BadgeStatus } from '@unoui/vue/badge'
-import { Button } from '@unoui/vue/button'
-import { Tabs, TabPane } from '@unoui/vue/tab'
+import { Badge, BadgeRibbon, type BadgeStatus } from '@mcistudio/unoui-vue/badge'
+import { Button } from '@mcistudio/unoui-vue/button'
+import { Tabs, TabPane } from '@mcistudio/unoui-vue/tab'
 import CodeBlock from '@/components/CodeBlock.vue'
 import ParamTable from '@/components/ParamTable.vue'
 import { badgeCodeExample, badgeProps, badgeRibbonProps, badgeRibbonSlots, badgeSlots } from '@/data/badge'

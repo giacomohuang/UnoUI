@@ -129,7 +129,7 @@ export const unoUIRules: Rule<UnoUITheme>[] = [
 ]
 
 export const presetUnoUI = definePreset(() => ({
-  name: '@unoui/vue',
+  name: '@mcistudio/unoui-vue',
   presets: [
     presetWind4({
       dark: {

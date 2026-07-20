@@ -61,8 +61,8 @@ export const tableSlots: ParamTableRow[] = [
 
 export const tableCodeExample = `<script setup lang="ts">
 import { ref } from 'vue'
-import { Table, type TableColumn } from '@unoui/vue/table'
-import { Tag } from '@unoui/vue/tag'
+import { Table, type TableColumn } from '@mcistudio/unoui-vue/table'
+import { Tag } from '@mcistudio/unoui-vue/tag'
 
 interface DataRow {
   id: number

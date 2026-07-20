@@ -39,7 +39,7 @@ export const sliderExposes: ParamTableRow[] = [
 
 export const sliderCodeExample = `<script setup lang="ts">
 import { ref } from 'vue'
-import { Slider } from '@unoui/vue/slider'
+import { Slider } from '@mcistudio/unoui-vue/slider'
 
 const value = ref(36)
 const rangeValue = ref([20, 60])

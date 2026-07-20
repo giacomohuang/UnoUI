@@ -98,8 +98,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-import { Switch, type SwitchProps } from '@unoui/vue/switch'
-import { Tabs, TabPane } from '@unoui/vue/tab'
+import { Switch, type SwitchProps } from '@mcistudio/unoui-vue/switch'
+import { Tabs, TabPane } from '@mcistudio/unoui-vue/tab'
 import { propsColumns, emitsColumns, slotsColumns } from '@/data/shared'
 import { switchProps, switchEmits, switchSlots, switchCodeExample } from '@/data/switch'
 import ParamTable from '@/components/ParamTable.vue'

@@ -231,10 +231,10 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-import { Button } from '@unoui/vue/button'
-import { Autocomplete, Input, InputI18n, InputTag } from '@unoui/vue/input'
-import { Tag } from '@unoui/vue/tag'
-import { Tabs, TabPane } from '@unoui/vue/tab'
+import { Button } from '@mcistudio/unoui-vue/button'
+import { Autocomplete, Input, InputI18n, InputTag } from '@mcistudio/unoui-vue/input'
+import { Tag } from '@mcistudio/unoui-vue/tag'
+import { Tabs, TabPane } from '@mcistudio/unoui-vue/tab'
 import { propsColumns, emitsColumns, slotsColumns } from '@/data/shared'
 import { inputProps, inputEmits, inputSlots, autocompleteProps, autocompleteEmits, autocompleteSlots, inputTagProps, inputI18nProps, inputCodeExample } from '@/data/input'
 import ParamTable from '@/components/ParamTable.vue'

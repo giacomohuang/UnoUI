@@ -144,9 +144,9 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-import { Button } from '@unoui/vue/button'
-import { Radio, RadioGroup } from '@unoui/vue/radio'
-import { Tabs, TabPane } from '@unoui/vue/tab'
+import { Button } from '@mcistudio/unoui-vue/button'
+import { Radio, RadioGroup } from '@mcistudio/unoui-vue/radio'
+import { Tabs, TabPane } from '@mcistudio/unoui-vue/tab'
 import { propsColumns, emitsColumns, slotsColumns, exposedColumns } from '@/data/shared'
 import { radioProps, radioGroupProps, radioEmits, radioGroupEmits, radioSlots, radioGroupSlots, radioExposes, radioCodeExample } from '@/data/radio'
 import ParamTable from '@/components/ParamTable.vue'

@@ -32,8 +32,8 @@ export const qrcodeExposes: ParamTableRow[] = [{ name: 'toDataURL', signature: `
 export const qrcodeCodeExample = `<script setup lang="ts">
 import { ref } from 'vue'
 
-import { Button } from '@unoui/vue/button'
-import { QRCode } from '@unoui/vue/qrcode'
+import { Button } from '@mcistudio/unoui-vue/button'
+import { QRCode } from '@mcistudio/unoui-vue/qrcode'
 
 const status = ref<'active' | 'expired'>('active')
 </script>

@@ -1,6 +1,6 @@
 import { defineConfig, transformerDirectives, transformerVariantGroup } from 'unocss'
 
-import { presetUnoUI } from '@unoui/vue/uno'
+import { presetUnoUI } from '@mcistudio/unoui-vue/uno'
 
 export default defineConfig({
   presets: [presetUnoUI()],

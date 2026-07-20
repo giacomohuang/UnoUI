@@ -13,7 +13,7 @@ Use this file for `Tabs`, `TabPane`, and `Rate`.
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
-import { Tabs, TabPane } from '@unoui/vue/tab'
+import { Tabs, TabPane } from '@mcistudio/unoui-vue/tab'
 
 const active = ref('a')
 </script>
@@ -90,7 +90,7 @@ Expose:
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
-import { Rate } from '@unoui/vue/rate'
+import { Rate } from '@mcistudio/unoui-vue/rate'
 
 const score = ref(3)
 </script>

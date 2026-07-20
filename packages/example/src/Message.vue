@@ -52,8 +52,8 @@
 </template>
 
 <script setup lang="ts">
-import { Button } from '@unoui/vue/button'
-import { message, type MessageType } from '@unoui/vue/message'
+import { Button } from '@mcistudio/unoui-vue/button'
+import { message, type MessageType } from '@mcistudio/unoui-vue/message'
 import { propsColumns } from '@/data/shared'
 import { messageOptions, messageMethods, messageCodeExample } from '@/data/message'
 import ParamTable from '@/components/ParamTable.vue'

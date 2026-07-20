@@ -86,9 +86,9 @@
 <script setup lang="ts">
 import { h, ref } from 'vue'
 
-import { Button } from '@unoui/vue/button'
-import { QRCode, type QRCodeStatusRender } from '@unoui/vue/qrcode'
-import { Tabs, TabPane } from '@unoui/vue/tab'
+import { Button } from '@mcistudio/unoui-vue/button'
+import { QRCode, type QRCodeStatusRender } from '@mcistudio/unoui-vue/qrcode'
+import { Tabs, TabPane } from '@mcistudio/unoui-vue/tab'
 import CodeBlock from '@/components/CodeBlock.vue'
 import ParamTable from '@/components/ParamTable.vue'
 import { qrcodeCodeExample, qrcodeEmits, qrcodeExposes, qrcodeProps, qrcodeSlots } from '@/data/qrcode'

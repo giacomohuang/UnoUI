@@ -121,10 +121,10 @@
 </template>
 
 <script setup lang="ts">
-import { Button } from '@unoui/vue/button'
-import { Dropdown } from '@unoui/vue/dropdown'
-import { Tabs, TabPane } from '@unoui/vue/tab'
-import { Tag } from '@unoui/vue/tag'
+import { Button } from '@mcistudio/unoui-vue/button'
+import { Dropdown } from '@mcistudio/unoui-vue/dropdown'
+import { Tabs, TabPane } from '@mcistudio/unoui-vue/tab'
+import { Tag } from '@mcistudio/unoui-vue/tag'
 import { ref } from 'vue'
 
 import CodeBlock from '@/components/CodeBlock.vue'

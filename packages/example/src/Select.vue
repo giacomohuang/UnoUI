@@ -87,9 +87,9 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-import { Select, type SelectOption } from '@unoui/vue/select'
-import { Tag } from '@unoui/vue/tag'
-import { Tabs, TabPane } from '@unoui/vue/tab'
+import { Select, type SelectOption } from '@mcistudio/unoui-vue/select'
+import { Tag } from '@mcistudio/unoui-vue/tag'
+import { Tabs, TabPane } from '@mcistudio/unoui-vue/tab'
 import { propsColumns, emitsColumns, slotsColumns } from '@/data/shared'
 import { selectProps, selectEmits, selectSlots, selectCodeExample } from '@/data/select'
 import ParamTable from '@/components/ParamTable.vue'

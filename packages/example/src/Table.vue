@@ -52,8 +52,8 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { Table, type TableColumn } from '@unoui/vue/table'
-import { Tabs, TabPane } from '@unoui/vue/tab'
+import { Table, type TableColumn } from '@mcistudio/unoui-vue/table'
+import { Tabs, TabPane } from '@mcistudio/unoui-vue/tab'
 import { propsColumns, emitsColumns, slotsColumns } from '@/data/shared'
 import { tableProps, tableEmits, tableSlots, tableColumnConfig, tableCodeExample } from '@/data/table'
 import ParamTable from '@/components/ParamTable.vue'

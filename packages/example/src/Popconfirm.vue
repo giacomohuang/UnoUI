@@ -105,9 +105,9 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
-import { Button } from '@unoui/vue/button'
-import { Popconfirm, type PopconfirmPlacement } from '@unoui/vue/popconfirm'
-import { Tabs, TabPane } from '@unoui/vue/tab'
+import { Button } from '@mcistudio/unoui-vue/button'
+import { Popconfirm, type PopconfirmPlacement } from '@mcistudio/unoui-vue/popconfirm'
+import { Tabs, TabPane } from '@mcistudio/unoui-vue/tab'
 import CodeBlock from '@/components/CodeBlock.vue'
 import ParamTable from '@/components/ParamTable.vue'
 import { popconfirmCodeExample, popconfirmEmits, popconfirmProps, popconfirmSlots } from '@/data/popconfirm'

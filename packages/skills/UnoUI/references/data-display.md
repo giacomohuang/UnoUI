@@ -17,7 +17,7 @@ Use this file for `Table`, `Pagination`, `Progress`, `Skeleton`, `Badge`, `Badge
 
 ```vue
 <script setup lang="ts">
-import { Table, type TableColumn } from '@unoui/vue/table'
+import { Table, type TableColumn } from '@mcistudio/unoui-vue/table'
 
 interface Row {
   id: number

@@ -20,7 +20,7 @@
 import hljs from 'highlight.js'
 import { computed, ref } from 'vue'
 
-import { Button } from '@unoui/vue/button'
+import { Button } from '@mcistudio/unoui-vue/button'
 
 const props = withDefaults(
   defineProps<{
