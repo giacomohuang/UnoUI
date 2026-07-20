@@ -5,6 +5,9 @@ allowBuilds:
   "@parcel/watcher": true
   vue-demi: true
 
+minimumReleaseAgeExclude:
+  - '@mcistudio/unoui-vue@1.0.0'
+
 onlyBuiltDependencies:
   - "@parcel/watcher"
   - vue-demi

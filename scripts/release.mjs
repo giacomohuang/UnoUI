@@ -9,6 +9,8 @@ import { createInterface } from 'node:readline/promises'
 const repositoryRoot = resolve(import.meta.dirname, '..')
 const packageDirectory = resolve(repositoryRoot, 'packages/vue')
 const packageManifestPath = resolve(packageDirectory, 'package.json')
+const exampleManifestPath = resolve(repositoryRoot, 'packages/example/package.json')
+const lockfilePath = resolve(repositoryRoot, 'pnpm-lock.yaml')
 const registry = 'https://registry.npmjs.org/'
 const semverPattern = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+[0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*)?$/
 
@@ -125,7 +127,8 @@ if (compareVersions(nextVersion, currentVersion) <= 0) {
 }
 
 const manifestPaths = packageManifestPaths()
-const originalManifests = new Map(manifestPaths.map((path) => [path, readFileSync(path, 'utf8')]))
+const versionedFiles = [...manifestPaths, lockfilePath]
+const originalFiles = new Map(versionedFiles.map((path) => [path, readFileSync(path, 'utf8')]))
 let published = false
 
 try {
@@ -141,6 +144,18 @@ try {
     manifest.version = nextVersion
     writeJson(path, manifest)
   }
+
+  const exampleManifest = readJson(exampleManifestPath)
+  if (!exampleManifest.dependencies?.[packageManifest.name]) {
+    throw new Error(`example 缺少 ${packageManifest.name} 依赖`)
+  }
+  const exampleDependencyVersion = `^${nextVersion}`
+  exampleManifest.dependencies[packageManifest.name] = exampleDependencyVersion
+  writeJson(exampleManifestPath, exampleManifest)
+  console.log(`同步 example 依赖: ${packageManifest.name}@${exampleDependencyVersion}`)
+
+  console.log('\n同步 pnpm lockfile...')
+  run('pnpm', ['install', '--lockfile-only'])
 
   console.log('\n运行单元测试...')
   run('pnpm', ['--filter', '@mcistudio/unoui-vue', 'test:unit', '--run'])
@@ -164,6 +179,6 @@ try {
   process.exitCode = 1
 } finally {
   if (!published) {
-    for (const [path, content] of originalManifests) writeFileSync(path, content)
+    for (const [path, content] of originalFiles) writeFileSync(path, content)
   }
 }

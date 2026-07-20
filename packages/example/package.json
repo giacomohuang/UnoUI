@@ -9,7 +9,7 @@
     "typecheck": "vue-tsc -b"
   },
   "dependencies": {
-    "@mcistudio/unoui-vue": "workspace:*",
+    "@mcistudio/unoui-vue": "^1.0.0",
     "dayjs": "^1.11.21",
     "highlight.js": "^11.11.1",
     "vue": "^3.5.39",

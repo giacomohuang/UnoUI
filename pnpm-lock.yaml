@@ -11,8 +11,8 @@ importers:
   packages/example:
     dependencies:
       '@mcistudio/unoui-vue':
-        specifier: workspace:*
-        version: link:../vue
+        specifier: ^1.0.0
+        version: 1.0.0(@unocss/preset-icons@66.7.3)(unocss@66.7.3(vite@8.1.0(@types/node@26.0.1)(jiti@2.7.0)(sass-embedded@1.100.0)(sass@1.100.0)(yaml@2.9.0)))(vue-i18n@11.4.6(vue@3.5.39(typescript@6.0.3)))(vue@3.5.39(typescript@6.0.3))
       dayjs:
         specifier: ^1.11.21
         version: 1.11.21
@@ -305,6 +305,15 @@ packages:
 
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
+
+  '@mcistudio/unoui-vue@1.0.0':
+    resolution: {integrity: sha512-u5OhzYQKdhg71mrL6KZZb3caMFopt2zmAz5yKpPpIFSD3pMVlH6hoy+ZtwItm7o/IjKLuJAssD+P5fV59Qob2A==}
+    engines: {node: ^20.19.0 || >=22.12.0}
+    peerDependencies:
+      '@unocss/preset-icons': ^66.7.3
+      unocss: ^66.7.3
+      vue: ^3.5.0
+      vue-i18n: ^11.0.0
 
   '@napi-rs/wasm-runtime@1.1.6':
     resolution: {integrity: sha512-ZLv/JdUfkvOy9eCnnBaGfiO+XimbjebAeO+MRQqD/B+FR1tnRN0tpKSJHRbE8sFfS6aqsXZ67TQjfwfsxULVbg==}
@@ -2341,6 +2350,20 @@ snapshots:
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
+
+  '@mcistudio/unoui-vue@1.0.0(@unocss/preset-icons@66.7.3)(unocss@66.7.3(vite@8.1.0(@types/node@26.0.1)(jiti@2.7.0)(sass-embedded@1.100.0)(sass@1.100.0)(yaml@2.9.0)))(vue-i18n@11.4.6(vue@3.5.39(typescript@6.0.3)))(vue@3.5.39(typescript@6.0.3))':
+    dependencies:
+      '@unocss/preset-icons': 66.7.3
+      async-validator: 4.2.5
+      class-variance-authority: 0.7.1
+      clsx: 2.1.1
+      dayjs: 1.11.21
+      simplebar-vue: 2.4.2(vue@3.5.39(typescript@6.0.3))
+      unocss: 66.7.3(vite@8.1.0(@types/node@26.0.1)(jiti@2.7.0)(sass-embedded@1.100.0)(sass@1.100.0)(yaml@2.9.0))
+      vue: 3.5.39(typescript@6.0.3)
+      vue-i18n: 11.4.6(vue@3.5.39(typescript@6.0.3))
+    transitivePeerDependencies:
+      - '@vue/composition-api'
 
   '@napi-rs/wasm-runtime@1.1.6(@emnapi/core@1.10.0)(@emnapi/runtime@1.10.0)':
     dependencies:
