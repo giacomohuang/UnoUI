@@ -518,9 +518,10 @@ function getSizes() {
 
 onMounted(() => {
   measureContainer()
-  window.addEventListener('pointermove', handlePointerMove)
-  window.addEventListener('pointerup', finishPointerDrag)
-  window.addEventListener('pointercancel', finishPointerDrag)
+  // Drawer 等浮层会阻止 pointer 事件冒泡，捕获阶段保证浮层内的拖拽仍能完成。
+  window.addEventListener('pointermove', handlePointerMove, { capture: true })
+  window.addEventListener('pointerup', finishPointerDrag, { capture: true })
+  window.addEventListener('pointercancel', finishPointerDrag, { capture: true })
   window.addEventListener('resize', measureContainer)
   if (typeof ResizeObserver !== 'undefined' && rootRef.value) {
     resizeObserver = new ResizeObserver(measureContainer)
@@ -529,9 +530,9 @@ onMounted(() => {
 })
 
 onBeforeUnmount(() => {
-  window.removeEventListener('pointermove', handlePointerMove)
-  window.removeEventListener('pointerup', finishPointerDrag)
-  window.removeEventListener('pointercancel', finishPointerDrag)
+  window.removeEventListener('pointermove', handlePointerMove, { capture: true })
+  window.removeEventListener('pointerup', finishPointerDrag, { capture: true })
+  window.removeEventListener('pointercancel', finishPointerDrag, { capture: true })
   window.removeEventListener('resize', measureContainer)
   resizeObserver?.disconnect()
   setDraggingDocumentState(false)

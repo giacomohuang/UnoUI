@@ -63,6 +63,37 @@ describe('Splitter', () => {
     expect(wrapper.emitted('resize-end')?.at(-1)).toEqual([[250, 250]])
   })
 
+  it('keeps dragging when an overlay ancestor stops pointer event bubbling', async () => {
+    const wrapper = mount(
+      {
+        components: { Splitter, SplitterPanel },
+        setup() {
+          const sizes = ref<SplitterSize[]>(['40%', '60%'])
+          return { sizes }
+        },
+        template: `
+          <div @pointermove.stop @pointerup.stop>
+            <Splitter v-model="sizes">
+              <SplitterPanel>First</SplitterPanel>
+              <SplitterPanel>Second</SplitterPanel>
+            </Splitter>
+          </div>
+        `
+      },
+      { attachTo: document.body }
+    )
+    const root = wrapper.find('[data-ui-splitter="true"]')
+    const dragger = wrapper.find('[role="separator"]')
+    mockSplitterRect(root.element)
+
+    await dispatchPointer(dragger.element, 'pointerdown', { button: 0, pointerId: 8, clientX: 200 })
+    await dispatchPointer(root.element, 'pointermove', { bubbles: true, pointerId: 8, clientX: 250 })
+    await dispatchPointer(root.element, 'pointerup', { bubbles: true, pointerId: 8, clientX: 250 })
+    await flushPromises()
+
+    expect(wrapper.vm.sizes).toEqual([250, 250])
+  })
+
   it('clamps drag updates to panel min and max sizes', async () => {
     const wrapper = mount(Splitter, {
       props: {
