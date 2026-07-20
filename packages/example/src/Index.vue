@@ -99,6 +99,7 @@ const contentScrollRef = ref<HTMLElement | null>(null)
 const showcaseIndex: ShowcaseNavItem[] = [
   { slug: 'overview', label: 'Overview 概览', path: '/ui', component: defineAsyncComponent(() => import('./Overview.vue')) },
   { slug: 'palette', label: 'Palette 配色', path: '/ui/palette', component: defineAsyncComponent(() => import('./Palette.vue')) },
+  { slug: 'splitter', label: 'Splitter 分隔面板', path: '/ui/splitter', component: defineAsyncComponent(() => import('./Splitter.vue')) },
   { slug: 'button', label: 'Button 按钮', path: '/ui/button', component: defineAsyncComponent(() => import('./Button.vue')) },
   { slug: 'input', label: 'Input 输入框', path: '/ui/input', component: defineAsyncComponent(() => import('./Input.vue')) },
   { slug: 'input-otp', label: 'InputOtp 验证码', path: '/ui/input-otp', component: defineAsyncComponent(() => import('./InputOtp.vue')) },
@@ -135,6 +136,7 @@ const pickShowcaseItems = (slugs: string[]) => slugs.map((slug) => componentPage
 
 const showcaseGroups: ShowcaseNavGroup[] = [
   { title: '概览', icon: 'i-lucide:home', items: pickShowcaseItems(['overview', 'palette']) },
+  { title: '布局', icon: 'i-lucide:panels-top-left', items: pickShowcaseItems(['splitter']) },
   { title: '基础输入', icon: 'i-lucide:text-cursor-input', items: pickShowcaseItems(['input', 'input-otp', 'select', 'datepicker', 'timepicker', 'colorpicker', 'form', 'checkbox', 'radio', 'switch', 'slider', 'rate']) },
   { title: '操作导航', icon: 'i-lucide:mouse-pointer-click', items: pickShowcaseItems(['button', 'dropdown', 'tab', 'pagination']) },
   { title: '反馈浮层', icon: 'i-lucide:message-square-warning', items: pickShowcaseItems(['alert', 'message', 'tooltip', 'popconfirm', 'modal', 'drawer']) },

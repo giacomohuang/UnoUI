@@ -103,6 +103,7 @@ import { Select } from '@unoui/vue/select'
 
 | Category              | Components                                                                                    |
 | --------------------- | --------------------------------------------------------------------------------------------- |
+| Layout                | `Splitter`, `SplitterPanel`                                                                   |
 | General               | `Button`, `ButtonGroup`, `Tag`, `Badge`, `BadgeRibbon`                                        |
 | Form                  | `Form`, `FormItem`, `Input`, `Autocomplete`, `InputTag`, `InputI18n`, `InputOtp`              |
 | Selection             | `Checkbox`, `Radio`, `Switch`, `Select`                                                       |

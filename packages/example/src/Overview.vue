@@ -208,7 +208,7 @@ const heroOnline = ref(true);
 const heroDensity = ref(68);
 
 const heroMetrics = [
-  { value: "27+", label: "组件页面" },
+  { value: "28+", label: "组件页面" },
   { value: "100%", label: "语义令牌驱动" },
   { value: "Vue 3", label: "组合式 API" },
 ];
@@ -232,6 +232,12 @@ const principleItems = [
 ];
 
 const componentGroups = [
+  {
+    title: "布局容器",
+    caption: "分区、调整、嵌套",
+    icon: "i-lucide:panels-top-left",
+    links: [{ label: "Splitter", path: "/ui/splitter" }],
+  },
   {
     title: "基础输入",
     caption: "录入、选择、校验",

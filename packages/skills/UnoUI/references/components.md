@@ -7,6 +7,7 @@ Use this file as the first stop for component work. Load only the reference file
 | Task or component                                                                              | Read                   |
 | ---------------------------------------------------------------------------------------------- | ---------------------- |
 | Setup, styles, UnoCSS preset, icons, theme, `configureUnoUI`                                   | `integration.md`       |
+| `Splitter`, `SplitterPanel`                                                                    | `layout.md`            |
 | `Button`, `ButtonGroup`, `Tag`                                                                 | `buttons-tags.md`      |
 | `Input`, `Autocomplete`, `InputTag`, `InputI18n`, `InputOtp`                                   | `inputs.md`            |
 | `Checkbox`, `CheckboxGroup`, `Radio`, `RadioGroup`, `Switch`, `Select`                         | `selection.md`         |
@@ -31,6 +32,7 @@ Use this file as the first stop for component work. Load only the reference file
 
 | Component                                        | Import                     | Details                |
 | ------------------------------------------------ | -------------------------- | ---------------------- |
+| `Splitter`, `SplitterPanel`                      | `@unoui/vue/splitter`      | `layout.md`            |
 | `Alert`                                          | `@unoui/vue/alert`         | `feedback-overlays.md` |
 | `Badge`, `BadgeRibbon`                           | `@unoui/vue/badge`         | `data-display.md`      |
 | `Button`, `ButtonGroup`                          | `@unoui/vue/button`        | `buttons-tags.md`      |
