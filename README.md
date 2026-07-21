@@ -35,6 +35,35 @@ UnoUI 提供表单、数据展示、选择控件和反馈浮层等常用管理�
 pnpm add @mcistudio/unoui-vue
 ```
 
+## AI 工具技能
+
+仓库提供了一份面向 AI 编程工具的 UnoUI 技能说明，来源于 `packages/skills/UnoUI`。运行安装脚本后，工具可以读取组件 API、集成方式和项目约定。
+
+```bash
+pnpm skills:install
+```
+
+在交互式终端中，脚本支持选择一个或多个工具，也可以输入 `all` 全选：
+
+| 工具           | 默认技能目录                |
+| -------------- | --------------------------- |
+| Codex          | `~/.codex/skills`           |
+| Claude Code    | `~/.claude/skills`          |
+| Cursor         | `~/.cursor/skills`          |
+| Gemini CLI     | `~/.gemini/skills`          |
+| GitHub Copilot | `~/.copilot/skills`         |
+| OpenCode       | `~/.config/opencode/skills` |
+
+在 CI 或脚本中，可以直接指定工具或全选：
+
+```bash
+scripts/install-skills.sh --tools codex,claude
+scripts/install-skills.sh --all
+scripts/install-skills.sh --check --all
+```
+
+未指定工具且没有交互终端时，脚本默认检查或安装 Codex 技能。各工具的目标目录可以通过对应的 `*_SKILLS_DIR` 环境变量覆盖。
+
 ## 快速开始
 
 ### 1. 配置应用入口

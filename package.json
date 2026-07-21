@@ -8,8 +8,8 @@
     "build:ex": "pnpm --filter @unoui/example build",
     "dev:ex": "pnpm --filter @unoui/example dev",
     "release": "node scripts/release.mjs",
-    "skills:check": "scripts/install-codex-skills.sh --check",
-    "skills:install": "scripts/install-codex-skills.sh",
+    "skills:check": "scripts/install-skills.sh --check",
+    "skills:install": "scripts/install-skills.sh",
     "test:unit": "pnpm --filter @mcistudio/unoui-vue test:unit",
     "typecheck": "pnpm --filter @mcistudio/unoui-vue typecheck && pnpm --filter @unoui/example typecheck"
   },

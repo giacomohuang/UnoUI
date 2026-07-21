@@ -35,6 +35,35 @@ UnoUI provides common admin components for forms, data display, selection, and f
 pnpm add @mcistudio/unoui-vue
 ```
 
+## AI Tool Skills
+
+The repository includes an UnoUI skill for AI coding tools under `packages/skills/UnoUI`. Install it so the tools can read the component APIs, integration guidance, and project conventions.
+
+```bash
+pnpm skills:install
+```
+
+In an interactive terminal, the script lets you choose one or more tools or enter `all`:
+
+| Tool           | Default skills directory    |
+| -------------- | --------------------------- |
+| Codex          | `~/.codex/skills`           |
+| Claude Code    | `~/.claude/skills`          |
+| Cursor         | `~/.cursor/skills`          |
+| Gemini CLI     | `~/.gemini/skills`          |
+| GitHub Copilot | `~/.copilot/skills`         |
+| OpenCode       | `~/.config/opencode/skills` |
+
+For CI or other non-interactive environments, specify the tools or select all:
+
+```bash
+scripts/install-skills.sh --tools codex,claude
+scripts/install-skills.sh --all
+scripts/install-skills.sh --check --all
+```
+
+When no tool is specified without an interactive terminal, the script defaults to Codex. Override any target directory with the corresponding `*_SKILLS_DIR` environment variable.
+
 ## Quick Start
 
 ### 1. Configure the application entry
@@ -62,15 +91,28 @@ createApp(App).mount('#app')
 Enable `presetUnoUI()` in `uno.config.ts` and include the class names from the compiled component package in UnoCSS scanning.
 
 ```ts
+import { readFileSync, readdirSync } from 'node:fs'
+import { createRequire } from 'node:module'
+import { dirname, resolve } from 'node:path'
+
 import { defineConfig, transformerDirectives, transformerVariantGroup } from 'unocss'
 import { presetUnoUI } from '@mcistudio/unoui-vue/uno'
+
+const require = createRequire(import.meta.url)
+const unoUIPackageDirectory = dirname(require.resolve('@mcistudio/unoui-vue/package.json'))
+const unoUIDistDirectory = resolve(unoUIPackageDirectory, 'dist')
+const unoUIContent = readdirSync(unoUIDistDirectory, { encoding: 'utf8', recursive: true })
+  .filter((file) => file.endsWith('.js'))
+  .map((file) => readFileSync(resolve(unoUIDistDirectory, file), 'utf8'))
+  .join('\n')
 
 export default defineConfig({
   presets: [presetUnoUI()],
   transformers: [transformerDirectives(), transformerVariantGroup()],
   content: {
+    inline: [unoUIContent],
     pipeline: {
-      include: [/\.(vue|svelte|[jt]sx|vine.ts|mdx?|astro|elm|php|phtml|marko|html)($|\?)/, 'src/**/*.{js,ts}', 'node_modules/@mcistudio/unoui-vue/dist/**/*.js'],
+      include: [/\.(vue|svelte|[jt]sx|vine.ts|mdx?|astro|elm|php|phtml|marko|html)($|\?)/, 'src/**/*.{js,ts}'],
       exclude: ['uno.config.ts']
     }
   }
