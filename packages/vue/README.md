@@ -53,15 +53,28 @@ createApp(App).mount('#app')
 Enable the UnoUI preset and scan the compiled package entries in `uno.config.ts`:
 
 ```ts
+import { readFileSync, readdirSync } from 'node:fs'
+import { createRequire } from 'node:module'
+import { dirname, resolve } from 'node:path'
+
 import { defineConfig, transformerDirectives, transformerVariantGroup } from 'unocss'
 import { presetUnoUI } from '@mcistudio/unoui-vue/uno'
+
+const require = createRequire(import.meta.url)
+const unoUIPackageDirectory = dirname(require.resolve('@mcistudio/unoui-vue/package.json'))
+const unoUIDistDirectory = resolve(unoUIPackageDirectory, 'dist')
+const unoUIContent = readdirSync(unoUIDistDirectory, { encoding: 'utf8', recursive: true })
+  .filter((file) => file.endsWith('.js'))
+  .map((file) => readFileSync(resolve(unoUIDistDirectory, file), 'utf8'))
+  .join('\n')
 
 export default defineConfig({
   presets: [presetUnoUI()],
   transformers: [transformerDirectives(), transformerVariantGroup()],
   content: {
+    inline: [unoUIContent],
     pipeline: {
-      include: ['src/**/*.{vue,js,ts}', 'node_modules/@mcistudio/unoui-vue/dist/**/*.js']
+      include: ['src/**/*.{vue,js,ts}']
     }
   }
 })

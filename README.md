@@ -62,15 +62,28 @@ createApp(App).mount('#app')
 在 `uno.config.ts` 中启用 `presetUnoUI()`，并让 UnoCSS 扫描组件库构建产物中的类名。
 
 ```ts
+import { readFileSync, readdirSync } from 'node:fs'
+import { createRequire } from 'node:module'
+import { dirname, resolve } from 'node:path'
+
 import { defineConfig, transformerDirectives, transformerVariantGroup } from 'unocss'
 import { presetUnoUI } from '@mcistudio/unoui-vue/uno'
+
+const require = createRequire(import.meta.url)
+const unoUIPackageDirectory = dirname(require.resolve('@mcistudio/unoui-vue/package.json'))
+const unoUIDistDirectory = resolve(unoUIPackageDirectory, 'dist')
+const unoUIContent = readdirSync(unoUIDistDirectory, { encoding: 'utf8', recursive: true })
+  .filter((file) => file.endsWith('.js'))
+  .map((file) => readFileSync(resolve(unoUIDistDirectory, file), 'utf8'))
+  .join('\n')
 
 export default defineConfig({
   presets: [presetUnoUI()],
   transformers: [transformerDirectives(), transformerVariantGroup()],
   content: {
+    inline: [unoUIContent],
     pipeline: {
-      include: [/\.(vue|svelte|[jt]sx|vine.ts|mdx?|astro|elm|php|phtml|marko|html)($|\?)/, 'src/**/*.{js,ts}', 'node_modules/@mcistudio/unoui-vue/dist/**/*.js'],
+      include: [/\.(vue|svelte|[jt]sx|vine.ts|mdx?|astro|elm|php|phtml|marko|html)($|\?)/, 'src/**/*.{js,ts}'],
       exclude: ['uno.config.ts']
     }
   }

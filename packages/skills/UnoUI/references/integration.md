@@ -40,22 +40,37 @@ Place it in `main.ts`, `main.js`, or a single global stylesheet import. Do not i
 Use `presetUnoUI()` so UnoUI semantic colors, icons, preflights, dark-mode selectors, and custom rules exist.
 
 ```ts
+import { readFileSync, readdirSync } from 'node:fs'
+import { createRequire } from 'node:module'
+import { dirname, resolve } from 'node:path'
+
 import { defineConfig, transformerDirectives, transformerVariantGroup } from 'unocss'
 import { presetUnoUI } from '@mcistudio/unoui-vue/uno'
+
+const require = createRequire(import.meta.url)
+const unoUIPackageDirectory = dirname(require.resolve('@mcistudio/unoui-vue/package.json'))
+const unoUIDistDirectory = resolve(unoUIPackageDirectory, 'dist')
+const unoUIContent = readdirSync(unoUIDistDirectory, { encoding: 'utf8', recursive: true })
+  .filter((file) => file.endsWith('.js'))
+  .map((file) => readFileSync(resolve(unoUIDistDirectory, file), 'utf8'))
+  .join('\n')
 
 export default defineConfig({
   presets: [presetUnoUI()],
   transformers: [transformerDirectives(), transformerVariantGroup()],
   content: {
+    inline: [unoUIContent],
     pipeline: {
-      include: [/\.(vue|svelte|[jt]sx|vine.ts|mdx?|astro|elm|php|phtml|marko|html)($|\?)/, 'src/**/*.{js,ts}', 'node_modules/@mcistudio/unoui-vue/dist/**/*.js'],
+      include: [/\.(vue|svelte|[jt]sx|vine.ts|mdx?|astro|elm|php|phtml|marko|html)($|\?)/, 'src/**/*.{js,ts}'],
       exclude: ['uno.config.ts']
     }
   }
 })
 ```
 
-For a monorepo workspace where UnoUI is linked directly from source, replace the npm package `dist` include with the actual relative path, for example `../UnoUI/packages/vue/src/**/*.{vue,js,ts}` or `../vue/src/**/*.{vue,js,ts}`.
+Reading the installed package into `content.inline` makes dynamic component classes and icons available even when the package manager stores dependencies behind symlinks.
+
+For a monorepo workspace where UnoUI is linked directly from source, replace `content.inline` with a `content.filesystem` entry pointing to the actual source path, for example `../UnoUI/packages/vue/src/**/*.{vue,js,ts}` or `../vue/src/**/*.{vue,js,ts}`.
 
 ## Theme And Icons
 
@@ -109,6 +124,6 @@ Do not import `.vue` source files directly from package internals unless fixing 
 
 - Typecheck target app after changes.
 - Run the app and inspect the page if styles, layout, overlay positioning, keyboard behavior, or theme switching are involved.
-- For missing classes, check UnoCSS content includes target files and UnoUI source.
+- For missing classes, check UnoCSS content includes target files and the installed UnoUI JavaScript through `content.inline`.
 - For missing component CSS, check `@mcistudio/unoui-vue/style.css` is imported once.
 - For overlay controls (`Dropdown`, `Tooltip`, `Popconfirm`, `Select`, `DatePicker`), verify z-index and clipping in the actual page.
