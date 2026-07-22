@@ -4,18 +4,19 @@ Use this file as the first stop for component work. Load only the reference file
 
 ## Reference Routing
 
-| Task or component                                                                              | Read                   |
-| ---------------------------------------------------------------------------------------------- | ---------------------- |
-| Setup, styles, UnoCSS preset, icons, theme, `configureUnoUI`                                   | `integration.md`       |
-| `Splitter`, `SplitterPanel`                                                                    | `layout.md`            |
-| `Button`, `ButtonGroup`, `Tag`                                                                 | `buttons-tags.md`      |
-| `Input`, `Autocomplete`, `InputTag`, `InputI18n`, `InputOtp`                                   | `inputs.md`            |
-| `Checkbox`, `CheckboxGroup`, `Radio`, `RadioGroup`, `Switch`, `Select`                         | `selection.md`         |
-| `DatePicker`, `RangePicker`, `TimePicker`, `TimeRangePicker`, `Slider`, `ColorPicker`          | `date-numeric.md`      |
-| `Form`, `FormItem`, validation rules/exposes                                                   | `form.md`              |
+| Task or component                                                                                | Read                   |
+| ------------------------------------------------------------------------------------------------ | ---------------------- |
+| Setup, styles, UnoCSS preset, icons, theme, `configureUnoUI`                                     | `integration.md`       |
+| `Splitter`, `SplitterPanel`                                                                      | `layout.md`            |
+| `Button`, `ButtonGroup`, `Tag`                                                                   | `buttons-tags.md`      |
+| `Input`, `Autocomplete`, `InputTag`, `InputI18n`, `InputOtp`                                     | `inputs.md`            |
+| `Checkbox`, `CheckboxGroup`, `Radio`, `RadioGroup`, `Switch`, `Select`                           | `selection.md`         |
+| `DatePicker`, `RangePicker`, `TimePicker`, `TimeRangePicker`, `Slider`, `ColorPicker`            | `date-numeric.md`      |
+| `ImageEditor`                                                                                    | `media.md`             |
+| `Form`, `FormItem`, validation rules/exposes                                                     | `form.md`              |
 | `Table`, `Pagination`, `Progress`, `Skeleton`, `Badge`, `BadgeRibbon`, `QRCode`, `MillerColumns` | `data-display.md`      |
-| `Alert`, `message`, `MessageContainer`, `Modal`, `Drawer`, `Tooltip`, `Popconfirm`, `Dropdown` | `feedback-overlays.md` |
-| `Tabs`, `TabPane`, `Rate`                                                                      | `navigation-rating.md` |
+| `Alert`, `message`, `MessageContainer`, `Modal`, `Drawer`, `Tooltip`, `Popconfirm`, `Dropdown`   | `feedback-overlays.md` |
+| `Tabs`, `TabPane`, `Rate`                                                                        | `navigation-rating.md` |
 
 ## Shared Conventions
 
@@ -30,8 +31,8 @@ Use this file as the first stop for component work. Load only the reference file
 
 ## Component Index
 
-| Component                                        | Import                     | Details                |
-| ------------------------------------------------ | -------------------------- | ---------------------- |
+| Component                                        | Import                               | Details                |
+| ------------------------------------------------ | ------------------------------------ | ---------------------- |
 | `Splitter`, `SplitterPanel`                      | `@mcistudio/unoui-vue/splitter`      | `layout.md`            |
 | `Alert`                                          | `@mcistudio/unoui-vue/alert`         | `feedback-overlays.md` |
 | `Badge`, `BadgeRibbon`                           | `@mcistudio/unoui-vue/badge`         | `data-display.md`      |
@@ -45,6 +46,7 @@ Use this file as the first stop for component work. Load only the reference file
 | `Form`, `FormItem`, `createFormRule`             | `@mcistudio/unoui-vue/form`          | `form.md`              |
 | `Input`, `Autocomplete`, `InputTag`, `InputI18n` | `@mcistudio/unoui-vue/input`         | `inputs.md`            |
 | `InputOtp`                                       | `@mcistudio/unoui-vue/inputOtp`      | `inputs.md`            |
+| `ImageEditor`                                    | `@mcistudio/unoui-vue/imageeditor`   | `media.md`             |
 | `message`, `Message`, `MessageContainer`         | `@mcistudio/unoui-vue/message`       | `feedback-overlays.md` |
 | `MillerColumns`                                  | `@mcistudio/unoui-vue/millercolumns` | `data-display.md`      |
 | `Modal`                                          | `@mcistudio/unoui-vue/modal`         | `feedback-overlays.md` |

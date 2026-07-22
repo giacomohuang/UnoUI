@@ -106,6 +106,7 @@ const showcaseIndex: ShowcaseNavItem[] = [
   { slug: 'datepicker', label: 'DatePicker 日期选择器', path: '/ui/datepicker', component: defineAsyncComponent(() => import('./DatePicker.vue')) },
   { slug: 'timepicker', label: 'TimePicker 时间选择器', path: '/ui/timepicker', component: defineAsyncComponent(() => import('./TimePicker.vue')) },
   { slug: 'colorpicker', label: 'ColorPicker 取色器', path: '/ui/colorpicker', component: defineAsyncComponent(() => import('./ColorPicker.vue')) },
+  { slug: 'imageeditor', label: 'ImageEditor 图片编辑', path: '/ui/imageeditor', component: defineAsyncComponent(() => import('./ImageEditor.vue')) },
   { slug: 'form', label: 'Form 表单', path: '/ui/form', component: defineAsyncComponent(() => import('./Form.vue')) },
   { slug: 'checkbox', label: 'Checkbox 复选框', path: '/ui/checkbox', component: defineAsyncComponent(() => import('./Checkbox.vue')) },
   { slug: 'radio', label: 'Radio 单选框', path: '/ui/radio', component: defineAsyncComponent(() => import('./Radio.vue')) },
@@ -137,7 +138,7 @@ const pickShowcaseItems = (slugs: string[]) => slugs.map((slug) => componentPage
 const showcaseGroups: ShowcaseNavGroup[] = [
   { title: '概览', icon: 'i-lucide:home', items: pickShowcaseItems(['overview', 'palette']) },
   { title: '布局', icon: 'i-lucide:panels-top-left', items: pickShowcaseItems(['splitter']) },
-  { title: '基础输入', icon: 'i-lucide:text-cursor-input', items: pickShowcaseItems(['input', 'input-otp', 'select', 'datepicker', 'timepicker', 'colorpicker', 'form', 'checkbox', 'radio', 'switch', 'slider', 'rate']) },
+  { title: '基础输入', icon: 'i-lucide:text-cursor-input', items: pickShowcaseItems(['input', 'input-otp', 'select', 'datepicker', 'timepicker', 'colorpicker', 'imageeditor', 'form', 'checkbox', 'radio', 'switch', 'slider', 'rate']) },
   { title: '操作导航', icon: 'i-lucide:mouse-pointer-click', items: pickShowcaseItems(['button', 'dropdown', 'tab', 'pagination']) },
   { title: '反馈浮层', icon: 'i-lucide:message-square-warning', items: pickShowcaseItems(['alert', 'message', 'tooltip', 'popconfirm', 'modal', 'drawer']) },
   { title: '数据展示', icon: 'i-lucide:table-2', items: pickShowcaseItems(['badge', 'tag', 'progress', 'qrcode', 'skeleton', 'millercolumns', 'table']) }

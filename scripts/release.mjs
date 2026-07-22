@@ -153,7 +153,7 @@ try {
   if (!exampleManifest.dependencies?.[packageManifest.name]) {
     throw new Error(`example 缺少 ${packageManifest.name} 依赖`)
   }
-  const exampleDependencyVersion = `^${nextVersion}`
+  const exampleDependencyVersion = `workspace:^${nextVersion}`
   exampleManifest.dependencies[packageManifest.name] = exampleDependencyVersion
   writeJson(exampleManifestPath, exampleManifest)
   console.log(`\n同步 example 依赖: ${packageManifest.name}@${exampleDependencyVersion}`)

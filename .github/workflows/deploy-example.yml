@@ -46,8 +46,21 @@ jobs:
             echo "base=/${{ github.event.repository.name }}/" >> "$GITHUB_OUTPUT"
           fi
 
+      - name: Use published UnoUI package
+        shell: bash
+        run: |
+          node --input-type=module <<'NODE'
+          import { readFileSync, writeFileSync } from 'node:fs'
+
+          const library = JSON.parse(readFileSync('packages/vue/package.json', 'utf8'))
+          const examplePath = 'packages/example/package.json'
+          const example = JSON.parse(readFileSync(examplePath, 'utf8'))
+          example.dependencies[library.name] = `^${library.version}`
+          writeFileSync(examplePath, `${JSON.stringify(example, null, 2)}\n`)
+          NODE
+
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install --no-frozen-lockfile
 
       - name: Build example
         run: pnpm build:ex

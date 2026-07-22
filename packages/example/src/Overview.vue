@@ -208,7 +208,7 @@ const heroOnline = ref(true);
 const heroDensity = ref(68);
 
 const heroMetrics = [
-  { value: "28+", label: "组件页面" },
+  { value: "29+", label: "组件页面" },
   { value: "100%", label: "语义令牌驱动" },
   { value: "Vue 3", label: "组合式 API" },
 ];
@@ -248,6 +248,7 @@ const componentGroups = [
       { label: "DatePicker", path: "/ui/datepicker" },
       { label: "TimePicker", path: "/ui/timepicker" },
       { label: "ColorPicker", path: "/ui/colorpicker" },
+      { label: "ImageEditor", path: "/ui/imageeditor" },
       { label: "Checkbox", path: "/ui/checkbox" },
       { label: "Radio", path: "/ui/radio" },
       { label: "Slider", path: "/ui/slider" },

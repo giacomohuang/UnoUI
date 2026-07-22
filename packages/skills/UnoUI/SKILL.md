@@ -1,6 +1,6 @@
 ---
 name: use-unoui-vue
-description: Use when integrating or modifying @mcistudio/unoui-vue components in Vue 3 projects, including installing UnoUI, configuring UnoCSS with presetUnoUI, importing component styles, choosing the correct component subpath imports, wiring v-model/events/slots/exposed methods, and replacing local UI code with UnoUI primitives.
+description: Use when integrating or modifying @mcistudio/unoui-vue components in Vue 3 projects, including installing UnoUI, configuring UnoCSS with presetUnoUI, importing component styles, choosing component subpath imports, wiring v-model/events/slots/exposed methods, editing images, and replacing local UI code with UnoUI primitives.
 ---
 
 # Use UnoUI Vue

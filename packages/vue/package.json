@@ -1,6 +1,6 @@
 {
   "name": "@mcistudio/unoui-vue",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Vue 3 admin UI components powered by UnoCSS.",
   "keywords": [
     "components",
@@ -80,6 +80,7 @@
     "async-validator": "^4.2.5",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "cropperjs": "^1.6.2",
     "dayjs": "^1.11.21",
     "simplebar-vue": "^2.4.2"
   },
