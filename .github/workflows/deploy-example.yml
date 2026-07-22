@@ -50,6 +50,7 @@ jobs:
         shell: bash
         run: |
           node --input-type=module <<'NODE'
+          import { execFileSync } from 'node:child_process'
           import { readFileSync, writeFileSync } from 'node:fs'
 
           const library = JSON.parse(readFileSync('packages/vue/package.json', 'utf8'))
@@ -57,6 +58,29 @@ jobs:
           const example = JSON.parse(readFileSync(examplePath, 'utf8'))
           example.dependencies[library.name] = `^${library.version}`
           writeFileSync(examplePath, `${JSON.stringify(example, null, 2)}\n`)
+
+          const configOutput = execFileSync(
+            'pnpm',
+            ['config', 'get', 'minimumReleaseAgeExclude', '--json'],
+            { encoding: 'utf8' }
+          ).trim()
+          const currentExcludes = configOutput === 'undefined' ? [] : JSON.parse(configOutput)
+          const nextExcludes = currentExcludes.filter(
+            (entry) => entry !== library.name && !entry.startsWith(`${library.name}@`)
+          )
+          nextExcludes.push(`${library.name}@${library.version}`)
+          execFileSync(
+            'pnpm',
+            [
+              'config',
+              'set',
+              'minimumReleaseAgeExclude',
+              JSON.stringify(nextExcludes),
+              '--json',
+              '--location=project'
+            ],
+            { stdio: 'inherit' }
+          )
           NODE
 
       - name: Install dependencies

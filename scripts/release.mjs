@@ -10,6 +10,8 @@ const repositoryRoot = resolve(import.meta.dirname, '..')
 const packageDirectory = resolve(repositoryRoot, 'packages/vue')
 const packageManifestPath = resolve(packageDirectory, 'package.json')
 const exampleManifestPath = resolve(repositoryRoot, 'packages/example/package.json')
+const lockfilePath = resolve(repositoryRoot, 'pnpm-lock.yaml')
+const workspaceConfigPath = resolve(repositoryRoot, 'pnpm-workspace.yaml')
 const registry = 'https://registry.npmjs.org/'
 const semverPattern = /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+[0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*)?$/
 
@@ -20,6 +22,35 @@ const run = (command, args, cwd = repositoryRoot) => {
   const result = spawnSync(command, args, { cwd, stdio: 'inherit' })
   if (result.error) throw result.error
   if (result.status !== 0) throw new Error(`${command} ${args.join(' ')} 执行失败`)
+}
+
+const runForOutput = (command, args, cwd = repositoryRoot) => {
+  const result = spawnSync(command, args, { cwd, encoding: 'utf8' })
+  if (result.error) throw result.error
+  if (result.status !== 0) {
+    const output = `${result.stdout ?? ''}\n${result.stderr ?? ''}`.trim()
+    throw new Error(`${command} ${args.join(' ')} 执行失败${output ? `：${output}` : ''}`)
+  }
+  return result.stdout.trim()
+}
+
+const syncMinimumReleaseAgeExclude = (name, version) => {
+  const output = runForOutput('pnpm', ['config', 'get', 'minimumReleaseAgeExclude', '--json'])
+  const current = output === 'undefined' ? [] : JSON.parse(output)
+  if (!Array.isArray(current) || current.some((entry) => typeof entry !== 'string')) {
+    throw new Error('pnpm minimumReleaseAgeExclude 配置必须是字符串数组')
+  }
+
+  const next = current.filter((entry) => entry !== name && !entry.startsWith(`${name}@`))
+  next.push(`${name}@${version}`)
+  run('pnpm', [
+    'config',
+    'set',
+    'minimumReleaseAgeExclude',
+    JSON.stringify(next),
+    '--json',
+    '--location=project'
+  ])
 }
 
 const parseVersion = (version) => {
@@ -126,7 +157,8 @@ if (compareVersions(nextVersion, currentVersion) <= 0) {
 }
 
 const manifestPaths = packageManifestPaths()
-const originalFiles = new Map(manifestPaths.map((path) => [path, readFileSync(path, 'utf8')]))
+const versionedPaths = [...manifestPaths, lockfilePath, workspaceConfigPath]
+const originalFiles = new Map(versionedPaths.map((path) => [path, readFileSync(path, 'utf8')]))
 let published = false
 
 try {
@@ -143,12 +175,6 @@ try {
     writeJson(path, manifest)
   }
 
-  console.log('\n运行单元测试...')
-  run('pnpm', ['--filter', '@mcistudio/unoui-vue', 'test:unit', '--run'])
-
-  console.log('\n构建 npm library...')
-  run('pnpm', ['build'])
-
   const exampleManifest = readJson(exampleManifestPath)
   if (!exampleManifest.dependencies?.[packageManifest.name]) {
     throw new Error(`example 缺少 ${packageManifest.name} 依赖`)
@@ -156,7 +182,19 @@ try {
   const exampleDependencyVersion = `workspace:^${nextVersion}`
   exampleManifest.dependencies[packageManifest.name] = exampleDependencyVersion
   writeJson(exampleManifestPath, exampleManifest)
-  console.log(`\n同步 example 依赖: ${packageManifest.name}@${exampleDependencyVersion}`)
+  console.log(`同步 example 依赖: ${packageManifest.name}@${exampleDependencyVersion}`)
+
+  syncMinimumReleaseAgeExclude(packageManifest.name, nextVersion)
+  console.log(`同步 minimumReleaseAgeExclude: ${packageManifest.name}@${nextVersion}`)
+
+  console.log('\n更新 pnpm lockfile...')
+  run('pnpm', ['install', '--lockfile-only'])
+
+  console.log('\n运行单元测试...')
+  run('pnpm', ['--filter', '@mcistudio/unoui-vue', 'test:unit', '--run'])
+
+  console.log('\n构建 npm library...')
+  run('pnpm', ['build'])
 
   console.log('\n检查 npm 包内容...')
   run('npm', ['pack', '--dry-run'], packageDirectory)
