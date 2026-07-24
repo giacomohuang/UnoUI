@@ -129,6 +129,7 @@
           <div class="flex min-w-0 flex-wrap items-center gap-2 xl:flex-nowrap">
             <Input v-model="inputInlineActions.smCode" size="sm" prefix-icon="i-lucide:search" placeholder="编号" />
             <Input v-model="inputInlineActions.smKeyword" size="sm" placeholder="关键词" />
+            <Button size="icon" icon="i-lucide:search"></Button>
             <Button size="sm" icon="i-lucide:search">查询</Button>
             <Button size="sm" variant="outline" icon="i-lucide:rotate-ccw">重置</Button>
             <Button size="sm" variant="mono" icon="i-lucide:settings">设置</Button>
@@ -136,6 +137,7 @@
           <div class="flex min-w-0 flex-wrap items-center gap-2 xl:flex-nowrap">
             <Input v-model="inputInlineActions.mdName" size="md" clearable placeholder="名称" />
             <Input v-model="inputInlineActions.mdFloor" size="md" prefix="F" placeholder="楼层" />
+            <Button size="icon-md" icon="i-lucide:search"></Button>
             <Button size="md" icon="i-lucide:plus">新增</Button>
             <Button size="md" variant="outline" icon="i-lucide:upload">导入</Button>
             <Button size="md" variant="mono" icon="i-lucide:download">导出</Button>
@@ -143,6 +145,7 @@
           <div class="flex min-w-0 flex-wrap items-center gap-2 xl:flex-nowrap">
             <Input v-model="inputInlineActions.lgWidth" size="lg" suffix="m" placeholder="宽度" />
             <Input v-model="inputInlineActions.lgHeight" size="lg" suffix="m" placeholder="高度" />
+            <Button size="icon-lg" icon="i-lucide:search"></Button>
             <Button size="lg" icon="i-lucide:save">保存</Button>
             <Button size="lg" variant="outline" icon="i-lucide:copy">复制</Button>
             <Button size="lg" variant="mono" icon="i-lucide:trash-2">删除</Button>
@@ -229,16 +232,16 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-
 import { Button } from '@mcistudio/unoui-vue/button'
 import { Autocomplete, Input, InputI18n, InputTag } from '@mcistudio/unoui-vue/input'
-import { Tag } from '@mcistudio/unoui-vue/tag'
 import { Tabs, TabPane } from '@mcistudio/unoui-vue/tab'
-import { propsColumns, emitsColumns, slotsColumns } from '@/data/shared'
-import { inputProps, inputEmits, inputSlots, autocompleteProps, autocompleteEmits, autocompleteSlots, inputTagProps, inputI18nProps, inputCodeExample } from '@/data/input'
-import ParamTable from '@/components/ParamTable.vue'
+import { Tag } from '@mcistudio/unoui-vue/tag'
+import { ref } from 'vue'
+
 import CodeBlock from '@/components/CodeBlock.vue'
+import ParamTable from '@/components/ParamTable.vue'
+import { inputProps, inputEmits, inputSlots, autocompleteProps, autocompleteEmits, autocompleteSlots, inputTagProps, inputI18nProps, inputCodeExample } from '@/data/input'
+import { propsColumns, emitsColumns, slotsColumns } from '@/data/shared'
 
 const inputApiTab = ref('props')
 const autocompleteApiTab = ref('props')

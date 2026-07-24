@@ -6,7 +6,7 @@ allowBuilds:
   vue-demi: true
 
 minimumReleaseAgeExclude:
-  - '@mcistudio/unoui-vue@1.1.0'
+  - '@mcistudio/unoui-vue@1.1.1'
 
 onlyBuiltDependencies:
   - "@parcel/watcher"
