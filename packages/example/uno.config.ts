@@ -1,25 +1,18 @@
-import { readFileSync, readdirSync } from 'node:fs'
-import { createRequire } from 'node:module'
-import { dirname, resolve } from 'node:path'
+import { fileURLToPath, URL } from 'node:url'
 
-import { presetUnoUI } from '@mcistudio/unoui-vue/uno'
 import { defineConfig, transformerDirectives, transformerVariantGroup } from 'unocss'
 
-const require = createRequire(import.meta.url)
-const unoUIPackageDirectory = dirname(require.resolve('@mcistudio/unoui-vue/package.json'))
-const unoUIDistDirectory = resolve(unoUIPackageDirectory, 'dist')
-const unoUIContent = readdirSync(unoUIDistDirectory, { encoding: 'utf8', recursive: true })
-  .filter((file) => file.endsWith('.js'))
-  .map((file) => readFileSync(resolve(unoUIDistDirectory, file), 'utf8'))
-  .join('\n')
+import { presetUnoUI } from '../vue/src/uno'
+
+const unoUISourceFiles = fileURLToPath(new URL('../vue/src/**/*.{vue,js,ts}', import.meta.url))
 
 export default defineConfig({
   presets: [presetUnoUI()],
   transformers: [transformerDirectives(), transformerVariantGroup()],
   content: {
-    inline: [unoUIContent],
+    filesystem: [unoUISourceFiles],
     pipeline: {
-      include: [/\.(vue|svelte|[jt]sx|vine.ts|mdx?|astro|elm|php|phtml|marko|html)($|\?)/, 'src/**/*.{js,ts}'],
+      include: [/\.(vue|svelte|[jt]sx|vine.ts|mdx?|astro|elm|php|phtml|marko|html)($|\?)/, 'src/**/*.{js,ts}', '../vue/src/**/*.{js,ts}'],
       exclude: ['uno.config.ts']
     }
   }

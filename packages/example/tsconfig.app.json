@@ -8,7 +8,14 @@
     "incremental": true,
     "types": ["vite/client"],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@mcistudio/unoui-vue": ["../vue/src/index.ts"],
+      "@mcistudio/unoui-vue/attrs": ["../vue/src/attrs.ts"],
+      "@mcistudio/unoui-vue/config": ["../vue/src/config.ts"],
+      "@mcistudio/unoui-vue/uno": ["../vue/src/uno.ts"],
+      "@mcistudio/unoui-vue/colorpicker/color": ["../vue/src/colorpicker/color.ts"],
+      "@mcistudio/unoui-vue/table/types": ["../vue/src/table/types.ts"],
+      "@mcistudio/unoui-vue/*": ["../vue/src/*/index.ts"]
     },
     "strict": true,
     "noUnusedLocals": true,
