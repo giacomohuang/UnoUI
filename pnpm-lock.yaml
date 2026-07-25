@@ -11,7 +11,7 @@ importers:
   packages/example:
     dependencies:
       '@mcistudio/unoui-vue':
-        specifier: workspace:^1.1.1
+        specifier: workspace:^1.2.0
         version: link:../vue
       dayjs:
         specifier: ^1.11.21

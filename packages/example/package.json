@@ -1,6 +1,6 @@
 {
   "name": "@unoui/example",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -9,7 +9,7 @@
     "typecheck": "vue-tsc -b"
   },
   "dependencies": {
-    "@mcistudio/unoui-vue": "workspace:^1.1.1",
+    "@mcistudio/unoui-vue": "workspace:^1.2.0",
     "dayjs": "^1.11.21",
     "highlight.js": "^11.11.1",
     "vue": "^3.5.39",
