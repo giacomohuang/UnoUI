@@ -15,7 +15,7 @@ describe('button', () => {
     expect(className).toContain('hover:(border-brand-400 bg-brand-400)')
     expect(className).toContain('cursor-pointer')
     expect(className).toContain('after:pointer-events-none')
-    expect(className).toContain('after:shadow-[0_0_0_6px_currentColor]')
+    expect(className).toContain('after:shadow-[0_0_0_8px_currentColor]')
     expect(className).toContain('active:after:shadow-[0_0_0_0_currentColor]')
     expect(className).toContain('active:after:opacity-40')
     expect(className).toContain('after:text-brand-500')
