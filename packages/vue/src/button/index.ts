@@ -14,15 +14,15 @@ type ButtonColorStyleKey = 'solid' | 'outline' | 'mono' | 'dashed' | 'link'
 
 const emptyVariantRecord = <T extends readonly string[]>(options: T) => Object.fromEntries(options.map((option) => [option, ''])) as Record<T[number], ''>
 
-const buttonActiveClasses: Record<ButtonColor, string> = {
-  brand: 'active:after:shadow-[0_0_0_0_brand-500]',
-  red: 'active:after:shadow-[0_0_0_0_red-500]',
-  gray: 'active:after:shadow-[0_0_0_0_gray-500]',
-  green: 'active:after:shadow-[0_0_0_0_green-500]',
-  yellow: 'active:after:shadow-[0_0_0_0_yellow-500]',
-  orange: 'active:after:shadow-[0_0_0_0_orange-500]'
+const buttonRippleColorClasses: Record<ButtonColor, string> = {
+  brand: 'after:text-brand-500',
+  red: 'after:text-red-500',
+  gray: 'after:text-gray-500',
+  green: 'after:text-green-500',
+  yellow: 'after:text-amber-500',
+  orange: 'after:text-orange-500'
 }
-const buttonRippleClasses = 'after:(content-empty absolute inset-0 opacity-80 transition-all duration-800 shadow-[0_0_0_7px_transparent] ease-out) active:after:(opacity-0 duration-0)'
+const buttonRippleClasses = 'after:(content-empty pointer-events-none absolute inset-0 opacity-0 transition-[box-shadow,opacity] duration-800 shadow-[0_0_0_8px_currentColor] ease-out) active:after:(opacity-40 duration-0 shadow-[0_0_0_0_currentColor])'
 
 // 颜色态保留完整 UnoCSS 类字面量，确保构建扫描可以生成对应样式。
 const buttonColorClasses: Record<ButtonColor, Record<ButtonColorStyleKey, string>> = {
@@ -82,12 +82,12 @@ const buttonCompoundVariants = buttonColorOptions.flatMap((color) =>
   buttonVariantOptions.map((variant) => ({
     color,
     variant,
-    class: `${buttonColorClasses[color][buttonVariantColorStyleKeys[variant]]} ${variant === 'link' ? '' : `${buttonRippleClasses} ${buttonActiveClasses[color]}`}`
+    class: `${buttonColorClasses[color][buttonVariantColorStyleKeys[variant]]} ${variant === 'link' ? '' : `${buttonRippleClasses} ${buttonRippleColorClasses[color]}`}`
   }))
 )
 
 /** button 定义管理端 Button 组件的样式变体组合。 */
-export const button = cva('relative flex shrink-0 items-center justify-center whitespace-nowrap font-normal transition-all duration-150', {
+export const button = cva('relative flex shrink-0 cursor-pointer items-center justify-center whitespace-nowrap font-normal transition-all duration-150', {
   variants: {
     color: emptyVariantRecord(buttonColorOptions),
     variant: {
