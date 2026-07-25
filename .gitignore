@@ -11,5 +11,5 @@ target
 **/.env.local
 # .env.development
 # .env.production
-
+/output
 .playwright-cli
