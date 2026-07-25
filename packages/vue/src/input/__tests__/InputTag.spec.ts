@@ -4,6 +4,34 @@ import { describe, expect, it } from 'vitest'
 import InputTag from '../InputTag.vue'
 
 describe('InputTag', () => {
+  it('uses content padding instead of calculated row heights', () => {
+    const wrapper = mount(InputTag, {
+      props: {
+        modelValue: ['alpha'],
+        size: 'md',
+        clearable: true
+      }
+    })
+
+    const control = wrapper.find('[data-ui-input-tag="true"]')
+    expect(control.attributes('style') || '').not.toContain('calc(')
+    expect(control.classes()).toContain('py-1')
+    expect(wrapper.find('button[aria-label="清空"]').classes()).toContain('top-1/2')
+  })
+
+  it('does not keep the md input height class at sm size', () => {
+    const wrapper = mount(InputTag, {
+      props: {
+        modelValue: [],
+        size: 'sm'
+      }
+    })
+
+    const input = wrapper.find('[data-ui-input-tag-control="true"]')
+    expect(input.classes()).toContain('h-5!')
+    expect(input.classes()).not.toContain('h-6!')
+  })
+
   it('adds tags with Enter and emits model updates', async () => {
     const wrapper = mount(InputTag, {
       props: {

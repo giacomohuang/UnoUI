@@ -5,6 +5,7 @@ import { defineComponent, ref } from 'vue'
 
 import TimePicker from '../TimePicker.vue'
 import TimeRangePicker from '../TimeRangePicker.vue'
+import { timePickerValue, timePickerWrapper } from '../index'
 
 const cleanupBody = () => {
   document.body.innerHTML = ''
@@ -46,6 +47,16 @@ describe('TimePicker', () => {
     vi.restoreAllMocks()
     restoreScrollTo()
     cleanupBody()
+  })
+
+  it('uses padding instead of calculated heights for control sizes', () => {
+    expect(timePickerWrapper()).toContain('border-control')
+    expect(timePickerWrapper({ size: 'sm' })).not.toContain('calc(')
+    expect(timePickerWrapper({ size: 'md' })).not.toContain('calc(')
+    expect(timePickerWrapper({ size: 'lg' })).not.toContain('calc(')
+    expect(timePickerValue({ size: 'sm' })).toContain('py-1')
+    expect(timePickerValue({ size: 'md' })).toContain('py-2')
+    expect(timePickerValue({ size: 'lg' })).toContain('py-2')
   })
 
   it('renders formatted value and clears it', async () => {

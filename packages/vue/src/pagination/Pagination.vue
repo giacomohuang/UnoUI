@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 
-import { Button } from '../button'
+import { Button, type ButtonProps } from '../button'
 import { Input } from '../input'
 import { Select, type SelectOption, type SelectValue } from '../select'
 
@@ -83,10 +83,12 @@ const activeCurrentPage = computed(() => clampPage(props.currentPage ?? internal
 const shouldRender = computed(() => !(props.hideOnSinglePage && pageCount.value <= 1))
 const layoutTokens = computed(() => props.layout.split(',').map((item) => item.trim()).filter(Boolean) as PaginationLayoutToken[])
 const pageSizeOptions = computed<SelectOption[]>(() => props.pageSizes.map((size) => ({ label: `${size} ${props.pageSizeSuffix}`, value: size })))
-const controlHeightClass = computed(() => paginationControlHeightClasses[props.size ?? 'md'])
 const pagerMinWidthClass = computed(() => paginationPagerMinWidthClasses[props.size ?? 'md'])
-const iconButtonClass = computed(() => ['px-0!', controlHeightClass.value, pagerMinWidthClass.value])
-const textButtonClass = computed(() => [controlHeightClass.value])
+const iconButtonSize = computed<NonNullable<ButtonProps['size']>>(() => {
+  if (props.size === 'sm') return 'icon'
+  if (props.size === 'lg') return 'icon-lg'
+  return 'icon-md'
+})
 
 const normalizedPagerCount = computed(() => {
   const count = Math.max(5, props.pagerCount)
@@ -179,16 +181,10 @@ function commitJumper() {
   setCurrentPage(nextPage)
 }
 
-const paginationControlHeightClasses = {
-  sm: 'h-[calc(1.75rem+2px)]',
-  md: 'h-[calc(2rem+2px)]',
-  lg: 'h-[calc(2.25rem+2px)]'
-} as const
-
 const paginationPagerMinWidthClasses = {
-  sm: 'min-w-[calc(1.75rem+2px)]',
-  md: 'min-w-[calc(2rem+2px)]',
-  lg: 'min-w-[calc(2.25rem+2px)]'
+  sm: 'min-w-7.5',
+  md: 'min-w-8.5',
+  lg: 'min-w-9.5'
 } as const
 </script>
 
@@ -213,9 +209,8 @@ const paginationPagerMinWidthClasses = {
         v-else-if="token === 'prev'"
         color="gray"
         variant="mono"
-        :size="prevText ? size : 'icon'"
+        :size="prevText ? size : iconButtonSize"
         :icon="prevText ? undefined : 'i-lucide:chevron-left'"
-        :class="prevText ? textButtonClass : iconButtonClass"
         :disabled="disabled || activeCurrentPage <= 1"
         @click="setCurrentPage(activeCurrentPage - 1)"
       >
@@ -228,10 +223,9 @@ const paginationPagerMinWidthClasses = {
           :key="String(pager)"
           :color="pager === activeCurrentPage ? 'brand' : 'gray'"
           :variant="pager === activeCurrentPage ? 'default' : 'mono'"
-          :size="typeof pager === 'number' ? size : 'icon'"
+          :size="typeof pager === 'number' ? size : iconButtonSize"
           :icon="typeof pager === 'number' ? undefined : 'i-lucide:ellipsis'"
-          :icon-size="typeof pager === 'number' ? '14' : '16'"
-          :class="[controlHeightClass, pagerMinWidthClass, typeof pager !== 'number' ? 'px-0!' : 'px-2!']"
+          :class="typeof pager === 'number' ? [pagerMinWidthClass, 'px-2!'] : undefined"
           :disabled="disabled || typeof pager !== 'number'"
           @click="typeof pager === 'number' && setCurrentPage(pager)"
         >
@@ -243,9 +237,8 @@ const paginationPagerMinWidthClasses = {
         v-else-if="token === 'next'"
         color="gray"
         variant="mono"
-        :size="nextText ? size : 'icon'"
+        :size="nextText ? size : iconButtonSize"
         :icon="nextText ? undefined : 'i-lucide:chevron-right'"
-        :class="nextText ? textButtonClass : iconButtonClass"
         :disabled="disabled || activeCurrentPage >= pageCount"
         @click="setCurrentPage(activeCurrentPage + 1)"
       >

@@ -2,6 +2,7 @@ import { flushPromises, mount } from '@vue/test-utils'
 import { afterEach, describe, expect, it } from 'vitest'
 
 import Select from '../Select.vue'
+import { selectInner, selectWrapper } from '../index'
 
 const options = [
   { label: '按钮', value: 'button' },
@@ -35,6 +36,17 @@ afterEach(() => {
 })
 
 describe('Select', () => {
+  it('uses padding instead of calculated heights for control sizes', () => {
+    expect(selectWrapper()).toContain('border-control')
+    expect(selectWrapper({ size: 'sm' })).not.toContain('calc(')
+    expect(selectWrapper({ size: 'md' })).not.toContain('calc(')
+    expect(selectWrapper({ size: 'lg' })).not.toContain('calc(')
+    expect(selectInner({ size: 'sm' })).toContain('py-1')
+    expect(selectInner({ size: 'md' })).toContain('py-2')
+    expect(selectInner({ size: 'lg' })).toContain('py-2')
+    expect(selectInner({ size: 'md', multiple: true })).toContain('py-1.5')
+  })
+
   it('renders selected label and clears value', async () => {
     const wrapper = mount(Select, {
       props: {

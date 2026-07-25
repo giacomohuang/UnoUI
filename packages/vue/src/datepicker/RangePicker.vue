@@ -183,6 +183,11 @@ const wrapperClass = computed(() =>
     })
   )
 )
+const timeSideSizeClass = computed(() => {
+  if (props.size === 'sm') return 'py-1 text-sm/5'
+  if (props.size === 'lg') return 'py-1.5 text-base/6'
+  return 'py-1.5 text-sm/5'
+})
 
 const panelDates = computed<[Dayjs, Dayjs]>(() => [leftPanelDate.value, rightPanelDate.value])
 const leftPanelTitle = computed(() => getPanelTitle(leftPanelDate.value, leftPanelMode.value))
@@ -788,13 +793,13 @@ defineExpose({
         @focus="handleFocus"
         @blur="handleBlur"
       >
-        <span :class="datePickerValue({ size })" class="flex items-center gap-2" :title="[displayStartText, displayEndText].filter(Boolean).join(' - ')">
+        <span :class="[datePickerValue({ size }), effectiveShowTime ? 'py-0!' : '']" class="flex items-center gap-2" :title="[displayStartText, displayEndText].filter(Boolean).join(' - ')">
           <span
             class="min-w-0 flex-1 cursor-pointer truncate transition-colors"
             :class="[
               displayStartText ? 'text-primary' : 'text-tertiary/60',
-              effectiveShowTime ? 'border-b-2 py-1 text-sm' : '',
-              effectiveShowTime ? (activeSide === 'start' ? 'border-brand' : 'border-transparent') : open && activeSide === 'start' ? 'text-brand' : ''
+              effectiveShowTime ? `relative ${timeSideSizeClass} after:absolute after:inset-x-0 after:bottom-0 after:h-0.5 after:content-empty` : '',
+              effectiveShowTime ? (activeSide === 'start' ? 'after:bg-brand' : 'after:bg-transparent') : open && activeSide === 'start' ? 'text-brand' : ''
             ]"
             data-ui-range-picker-side="start"
             :data-ui-range-picker-side-active="activeSide === 'start' ? 'true' : undefined"
@@ -807,8 +812,8 @@ defineExpose({
             class="min-w-0 flex-1 cursor-pointer truncate transition-colors"
             :class="[
               displayEndText ? 'text-primary' : 'text-tertiary/60',
-              effectiveShowTime ? 'border-b-2 py-1 text-sm' : '',
-              effectiveShowTime ? (activeSide === 'end' ? 'border-brand' : 'border-transparent') : open && activeSide === 'end' ? 'text-brand' : ''
+              effectiveShowTime ? `relative ${timeSideSizeClass} after:absolute after:inset-x-0 after:bottom-0 after:h-0.5 after:content-empty` : '',
+              effectiveShowTime ? (activeSide === 'end' ? 'after:bg-brand' : 'after:bg-transparent') : open && activeSide === 'end' ? 'text-brand' : ''
             ]"
             data-ui-range-picker-side="end"
             :data-ui-range-picker-side-active="activeSide === 'end' ? 'true' : undefined"

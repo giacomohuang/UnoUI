@@ -16,7 +16,7 @@ export const paginationPagerButton = cva('inline-flex shrink-0 items-center just
     },
     active: {
       true: 'border-brand-500 bg-brand-500 text-white hover:border-brand-400 hover:bg-brand-400',
-      false: 'border-medium bg-primary text-secondary hover:border-brand/40 hover:text-brand'
+      false: 'border-control bg-primary text-secondary hover:border-brand/40 hover:text-brand'
     },
     disabled: {
       true: 'cursor-not-allowed opacity-50 pointer-events-none',

@@ -85,10 +85,12 @@ describe('ColorPicker', () => {
     })
 
     const trigger = wrapper.find('[data-ui-colorpicker="true"]')
-    expect(trigger.classes()).toContain('h-8')
-    expect(trigger.classes()).toContain('w-8')
-    expect(trigger.attributes('style')).toContain('width: 2rem')
-    expect(trigger.attributes('style')).toContain('height: 2rem')
+    expect(trigger.classes()).toContain('border-control')
+    expect(trigger.classes()).toContain('p-1')
+    expect(trigger.classes()).not.toContain('h-8')
+    expect(trigger.classes()).not.toContain('w-8')
+    expect(trigger.attributes('style')).toBeUndefined()
+    expect(trigger.find('.ui-colorpicker-checker').classes()).toContain('size-6')
 
     await trigger.trigger('click')
     await flushPromises()

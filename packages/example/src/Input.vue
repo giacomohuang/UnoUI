@@ -53,7 +53,7 @@
           <h3 class="text-sm font-bold text-secondary">复合输入框</h3>
           <Input v-model="inputCompoundUrl">
             <template #prepend><span>https://</span></template>
-            <template #append>.vmap.local</template>
+            <template #append>.unoui.local</template>
           </Input>
           <Input v-model="inputCompoundAmount" type="number" :precision="2">
             <template #prepend>
@@ -257,7 +257,7 @@ const inputReadonlyValue = ref('只读输入')
 const inputIconValue = ref('search-key')
 const inputUnitValue = ref('12.5')
 const inputSlotValue = ref('layout-001')
-const inputPasswordValue = ref('vmap-admin')
+const inputPasswordValue = ref('unoui-admin')
 const inputClearValue = ref('可一键清空')
 const inputCustomClearValue = ref('自定义图标')
 const inputSingleLineValue = ref('单行文本内容')

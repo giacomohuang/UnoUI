@@ -1,5 +1,8 @@
 import { cva } from 'class-variance-authority'
 import type { VariantProps } from 'class-variance-authority'
+
+import { controlSizeClasses } from '../control'
+
 export { default as Button } from './Button.vue'
 export { default as ButtonGroup } from './ButtonGroup.vue'
 
@@ -92,12 +95,12 @@ export const button = cva('relative flex shrink-0 items-center justify-center wh
       outline: 'border bg-transparent',
       dashed: 'border border-dashed bg-transparent',
       link: 'bg-transparent hover:bg-transparent hover:underline underline-offset-4 underline-dashed px-2!',
-      mono: 'border border-zinc-300 bg-primary text-zinc-500 dark:(border-zinc-500 text-zinc-400)'
+      mono: 'border border-control bg-primary text-zinc-500 dark:text-zinc-400'
     },
     size: {
-      sm: '[&_svg]:size-4 text-sm/5 px-4 py-1 gap-1',
-      md: '[&_svg]:size-5 text-base/4 px-6 py-2 gap-1.5',
-      lg: '[&_svg]:size-6 text-lg/5 px-8 py-2 gap-2',
+      sm: `[&_svg]:size-4 px-4 gap-1 ${controlSizeClasses.sm}`,
+      md: `[&_svg]:size-5 px-6 gap-1.5 ${controlSizeClasses.md}`,
+      lg: `[&_svg]:size-6 px-8 gap-2 ${controlSizeClasses.lg}`,
       icon: '[&_svg]:size-4 px-1.5 py-1.5',
       'icon-md': '[&_svg]:size-5 px-2 py-2',
       'icon-lg': '[&_svg]:size-6 px-2.5 py-2.5'

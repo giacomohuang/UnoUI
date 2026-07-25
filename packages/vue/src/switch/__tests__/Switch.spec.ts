@@ -4,6 +4,15 @@ import { describe, expect, it, vi } from 'vitest'
 import Switch from '../Switch.vue'
 
 describe('Switch', () => {
+  it('uses the shared neutral border when unchecked', () => {
+    const wrapper = mount(Switch)
+    const track = wrapper.find('label > span')
+
+    expect(track.classes()).toContain('border-control')
+    expect(track.classes()).not.toContain('border-zinc-300')
+    expect(track.classes()).not.toContain('dark:border-zinc-600')
+  })
+
   it('uses the brand track when checked', () => {
     const wrapper = mount(Switch, {
       props: {

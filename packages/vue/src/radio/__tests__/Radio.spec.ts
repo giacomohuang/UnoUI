@@ -9,6 +9,12 @@ describe('Radio', () => {
     document.body.innerHTML = ''
   })
 
+  it('uses the control border when unchecked', () => {
+    const wrapper = mount(Radio)
+
+    expect(wrapper.find('span').classes()).toContain('border-control')
+  })
+
   it('renders an inner dot when checked as a standalone radio', () => {
     const wrapper = mount(Radio, {
       props: {
@@ -150,7 +156,8 @@ describe('Radio', () => {
     })
 
     expect(wrapper.find('label').classes()).toContain('border-brand-500')
-    expect(wrapper.find('label').classes()).toContain('min-h-9')
+    expect(wrapper.find('label').classes()).toContain('py-1.5')
+    expect(wrapper.find('label').classes()).not.toContain('min-h-9')
   })
 
   it('uses RadioGroup button type without rendering the circle dot', () => {

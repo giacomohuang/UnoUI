@@ -1,6 +1,8 @@
 import { cva } from 'class-variance-authority'
 import type { VariantProps } from 'class-variance-authority'
 
+import { controlSizeClasses } from '../control'
+
 export { default as Input } from './Input.vue'
 export { default as Autocomplete } from './Autocomplete.vue'
 export { default as InputI18n } from './InputI18n.vue'
@@ -19,20 +21,6 @@ export type AutocompleteDataSourceCallback = (suggestions: AutocompleteSuggestio
 /** AutocompleteDataSource 是 Input 自动补全建议源，兼容静态数组和回调式远程查询。 */
 export type AutocompleteDataSource = AutocompleteSuggestion[] | ((query: string, callback: AutocompleteDataSourceCallback) => void)
 
-const inputSingleLineHeightClasses = {
-  sm: 'h-[calc(1.75rem+2px)]',
-  md: 'h-[calc(2rem+2px)]',
-  lg: 'h-[calc(2.25rem+2px)]'
-} as const
-
-const inputSizeOptions = ['sm', 'md', 'lg'] as const
-
-const inputSingleLineHeightVariants = inputSizeOptions.map((size) => ({
-  size,
-  multiline: false,
-  class: inputSingleLineHeightClasses[size]
-}))
-
 /** inputWrapper 定义管理端 Input 组件外层容器的样式变体组合。 */
 export const inputWrapper = cva('group/ui-input relative flex w-full min-w-0 items-stretch overflow-hidden border bg-primary text-primary transition-colors duration-150', {
   variants: {
@@ -43,10 +31,10 @@ export const inputWrapper = cva('group/ui-input relative flex w-full min-w-0 ite
     },
     focused: {
       true: 'border-brand ring-2 ring-brand/15',
-      false: 'border-medium hover:border-brand/40'
+      false: 'border-control hover:border-brand/40'
     },
     disabled: {
-      true: 'cursor-not-allowed bg-tertiary/20 text-tertiary opacity-70 hover:border-medium',
+      true: 'cursor-not-allowed bg-tertiary/20 text-tertiary opacity-70 hover:border-control',
       false: ''
     },
     multiline: {
@@ -59,8 +47,17 @@ export const inputWrapper = cva('group/ui-input relative flex w-full min-w-0 ite
     focused: false,
     disabled: false,
     multiline: false
+  }
+})
+
+/** inputSizer 同时提供单行 Input 的自然高度和原生输入框固有宽度。 */
+export const inputSizer = cva('invisible block w-[20ch] overflow-hidden', {
+  variants: {
+    size: controlSizeClasses
   },
-  compoundVariants: inputSingleLineHeightVariants
+  defaultVariants: {
+    size: 'md'
+  }
 })
 
 /** inputControl 定义原生 input/textarea 的尺寸与排版样式。 */
@@ -96,7 +93,7 @@ export const inputControl = cva('min-w-0 flex-1 border-0 bg-transparent text-inh
 })
 
 /** inputGroup 定义 Input 与复合前后置内容的外层排版。 */
-export const inputGroup = cva('inline-flex w-full min-w-0 items-stretch align-middle', {
+export const inputGroup = cva('inline-flex w-full min-w-0 self-start items-stretch align-middle', {
   variants: {
     size: {
       sm: '',
@@ -111,12 +108,11 @@ export const inputGroup = cva('inline-flex w-full min-w-0 items-stretch align-mi
   defaultVariants: {
     size: 'md',
     multiline: false
-  },
-  compoundVariants: inputSingleLineHeightVariants
+  }
 })
 
 /** inputAddon 定义 Input 复合前后置内容容器的样式。 */
-export const inputAddon = cva('flex shrink-0 items-center border border-medium bg-tertiary/50 px-3 text-tertiary', {
+export const inputAddon = cva('flex shrink-0 items-center border border-control bg-tertiary/50 px-3 text-tertiary', {
   variants: {
     position: {
       prepend: 'rounded-l-md border-r-0',

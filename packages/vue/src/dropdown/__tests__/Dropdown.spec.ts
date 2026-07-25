@@ -102,6 +102,7 @@ describe('Dropdown', () => {
     const list = menu.querySelector('[role="menu"]')
     const footer = menu.querySelector('.dropdown-footer-slot')
 
+    expect(menu.classList).toContain('border-control')
     expect(header).not.toBeNull()
     expect(list).not.toBeNull()
     expect(footer).not.toBeNull()

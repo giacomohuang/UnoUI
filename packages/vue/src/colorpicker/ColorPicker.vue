@@ -4,7 +4,7 @@ import { computed, nextTick, onMounted, onUnmounted, reactive, ref, useAttrs, us
 import type { CSSProperties } from 'vue'
 
 import { getUiAttrStyle, getUiExposeAttrs } from '../attrs'
-import { colorPickerTrigger, type ColorPickerSize } from '.'
+import { colorPickerSwatch, colorPickerTrigger, type ColorPickerSize } from '.'
 import { clampAlpha, clampHue, clampPercent, cloneHsba, colorToHsba, hsbToRgb, hsbaToCss, normalizeDegree, normalizeRgba, parseCssColor, rgbaToCss, rgbaToHex, type ColorPickerHsbaColor, type ColorPickerMode, type ColorPickerValue, type InternalGradientStop } from './color'
 
 defineOptions({
@@ -85,11 +85,6 @@ const panelGap = 4
 const viewportPadding = 8
 const maxGradientStops = 10
 const colorInputDebounceMs = 200
-const triggerSizeMap: Record<ColorPickerSize, string> = {
-  sm: '1.75rem',
-  md: '2rem',
-  lg: '2.25rem'
-}
 // 控制点拖出渐变条一段距离后松手，按设计语义移除该控制点。
 const gradientStopRemoveDistance = 24
 
@@ -135,13 +130,7 @@ const triggerClass = computed(() =>
     })
   )
 )
-const triggerStyle = computed<CSSProperties>(() => {
-  const size = triggerSizeMap[props.size ?? 'md'] ?? triggerSizeMap.md
-  return {
-    width: size,
-    height: size
-  }
-})
+const swatchClass = computed(() => colorPickerSwatch({ size: props.size }))
 const eyeDropperButtonDisabled = computed(() => props.disabled || !eyeDropperSupported.value)
 const panelStyle = computed<CSSProperties>(() => ({
   position: 'fixed',
@@ -737,8 +726,8 @@ onUnmounted(() => {
 
 <template>
   <div ref="rootRef" class="relative inline-flex align-middle" :style="getUiAttrStyle(attrs)">
-    <button v-bind="getUiExposeAttrs(attrs)" data-ui-colorpicker="true" type="button" :class="triggerClass" :style="triggerStyle" :disabled="disabled" :aria-expanded="open" aria-haspopup="dialog" aria-label="选择颜色" @click="toggleOpen" @keydown="handleTriggerKeydown">
-      <span class="ui-colorpicker-checker block h-full w-full overflow-hidden rounded-[inherit]">
+    <button v-bind="getUiExposeAttrs(attrs)" data-ui-colorpicker="true" type="button" :class="triggerClass" :disabled="disabled" :aria-expanded="open" aria-haspopup="dialog" aria-label="选择颜色" @click="toggleOpen" @keydown="handleTriggerKeydown">
+      <span :class="swatchClass">
         <span class="block h-full w-full rounded-[inherit]" :style="{ background: previewBackground }"></span>
       </span>
     </button>

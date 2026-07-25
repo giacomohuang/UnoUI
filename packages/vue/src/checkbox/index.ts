@@ -50,7 +50,7 @@ export const checkbox = cva('relative inline-flex shrink-0 items-center justify-
     {
       checked: false,
       disabled: false,
-      class: 'border-medium bg-primary hover:border-brand-400 dark:border-zinc-500 dark:bg-zinc-950 dark:hover:border-brand-400'
+      class: 'border-control bg-primary hover:border-brand-400 dark:bg-zinc-950 dark:hover:border-brand-400'
     },
     {
       checked: false,

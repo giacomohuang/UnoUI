@@ -53,7 +53,7 @@ export const switchTrack = cva('relative inline-flex shrink-0 items-center overf
     {
       checked: false,
       disabled: false,
-      class: 'border-zinc-300 bg-zinc-300 hover:(border-zinc-400 bg-zinc-400) dark:border-zinc-600 dark:bg-zinc-700 dark:hover:(border-zinc-500 bg-zinc-600)'
+      class: 'border-control bg-zinc-300 hover:(border-zinc-400 bg-zinc-400) dark:bg-zinc-700 dark:hover:(border-zinc-500 bg-zinc-600)'
     },
     {
       checked: false,

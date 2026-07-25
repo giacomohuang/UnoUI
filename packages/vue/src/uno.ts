@@ -24,6 +24,7 @@ const borderColors = {
   faint: ['slate-50', 'zinc-900'],
   light: ['slate-100', 'zinc-800'],
   medium: ['slate-200', 'zinc-700'],
+  control: ['zinc-300', 'zinc-600'],
   strong: ['slate-400', 'zinc-500'],
   dark: ['slate-600', 'zinc-400'],
   heavy: ['slate-700', 'zinc-300']

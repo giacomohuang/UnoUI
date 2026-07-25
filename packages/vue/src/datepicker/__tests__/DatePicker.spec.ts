@@ -4,6 +4,7 @@ import { afterEach, describe, expect, it } from 'vitest'
 
 import DatePicker from '../DatePicker.vue'
 import RangePicker from '../RangePicker.vue'
+import { datePickerValue, datePickerWrapper } from '../index'
 
 const cleanupBody = () => {
   document.body.innerHTML = ''
@@ -26,6 +27,16 @@ const findPanelButton = (text: string) => {
 
 describe('DatePicker', () => {
   afterEach(() => cleanupBody())
+
+  it('uses padding instead of calculated heights for control sizes', () => {
+    expect(datePickerWrapper()).toContain('border-control')
+    expect(datePickerWrapper({ size: 'sm' })).not.toContain('calc(')
+    expect(datePickerWrapper({ size: 'md' })).not.toContain('calc(')
+    expect(datePickerWrapper({ size: 'lg' })).not.toContain('calc(')
+    expect(datePickerValue({ size: 'sm' })).toContain('py-1')
+    expect(datePickerValue({ size: 'md' })).toContain('py-2')
+    expect(datePickerValue({ size: 'lg' })).toContain('py-2')
+  })
 
   it('renders formatted value and clears it', async () => {
     const wrapper = mount(DatePicker, {

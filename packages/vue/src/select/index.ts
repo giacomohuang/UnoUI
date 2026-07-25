@@ -1,6 +1,8 @@
 import { cva } from 'class-variance-authority'
 import type { VariantProps } from 'class-variance-authority'
 
+import { controlSizeClasses } from '../control'
+
 export { default as Select } from './Select.vue'
 
 /** SelectValue 是 Select 单项值类型，默认覆盖表单控件常用标量。 */
@@ -20,16 +22,16 @@ export interface SelectOption {
 export const selectWrapper = cva('group/ui-select relative inline-flex w-full min-w-0 items-center overflow-hidden border bg-primary text-primary transition-colors duration-150', {
   variants: {
     size: {
-      sm: 'min-h-[calc(1.75rem+2px)] rounded-md text-sm/5',
-      md: 'min-h-[calc(2rem+2px)] rounded-md text-base/4',
-      lg: 'min-h-[calc(2.25rem+2px)] rounded-md text-lg/5'
+      sm: 'rounded-md text-sm/5',
+      md: 'rounded-md text-base/4',
+      lg: 'rounded-md text-lg/5'
     },
     focused: {
       true: 'border-brand ring-2 ring-brand/15',
-      false: 'border-medium hover:border-brand/40'
+      false: 'border-control hover:border-brand/40'
     },
     disabled: {
-      true: 'cursor-not-allowed bg-tertiary/20 text-tertiary opacity-70 hover:border-medium',
+      true: 'cursor-not-allowed bg-tertiary/20 text-tertiary opacity-70 hover:border-control',
       false: 'cursor-pointer'
     },
     multiple: {
@@ -49,9 +51,9 @@ export const selectWrapper = cva('group/ui-select relative inline-flex w-full mi
 export const selectInner = cva('min-w-0 flex-1 items-center text-inherit', {
   variants: {
     size: {
-      sm: 'px-2 py-1',
-      md: 'px-3 py-1.5',
-      lg: 'px-4 py-2'
+      sm: 'px-2 text-sm/5',
+      md: 'px-3 text-base/4',
+      lg: 'px-4 text-lg/5'
     },
     multiple: {
       true: 'flex flex-wrap gap-1',
@@ -61,7 +63,15 @@ export const selectInner = cva('min-w-0 flex-1 items-center text-inherit', {
   defaultVariants: {
     size: 'md',
     multiple: false
-  }
+  },
+  compoundVariants: [
+    { size: 'sm', multiple: false, class: controlSizeClasses.sm },
+    { size: 'md', multiple: false, class: controlSizeClasses.md },
+    { size: 'lg', multiple: false, class: controlSizeClasses.lg },
+    { size: 'sm', multiple: true, class: 'py-1' },
+    { size: 'md', multiple: true, class: 'py-1.5' },
+    { size: 'lg', multiple: true, class: 'py-2' }
+  ]
 })
 
 /** selectOption 定义 Select 下拉选项样式。 */

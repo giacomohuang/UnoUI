@@ -12,7 +12,7 @@ describe('QRCode', () => {
   it('renders svg qrcode with custom colors and title', () => {
     const wrapper = mount(QRCode, {
       props: {
-        value: 'https://vmap.example.com/project/10000',
+        value: 'https://unoui.example.com/project/10000',
         type: 'svg',
         color: '#1677ff',
         bgColor: '#f0f5ff',

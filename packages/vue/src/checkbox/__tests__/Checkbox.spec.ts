@@ -98,6 +98,8 @@ describe('Checkbox', () => {
     const box = getBox(wrapper)
     expect(box.classList).toContain('size-5')
     expect(box.classList).toContain('rounded')
+    expect(box.classList).toContain('border-control')
+    expect(box.classList).not.toContain('dark:border-zinc-500')
   })
 
   it('supports sm and lg sizes', () => {

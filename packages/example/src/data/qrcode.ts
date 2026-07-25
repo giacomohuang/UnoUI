@@ -40,7 +40,7 @@ const status = ref<'active' | 'expired'>('active')
 
 <template>
   <QRCode
-    value="https://vmap.example.com/project/10000"
+    value="https://unoui.example.com/project/10000"
     icon="/favicon.ico"
     :icon-size="36"
     error-level="H"

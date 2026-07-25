@@ -54,7 +54,7 @@ export const radio = cva('relative inline-flex shrink-0 items-center justify-cen
     {
       checked: false,
       disabled: false,
-      class: 'border-medium bg-primary hover:border-brand-400 dark:border-zinc-500 dark:bg-zinc-950 dark:hover:border-brand-400'
+      class: 'border-control bg-primary hover:border-brand-400 dark:bg-zinc-950 dark:hover:border-brand-400'
     },
     {
       checked: false,
@@ -97,7 +97,7 @@ export const radioLabel = cva('inline-flex w-fit items-center align-middle trans
       lg: 'gap-2.5 text-base/6'
     },
     border: {
-      true: 'rounded-md border border-medium bg-primary hover:border-brand-400',
+      true: 'rounded-md border border-control bg-primary hover:border-brand-400',
       false: ''
     },
     checked: {
@@ -110,11 +110,11 @@ export const radioLabel = cva('inline-flex w-fit items-center align-middle trans
     }
   },
   compoundVariants: [
-    { size: 'sm', border: true, class: 'min-h-8 px-2' },
-    { size: 'md', border: true, class: 'min-h-9 px-3' },
-    { size: 'lg', border: true, class: 'min-h-10 px-3.5' },
+    { size: 'sm', border: true, class: 'px-2 py-1' },
+    { size: 'md', border: true, class: 'px-3 py-1.5' },
+    { size: 'lg', border: true, class: 'px-3.5 py-1.5' },
     { border: true, checked: true, disabled: false, class: 'border-brand-500 text-brand-500 dark:border-brand-400 dark:text-brand-400' },
-    { border: true, checked: false, disabled: true, class: 'hover:border-medium' },
+    { border: true, checked: false, disabled: true, class: 'hover:border-control' },
     { border: true, checked: true, disabled: true, class: 'border-zinc-300 dark:border-zinc-600' }
   ],
   defaultVariants: {
@@ -129,9 +129,9 @@ export const radioLabel = cva('inline-flex w-fit items-center align-middle trans
 export const radioButton = cva('ui-radio-button relative z-0 inline-flex w-fit shrink-0 items-center justify-center whitespace-nowrap rounded-md border font-medium align-middle outline-none transition-[background-color,color] duration-150 focus-within:(ring-2 ring-brand-400/30 ring-offset-1 ring-offset-primary)', {
   variants: {
     size: {
-      sm: 'min-h-8 px-3 text-sm/5',
-      md: 'min-h-9 px-4 text-sm/5',
-      lg: 'min-h-10 px-5 text-base/6'
+      sm: 'px-3 py-1 text-sm/5',
+      md: 'px-4 py-1.5 text-sm/5',
+      lg: 'px-5 py-1.5 text-base/6'
     },
     buttonStyle: {
       outline: '',
@@ -157,7 +157,7 @@ export const radioButton = cva('ui-radio-button relative z-0 inline-flex w-fit s
       buttonStyle: 'outline',
       checked: false,
       disabled: false,
-      class: 'border-medium bg-primary text-secondary hover:(border-brand-400 text-brand-500) dark:border-zinc-600 dark:hover:border-brand-400'
+      class: 'border-control bg-primary text-secondary hover:(border-brand-400 text-brand-500) dark:hover:border-brand-400'
     },
     {
       buttonStyle: 'outline',
@@ -181,7 +181,7 @@ export const radioButton = cva('ui-radio-button relative z-0 inline-flex w-fit s
       buttonStyle: 'solid',
       checked: false,
       disabled: false,
-      class: 'border-medium bg-primary text-secondary hover:(border-brand-400 text-brand-500) dark:border-zinc-600 dark:hover:border-brand-400'
+      class: 'border-control bg-primary text-secondary hover:(border-brand-400 text-brand-500) dark:hover:border-brand-400'
     },
     {
       buttonStyle: 'solid',

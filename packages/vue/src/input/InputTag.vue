@@ -115,19 +115,7 @@ const activeDelimiters = computed(() => props.delimiters.filter(Boolean))
 
 const getAttrClass = () => clsx(attrs.class as string | undefined)
 const getAttrStyle = () => attrs.style
-const rowHeight = computed(() => {
-  if (props.size === 'sm') return 'calc(2rem + 2px)'
-  if (props.size === 'lg') return 'calc(2.5rem + 2px)'
-  return 'calc(2rem + 2px)'
-})
-const wrapperStyle = computed(() => [
-  getAttrStyle(),
-  {
-    minHeight: rowHeight.value,
-    '--ui-input-tag-clear-size': '1rem',
-    '--ui-input-tag-row-height': rowHeight.value
-  }
-])
+const wrapperStyle = computed(() => getAttrStyle())
 const getExposeAttrs = () => {
   // class/style 绑定在外层容器，其余原生属性透传给内部 input。
   const { class: _class, style: _style, ...rest } = attrs
@@ -143,8 +131,8 @@ const wrapperClass = computed(() =>
       multiline: true
     }),
     'flex-wrap items-center! content-start overflow-visible! gap-1 px-2 py-1',
-    props.size === 'sm' && 'px-1.5 py-0.5',
-    props.size === 'lg' && 'px-2.5 py-1.5',
+    props.size === 'sm' && 'px-1.5',
+    props.size === 'lg' && 'px-2.5',
     showClearButton() && 'pr-7!',
     hasPrepend && '-ml-px rounded-l-none',
     hasAppend && '-mr-px rounded-r-none'
@@ -157,16 +145,13 @@ const inputClass = computed(() =>
       multiline: false,
       number: false
     }),
-    'h-6! min-w-20 flex-[1_0_5rem]! self-center px-1! py-0!',
-    props.size === 'sm' && 'h-5 text-sm/5',
-    props.size === 'sm' && 'h-5!',
-    props.size === 'lg' && 'h-7',
-    props.size === 'lg' && 'h-7!'
+    'min-w-20 flex-[1_0_5rem]! self-center px-1! py-0!',
+    props.size === 'sm' ? 'h-5! text-sm/5' : props.size === 'lg' ? 'h-7!' : 'h-6!'
   )
 )
 const clearButtonClass = computed(() =>
   clsx(
-    'absolute right-2 top-[calc((var(--ui-input-tag-row-height)-var(--ui-input-tag-clear-size))/2-1px)] flex size-4 items-center justify-center rounded-full bg-tertiary/90 text-tertiary/60 opacity-0 transition-all duration-150 hover:bg-tertiary hover:text-tertiary group-hover/ui-input:opacity-100 group-focus-within/ui-input:opacity-100'
+    'absolute right-2 top-1/2 flex size-4 -translate-y-1/2 items-center justify-center rounded-full bg-tertiary/90 text-tertiary/60 opacity-0 transition-all duration-150 hover:bg-tertiary hover:text-tertiary group-hover/ui-input:opacity-100 group-focus-within/ui-input:opacity-100'
   )
 )
 

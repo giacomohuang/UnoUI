@@ -343,6 +343,10 @@ defineExpose({
           <slot name="prefix"></slot>
         </span>
         <div :class="selectInner({ size, multiple })">
+          <span v-if="multiple" aria-hidden="true" class="invisible flex w-0 shrink-0 items-center overflow-hidden border py-0.5 leading-none">
+            <span class="block size-3.5 shrink-0"></span>
+          </span>
+          <span v-else-if="filterable" aria-hidden="true" class="invisible w-0 shrink-0 overflow-hidden">x</span>
           <template v-if="multiple">
             <template v-if="hasValue">
               <Tag v-for="option in visibleSelectedOptions" :key="String(option.value)" color="brand" size="sm" radius="sm" closable @close="removeTag(option.value, $event)">
@@ -351,30 +355,32 @@ defineExpose({
               <Tag v-if="collapsedTagCount > 0" color="gray" size="sm" radius="sm">+{{ collapsedTagCount }}</Tag>
             </template>
             <span v-else-if="!filterable" class="text-tertiary/60">{{ placeholder }}</span>
-            <input
-              v-if="filterable"
-              class="min-w-12 flex-1 border-0 bg-transparent p-0 text-sm outline-none placeholder:text-tertiary/60"
-              :value="query"
-              :placeholder="hasValue ? '' : placeholder"
-              :disabled="disabled"
-              @input="handleQueryInput"
-              @focus="handleFocus"
-              @blur="handleBlur"
-              @keydown.stop="handleKeydown"
-            />
+            <span v-if="filterable" class="relative min-w-12 flex-1 self-stretch">
+              <input
+                class="absolute inset-0 h-full w-full border-0 bg-transparent p-0 text-sm outline-none placeholder:text-tertiary/60"
+                :value="query"
+                :placeholder="hasValue ? '' : placeholder"
+                :disabled="disabled"
+                @input="handleQueryInput"
+                @focus="handleFocus"
+                @blur="handleBlur"
+                @keydown.stop="handleKeydown"
+              />
+            </span>
           </template>
           <template v-else>
-            <input
-              v-if="filterable"
-              class="h-full min-w-0 flex-1 border-0 bg-transparent p-0 text-inherit outline-none placeholder:text-tertiary/60 disabled:cursor-not-allowed"
-              :value="inputDisplayValue"
-              :placeholder="placeholder"
-              :disabled="disabled"
-              @input="handleQueryInput"
-              @focus="handleFocus"
-              @blur="handleBlur"
-              @keydown.stop="handleKeydown"
-            />
+            <span v-if="filterable" class="relative min-w-0 flex-1 self-stretch">
+              <input
+                class="absolute inset-0 h-full w-full border-0 bg-transparent p-0 text-inherit outline-none placeholder:text-tertiary/60 disabled:cursor-not-allowed"
+                :value="inputDisplayValue"
+                :placeholder="placeholder"
+                :disabled="disabled"
+                @input="handleQueryInput"
+                @focus="handleFocus"
+                @blur="handleBlur"
+                @keydown.stop="handleKeydown"
+              />
+            </span>
             <span v-else :class="valueTextClass">{{ displayLabel || placeholder }}</span>
           </template>
         </div>

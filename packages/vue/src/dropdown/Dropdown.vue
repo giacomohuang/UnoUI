@@ -619,13 +619,13 @@ defineExpose({
           v-if="shouldRenderMenu"
           v-show="isOpen"
           ref="menuContainerRef"
-          :class="['fixed bg-primary border border-medium shadow-xl rounded-lg outline-none overflow-hidden', contentClass]"
+          :class="['fixed bg-primary border border-control shadow-xl rounded-lg outline-none overflow-hidden', contentClass]"
           :style="[menuStyle, { transformOrigin }, extraPopupStyle]"
           :data-placement="activePlacement"
           @mouseenter="handleMouseEnter"
           @mouseleave="handleMouseLeave"
         >
-          <span v-if="hasArrow" :class="['absolute z-1 size-2 rotate-45 border-medium bg-primary', arrowClass]" :style="arrowStyle"></span>
+          <span v-if="hasArrow" :class="['absolute z-1 size-2 rotate-45 border-control bg-primary', arrowClass]" :style="arrowStyle"></span>
           <slot name="header" />
           <slot v-if="$slots.default" />
           <SimpleBar v-else ref="menuRef" tabindex="-1" role="menu" @keydown="handleKeyDown" class="outline-none" :style="menuContentStyle">

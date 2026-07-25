@@ -2,6 +2,8 @@ import { cva } from 'class-variance-authority'
 import type { VariantProps } from 'class-variance-authority'
 import type { Dayjs } from 'dayjs'
 
+import { controlSizeClasses } from '../control'
+
 export { default as TimePicker } from './TimePicker.vue'
 export { default as TimeRangePicker } from './TimeRangePicker.vue'
 
@@ -27,26 +29,20 @@ export interface TimeRangePickerChangeInfo {
   crossesDay: boolean
 }
 
-const timePickerHeightClasses = {
-  sm: 'h-[calc(1.75rem+2px)] text-sm/5',
-  md: 'h-[calc(2rem+2px)] text-base/4',
-  lg: 'h-[calc(2.25rem+2px)] text-lg/5'
-} as const
-
 /** timePickerWrapper 定义 TimePicker 触发器的输入框样式。 */
 export const timePickerWrapper = cva('group/ui-timepicker relative flex w-full min-w-0 items-center overflow-hidden border bg-primary text-primary transition-colors duration-150', {
   variants: {
     size: {
-      sm: `${timePickerHeightClasses.sm} rounded-md`,
-      md: `${timePickerHeightClasses.md} rounded-md`,
-      lg: `${timePickerHeightClasses.lg} rounded-md`
+      sm: 'rounded-md text-sm/5',
+      md: 'rounded-md text-base/4',
+      lg: 'rounded-md text-lg/5'
     },
     focused: {
       true: 'border-brand ring-2 ring-brand/15',
-      false: 'border-medium hover:border-brand/40'
+      false: 'border-control hover:border-brand/40'
     },
     disabled: {
-      true: 'cursor-not-allowed bg-tertiary/20 text-tertiary opacity-70 hover:border-medium',
+      true: 'cursor-not-allowed bg-tertiary/20 text-tertiary opacity-70 hover:border-control',
       false: 'cursor-pointer'
     }
   },
@@ -58,12 +54,12 @@ export const timePickerWrapper = cva('group/ui-timepicker relative flex w-full m
 })
 
 /** timePickerValue 定义触发器内部文本的尺寸与留白。 */
-export const timePickerValue = cva('min-w-0 flex-1 truncate py-0', {
+export const timePickerValue = cva('min-w-0 flex-1 truncate', {
   variants: {
     size: {
-      sm: 'px-2 text-sm/5',
-      md: 'px-3 text-base/4',
-      lg: 'px-4 text-lg/5'
+      sm: `px-2 ${controlSizeClasses.sm}`,
+      md: `px-3 ${controlSizeClasses.md}`,
+      lg: `px-4 ${controlSizeClasses.lg}`
     }
   },
   defaultVariants: {

@@ -260,9 +260,9 @@ export const formItemLabel = cva("flex min-w-0 whitespace-normal break-words tex
   compoundVariants: [
     { required: true, requiredPosition: "left", class: "before:mr-1 before:text-red-500 before:content-['*']" },
     { required: true, requiredPosition: "right", class: "after:ml-1 after:text-red-500 after:content-['*']" },
-    { labelPosition: ["left", "right"], size: "sm", class: "min-h-[calc(1.75rem+7px)] items-center" },
-    { labelPosition: ["left", "right"], size: "md", class: "min-h-[calc(2rem+3px)] items-center" },
-    { labelPosition: ["left", "right"], size: "lg", class: "min-h-[calc(2.25rem)] items-center" },
+    { labelPosition: ["left", "right"], size: "sm", class: "items-center border-y border-transparent py-1" },
+    { labelPosition: ["left", "right"], size: "md", class: "items-center border-y border-transparent py-1.5" },
+    { labelPosition: ["left", "right"], size: "lg", class: "items-center border-y border-transparent py-1.5" },
   ],
   defaultVariants: {
     labelPosition: "right",
@@ -287,9 +287,9 @@ export const formItemContent = cva("flex min-w-0 flex-col justify-center", {
     },
   },
   compoundVariants: [
-    { labelPosition: ["left", "right", "top"], size: "sm", class: "min-h-[calc(1.75rem+7px)]" },
-    { labelPosition: ["left", "right", "top"], size: "md", class: "min-h-[calc(2rem+3px)]" },
-    { labelPosition: ["left", "right", "top"], size: "lg", class: "min-h-[calc(2.25rem)]" },
+    { labelPosition: ["left", "right", "top"], size: "sm", class: "min-h-7.5" },
+    { labelPosition: ["left", "right", "top"], size: "md", class: "min-h-8.5" },
+    { labelPosition: ["left", "right", "top"], size: "lg", class: "min-h-9.5" },
   ],
   defaultVariants: {
     labelPosition: "right",

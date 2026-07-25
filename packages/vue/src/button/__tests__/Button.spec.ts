@@ -28,6 +28,9 @@ describe('button', () => {
     expect(mono).toContain('active:after:shadow-[0_0_0_0_red-500]')
     expect(outline).toContain('bg-transparent')
     expect(mono).toContain('bg-primary')
+    expect(mono).toContain('border-control')
+    expect(mono).not.toContain('border-zinc-300')
+    expect(mono).not.toContain('dark:border-zinc-500')
   })
 
   it('keeps dashed and link color classes distinct', () => {

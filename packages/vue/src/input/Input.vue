@@ -2,7 +2,7 @@
 import { clsx } from 'clsx'
 import { computed, nextTick, onUnmounted, ref, useAttrs, useSlots, useTemplateRef, watch } from 'vue'
 
-import { inputAddon, inputControl, inputGroup, inputWrapper, type InputProps } from '.'
+import { inputAddon, inputControl, inputGroup, inputSizer, inputWrapper, type InputProps } from '.'
 
 defineOptions({
   inheritAttrs: false
@@ -173,11 +173,14 @@ const wrapperClass = computed(() =>
   )
 )
 const getControlClass = () =>
-  inputControl({
-    size: props.size,
-    multiline: isTextarea(),
-    number: isNumber()
-  })
+  clsx(
+    inputControl({
+      size: props.size,
+      multiline: isTextarea(),
+      number: isNumber()
+    }),
+    !isTextarea() && 'absolute inset-0 w-full'
+  )
 
 const parseNumber = (value: string | number | undefined) => {
   if (value === undefined || value === '') return undefined
@@ -419,32 +422,34 @@ defineExpose({
         @compositionstart="handleCompositionStart"
         @compositionend="handleCompositionEnd"
       ></textarea>
-      <input
-        v-else
-        ref="controlRef"
-        v-bind="getExposeAttrs()"
-        data-ui-input-control="true"
-        :name="name"
-        :type="nativeType"
-        :value="controlValue"
-        :step="isNumber() ? step : undefined"
-        :min="isNumber() ? min : undefined"
-        :max="isNumber() ? max : undefined"
-        :maxlength="maxlength"
-        :placeholder="placeholder"
-        :disabled="disabled"
-        :readonly="readonly"
-        :autocomplete="autocomplete"
-        :class="getControlClass()"
-        @beforeinput="handleBeforeInput"
-        @input="handleInput"
-        @change="handleChange"
-        @focus="handleFocus"
-        @blur="handleBlur"
-        @keydown="emit('keydown', $event)"
-        @compositionstart="handleCompositionStart"
-        @compositionend="handleCompositionEnd"
-      />
+      <span v-else class="relative min-w-0 flex-auto self-stretch">
+        <span aria-hidden="true" :class="inputSizer({ size })">x</span>
+        <input
+          ref="controlRef"
+          v-bind="getExposeAttrs()"
+          data-ui-input-control="true"
+          :name="name"
+          :type="nativeType"
+          :value="controlValue"
+          :step="isNumber() ? step : undefined"
+          :min="isNumber() ? min : undefined"
+          :max="isNumber() ? max : undefined"
+          :maxlength="maxlength"
+          :placeholder="placeholder"
+          :disabled="disabled"
+          :readonly="readonly"
+          :autocomplete="autocomplete"
+          :class="getControlClass()"
+          @beforeinput="handleBeforeInput"
+          @input="handleInput"
+          @change="handleChange"
+          @focus="handleFocus"
+          @blur="handleBlur"
+          @keydown="emit('keydown', $event)"
+          @compositionstart="handleCompositionStart"
+          @compositionend="handleCompositionEnd"
+        />
+      </span>
 
       <span v-if="hasSuffix()" class="flex shrink-0 items-center gap-1 pr-2 text-tertiary">
         <slot name="suffix"></slot>

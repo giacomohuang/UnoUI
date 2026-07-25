@@ -2,21 +2,38 @@ import { mount } from '@vue/test-utils'
 import { describe, expect, it, vi } from 'vitest'
 import { nextTick } from 'vue'
 
-import { inputControl, inputGroup, inputWrapper } from '../index'
+import { inputControl, inputGroup, inputSizer, inputWrapper } from '../index'
 import Input from '../Input.vue'
 
 describe('Input', () => {
   it('aligns sizes to button height tokens', () => {
-    expect(inputWrapper({ size: 'sm' })).toContain('h-[calc(1.75rem+2px)]')
-    expect(inputWrapper({ size: 'md' })).toContain('h-[calc(2rem+2px)]')
-    expect(inputWrapper({ size: 'lg' })).toContain('h-[calc(2.25rem+2px)]')
-    expect(inputGroup({ size: 'sm' })).toContain('h-[calc(1.75rem+2px)]')
-    expect(inputGroup({ size: 'md' })).toContain('h-[calc(2rem+2px)]')
-    expect(inputGroup({ size: 'lg' })).toContain('h-[calc(2.25rem+2px)]')
+    expect(inputWrapper()).toContain('border-control')
+    expect(inputWrapper({ size: 'sm' })).not.toContain('calc(')
+    expect(inputWrapper({ size: 'md' })).not.toContain('calc(')
+    expect(inputWrapper({ size: 'lg' })).not.toContain('calc(')
+    expect(inputGroup({ size: 'sm' })).not.toContain('calc(')
+    expect(inputGroup({ size: 'md' })).not.toContain('calc(')
+    expect(inputGroup({ size: 'lg' })).not.toContain('calc(')
+    expect(inputGroup({ size: 'md' })).toContain('self-start')
+    expect(inputSizer({ size: 'sm' })).toContain('py-1')
+    expect(inputSizer({ size: 'md' })).toContain('py-2')
+    expect(inputSizer({ size: 'lg' })).toContain('py-2')
+    expect(inputSizer({ size: 'md' })).toContain('w-[20ch]')
+    expect(inputControl({ size: 'md' })).toContain('h-full')
     expect(inputControl({ size: 'md' })).toContain('py-0')
     expect(inputWrapper({ size: 'md', multiline: true })).toContain('h-auto')
     expect(inputGroup({ size: 'md', multiline: true })).toContain('h-auto')
     expect(inputControl({ size: 'md', multiline: true })).toContain('py-2')
+  })
+
+  it('keeps an intrinsic width contribution for shrink-to-fit layouts', () => {
+    const wrapper = mount(Input)
+    const control = wrapper.find('[data-ui-input-control="true"]')
+    const holder = control.element.parentElement
+    const sizer = holder?.querySelector('[aria-hidden="true"]')
+
+    expect(holder?.classList).toContain('flex-auto')
+    expect(sizer?.classList).toContain('w-[20ch]')
   })
 
   it('renders prefix suffix prepend and append content', () => {
