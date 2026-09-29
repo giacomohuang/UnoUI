@@ -34,6 +34,60 @@ const runForOutput = (command, args, cwd = repositoryRoot) => {
   return result.stdout.trim()
 }
 
+const npmAuthFailurePattern = /(?:E401|ENEEDAUTH|401 Unauthorized|not logged in|authentication token)/i
+
+const runNpmWhoami = () => {
+  const result = spawnSync('npm', ['whoami', '--registry', registry], {
+    cwd: repositoryRoot,
+    encoding: 'utf8'
+  })
+  if (result.error) throw result.error
+
+  const output = `${result.stdout ?? ''}\n${result.stderr ?? ''}`.trim()
+  if (result.status === 0) {
+    if (output) console.log(output)
+    return { authenticated: true, output }
+  }
+
+  if (output) console.error(output)
+  return { authenticated: false, output }
+}
+
+const ensureNpmLogin = async () => {
+  let loginCheck = runNpmWhoami()
+  if (loginCheck.authenticated) return
+
+  if (!npmAuthFailurePattern.test(loginCheck.output)) {
+    throw new Error('npm whoami --registry https://registry.npmjs.org/ 执行失败')
+  }
+
+  const loginCommand = 'npm login --registry=https://registry.npmjs.org/ --auth-type=web'
+  if (!stdin.isTTY || !stdout.isTTY) {
+    throw new Error(`npm 登录凭证无效，请先执行：${loginCommand}`)
+  }
+
+  const readline = createInterface({ input: stdin, output: stdout })
+  let shouldLogin
+  try {
+    shouldLogin = (await readline.question(`npm 登录凭证无效，是否现在执行 ${loginCommand}？[Y/n] `)).trim().toLowerCase()
+  } finally {
+    readline.close()
+  }
+
+  if (shouldLogin && !['y', 'yes', '是'].includes(shouldLogin)) {
+    throw new Error('未重新登录 npm，发布已取消')
+  }
+
+  console.log(`\n开始执行 ${loginCommand}`)
+  run('npm', ['login', '--registry', registry, '--auth-type=web'])
+
+  console.log('\n重新检查 npm 登录状态...')
+  loginCheck = runNpmWhoami()
+  if (!loginCheck.authenticated) {
+    throw new Error(`npm 登录后仍未通过验证，请手动执行：${loginCommand}`)
+  }
+}
+
 const syncMinimumReleaseAgeExclude = (name, version) => {
   const output = runForOutput('pnpm', ['config', 'get', 'minimumReleaseAgeExclude', '--json'])
   const current = output === 'undefined' ? [] : JSON.parse(output)
@@ -43,14 +97,7 @@ const syncMinimumReleaseAgeExclude = (name, version) => {
 
   const next = current.filter((entry) => entry !== name && !entry.startsWith(`${name}@`))
   next.push(`${name}@${version}`)
-  run('pnpm', [
-    'config',
-    'set',
-    'minimumReleaseAgeExclude',
-    JSON.stringify(next),
-    '--json',
-    '--location=project'
-  ])
+  run('pnpm', ['config', 'set', 'minimumReleaseAgeExclude', JSON.stringify(next), '--json', '--location=project'])
 }
 
 const parseVersion = (version) => {
@@ -164,7 +211,7 @@ let published = false
 try {
   if (!dryRun) {
     console.log('\n检查 npm 登录状态...')
-    run('npm', ['whoami', '--registry', registry])
+    await ensureNpmLogin()
     assertVersionIsUnpublished(packageManifest.name, nextVersion)
   }
 
