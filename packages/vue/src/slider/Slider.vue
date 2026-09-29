@@ -232,16 +232,16 @@ const railStyle = computed<CSSProperties>(() => {
   if (isVertical.value) {
     return {
       left: '50%',
-      top: '8px',
+      top: '0',
       width: trackThickness.value,
-      height: 'calc(100% - 16px)',
+      height: '100%',
       transform: 'translateX(-50%)'
     }
   }
   return {
-    left: '8px',
+    left: '0',
     top: '50%',
-    width: 'calc(100% - 16px)',
+    width: '100%',
     height: trackThickness.value,
     transform: 'translateY(-50%)'
   }
