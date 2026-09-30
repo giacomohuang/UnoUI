@@ -97,7 +97,14 @@ const syncMinimumReleaseAgeExclude = (name, version) => {
 
   const next = current.filter((entry) => entry !== name && !entry.startsWith(`${name}@`))
   next.push(`${name}@${version}`)
-  run('pnpm', ['config', 'set', 'minimumReleaseAgeExclude', JSON.stringify(next), '--json', '--location=project'])
+  run('pnpm', [
+    'config',
+    'set',
+    'minimumReleaseAgeExclude',
+    JSON.stringify(next),
+    '--json',
+    '--location=project'
+  ])
 }
 
 const parseVersion = (version) => {
