@@ -103,6 +103,21 @@ provide(radioGroupContextKey, {
   z-index: 3;
 }
 
+/* Tooltip 按默认方式渲染一个触发器节点；允许这个单子节点包装器参与按钮组拼接，
+ * 避免提示层破坏相邻 Radio 的边框重叠和圆角规则。 */
+.ui-radio-group--button :deep(> [data-ui-tooltip-trigger] > .ui-radio-button[data-checked='true']) {
+  z-index: 1;
+}
+
+.ui-radio-group--button :deep(> [data-ui-tooltip-trigger] > .ui-radio-button[data-disabled='false']:hover),
+.ui-radio-group--button :deep(> [data-ui-tooltip-trigger] > .ui-radio-button[data-disabled='false']:active) {
+  z-index: 2;
+}
+
+.ui-radio-group--button :deep(> [data-ui-tooltip-trigger] > .ui-radio-button:focus-within) {
+  z-index: 3;
+}
+
 .ui-radio-group--button[data-direction='horizontal'] :deep(> .ui-radio-button:has(+ .ui-radio-button)) {
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
@@ -119,6 +134,22 @@ provide(radioGroupContextKey, {
   border-bottom-right-radius: 0;
 }
 
+.ui-radio-group--button[data-direction='horizontal'] :deep(> [data-ui-tooltip-trigger]:has(+ [data-ui-tooltip-trigger]) > .ui-radio-button) {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.ui-radio-group--button[data-direction='horizontal'] :deep(> [data-ui-tooltip-trigger] + [data-ui-tooltip-trigger] > .ui-radio-button) {
+  margin-left: -1px;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.ui-radio-group--button[data-direction='horizontal'] :deep(> [data-ui-tooltip-trigger] + [data-ui-tooltip-trigger]:has(+ [data-ui-tooltip-trigger]) > .ui-radio-button) {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
 .ui-radio-group--button[data-direction='vertical'] :deep(> .ui-radio-button:has(+ .ui-radio-button)) {
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
@@ -131,6 +162,22 @@ provide(radioGroupContextKey, {
 }
 
 .ui-radio-group--button[data-direction='vertical'] :deep(> .ui-radio-button + .ui-radio-button:has(+ .ui-radio-button)) {
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.ui-radio-group--button[data-direction='vertical'] :deep(> [data-ui-tooltip-trigger]:has(+ [data-ui-tooltip-trigger]) > .ui-radio-button) {
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.ui-radio-group--button[data-direction='vertical'] :deep(> [data-ui-tooltip-trigger] + [data-ui-tooltip-trigger] > .ui-radio-button) {
+  margin-top: -1px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.ui-radio-group--button[data-direction='vertical'] :deep(> [data-ui-tooltip-trigger] + [data-ui-tooltip-trigger]:has(+ [data-ui-tooltip-trigger]) > .ui-radio-button) {
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
 }
