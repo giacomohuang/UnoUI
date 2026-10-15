@@ -2,8 +2,8 @@
 import { clsx } from 'clsx'
 import { computed, inject, ref, useAttrs, watch } from 'vue'
 
-import { getUiAttrClass, getUiAttrStyle, getUiExposeAttrs } from '../attrs'
 import { radio, radioButton, radioDot, radioGroupContextKey, radioLabel, type RadioButtonStyle, type RadioSize, type RadioType, type RadioValue } from '.'
+import { getUiAttrClass, getUiAttrStyle, getUiExposeAttrs } from '../attrs'
 
 defineOptions({
   inheritAttrs: false
@@ -139,12 +139,7 @@ defineExpose({
 </script>
 
 <template>
-  <label
-    :class="labelClass"
-    :data-checked="resolvedType === 'button' ? isChecked : undefined"
-    :data-disabled="resolvedType === 'button' ? resolvedDisabled : undefined"
-    :style="getUiAttrStyle(attrs)"
-  >
+  <label :class="labelClass" :data-checked="resolvedType === 'button' ? isChecked : undefined" :data-disabled="resolvedType === 'button' ? resolvedDisabled : undefined" :style="getUiAttrStyle(attrs)">
     <input
       v-if="resolvedType === 'button'"
       ref="inputRef"
@@ -179,7 +174,7 @@ defineExpose({
       />
       <span v-if="isChecked" aria-hidden="true" :class="dotClass"></span>
     </span>
-    <span v-if="$slots.default" class="select-none" :class="{ 'inline-flex h-[1lh] items-center justify-center': resolvedType === 'button' }">
+    <span v-if="$slots.default" class="select-none">
       <slot></slot>
     </span>
   </label>
