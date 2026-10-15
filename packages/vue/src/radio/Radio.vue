@@ -179,7 +179,7 @@ defineExpose({
       />
       <span v-if="isChecked" aria-hidden="true" :class="dotClass"></span>
     </span>
-    <span v-if="$slots.default" class="select-none">
+    <span v-if="$slots.default" class="select-none" :class="{ 'inline-flex h-[1lh] items-center justify-center': resolvedType === 'button' }">
       <slot></slot>
     </span>
   </label>

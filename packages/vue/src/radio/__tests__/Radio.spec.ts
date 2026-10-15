@@ -192,6 +192,7 @@ describe('Radio', () => {
     expect(selected.classes()).not.toContain('transition-colors')
     expect(selected.classes()).not.toContain('z-1')
     expect(unselected.classes()).not.toContain('hover:z-1')
+    expect(selected.find('span.select-none').classes()).toEqual(expect.arrayContaining(['inline-flex', 'h-[1lh]', 'items-center', 'justify-center']))
   })
 
   it('supports solid button style from RadioGroup', () => {
