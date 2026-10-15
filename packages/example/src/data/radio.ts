@@ -33,13 +33,9 @@ export const radioGroupEmits: ParamTableRow[] = [
   { name: 'change', params: 'value, Event', desc: '组内选中值改变时触发' }
 ]
 
-export const radioSlots: ParamTableRow[] = [
-  { name: 'default', scoped: '—', desc: 'Radio 标签文本' }
-]
+export const radioSlots: ParamTableRow[] = [{ name: 'default', scoped: '—', desc: 'Radio 标签内容，可放文本或图标' }]
 
-export const radioGroupSlots: ParamTableRow[] = [
-  { name: 'default', scoped: '—', desc: 'Radio 选项列表' }
-]
+export const radioGroupSlots: ParamTableRow[] = [{ name: 'default', scoped: '—', desc: 'Radio 选项列表' }]
 
 export const radioExposes: ParamTableRow[] = [
   { name: 'focus', signature: '() => void', desc: '让原生 radio input 获取焦点' },
@@ -79,5 +75,18 @@ const view = ref('map')
     <Radio value="map">地图</Radio>
     <Radio value="list">列表</Radio>
     <Radio value="stats">统计</Radio>
+  </RadioGroup>
+
+  <!-- 按钮式单选：纯图标（用 aria-label 提供可访问名称） -->
+  <RadioGroup v-model="view" type="button" button-style="solid" name="view-icon">
+    <Radio value="map" aria-label="地图" title="地图">
+      <span class="i-lucide:map"></span>
+    </Radio>
+    <Radio value="list" aria-label="列表" title="列表">
+      <span class="i-lucide:list"></span>
+    </Radio>
+    <Radio value="stats" aria-label="统计" title="统计" disabled>
+      <span class="i-lucide:bar-chart-3"></span>
+    </Radio>
   </RadioGroup>
 </template>`

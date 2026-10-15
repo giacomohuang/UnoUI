@@ -75,6 +75,22 @@
       </div>
 
       <div class="grid gap-2 md:grid-cols-[72px_minmax(0,1fr)] md:items-start">
+        <span class="pt-1.5 text-xs font-medium text-tertiary">纯图标</span>
+        <div class="grid gap-3">
+          <RadioGroup v-model="radioIconValue" type="button" name="radio-icon-outline">
+            <Radio v-for="option in radioIconOptions" :key="`icon-outline-${option.value}`" :value="option.value" :disabled="option.disabled" :aria-label="option.label" :title="option.label">
+              <span :class="option.icon"></span>
+            </Radio>
+          </RadioGroup>
+          <RadioGroup v-model="radioIconSolidValue" type="button" button-style="solid" name="radio-icon-solid">
+            <Radio v-for="option in radioIconOptions" :key="`icon-solid-${option.value}`" :value="option.value" :disabled="option.disabled" :aria-label="option.label" :title="option.label">
+              <span :class="option.icon"></span>
+            </Radio>
+          </RadioGroup>
+        </div>
+      </div>
+
+      <div class="grid gap-2 md:grid-cols-[72px_minmax(0,1fr)] md:items-start">
         <span class="pt-2 text-xs font-medium text-tertiary">方法</span>
         <div class="flex flex-wrap items-center gap-3 rounded-md bg-secondary/60 px-3 py-3">
           <RadioGroup v-model="radioFocusValue" type="button" button-style="solid" name="radio-focus">
@@ -142,15 +158,15 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-
 import { Button } from '@mcistudio/unoui-vue/button'
 import { Radio, RadioGroup } from '@mcistudio/unoui-vue/radio'
 import { Tabs, TabPane } from '@mcistudio/unoui-vue/tab'
-import { propsColumns, emitsColumns, slotsColumns, exposedColumns } from '@/data/shared'
-import { radioProps, radioGroupProps, radioEmits, radioGroupEmits, radioSlots, radioGroupSlots, radioExposes, radioCodeExample } from '@/data/radio'
-import ParamTable from '@/components/ParamTable.vue'
+import { ref } from 'vue'
+
 import CodeBlock from '@/components/CodeBlock.vue'
+import ParamTable from '@/components/ParamTable.vue'
+import { radioProps, radioGroupProps, radioEmits, radioGroupEmits, radioSlots, radioGroupSlots, radioExposes, radioCodeExample } from '@/data/radio'
+import { propsColumns, emitsColumns, slotsColumns, exposedColumns } from '@/data/shared'
 
 type RadioSize = 'sm' | 'md' | 'lg'
 
@@ -185,6 +201,15 @@ const radioButtonOptions = [
   { label: '列表', value: 'list' },
   { label: '统计', value: 'stats' },
   { label: '禁用', value: 'disabled', disabled: true }
+]
+const radioIconValue = ref('map')
+const radioIconSolidValue = ref('list')
+// 纯图标选项只渲染图标插槽，按钮尺寸由 Radio 尺寸变体决定，图标在插槽容器内垂直居中。
+const radioIconOptions = [
+  { label: '地图', value: 'map', icon: 'i-lucide:map' },
+  { label: '列表', value: 'list', icon: 'i-lucide:list' },
+  { label: '统计', value: 'stats', icon: 'i-lucide:bar-chart-3' },
+  { label: '禁用', value: 'disabled', icon: 'i-lucide:lock', disabled: true }
 ]
 const radioFocusValue = ref('focus')
 </script>
