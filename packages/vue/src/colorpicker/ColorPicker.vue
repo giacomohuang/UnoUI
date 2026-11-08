@@ -69,6 +69,7 @@ const paletteColor = reactive<ColorPickerHsbaColor>({ h: 0, s: 0, b: 0, a: 1 })
 const panelPosition = reactive({ top: 0, left: 0 })
 const eyeDropperSupported = ref(false)
 let gradientStopSeed = 0
+/** 当前拖拽会话的取消函数，供二次拖拽、面板关闭和组件卸载统一收尾。 */
 let dragCleanup: (() => void) | null = null
 let syncingFromModel = false
 let lastEmittedValue: ColorPickerValue | null = null
@@ -178,6 +179,7 @@ watch(
 
 watch(open, (value) => {
   if (value) void updatePanelPosition()
+  else dragCleanup?.()
 })
 
 watch(
@@ -525,36 +527,87 @@ function getBoundedPointerRatio(clientPosition: number, start: number, size: num
   return Math.min(1, Math.max(0, (clientPosition - start) / size))
 }
 
-function startDrag(event: PointerEvent, update: (event: PointerEvent) => void, onEnd?: (event: PointerEvent) => void, onCancel?: () => void) {
-  if (props.disabled) return
+function startDrag(event: PointerEvent, update: (event: PointerEvent) => void, onEnd?: (event: PointerEvent) => void, onCancel?: () => void): boolean {
+  if (props.disabled) return false
   event.preventDefault()
+  // 上一次拖拽若因异常释放未收尾，先按取消处理，避免监听叠加。
   dragCleanup?.()
   update(event)
 
-  const handleMove = (moveEvent: PointerEvent) => {
+  // currentTarget 在事件派发结束后会被清空，必须在同步阶段取出。
+  const captureTarget = (event.currentTarget as HTMLElement | null) ?? null
+  const pointerId = typeof event.pointerId === 'number' ? event.pointerId : null
+  const isSamePointer = (target: PointerEvent) => pointerId === null || target.pointerId === pointerId
+  let hasPointerCapture = false
+
+  if (pointerId !== null && typeof captureTarget?.setPointerCapture === 'function') {
+    try {
+      captureTarget.setPointerCapture(pointerId)
+      hasPointerCapture = typeof captureTarget.hasPointerCapture === 'function' ? captureTarget.hasPointerCapture(pointerId) : true
+    } catch {
+      // 元素已卸载等场景无法捕获指针，退化为仅依赖 window 监听。
+      hasPointerCapture = false
+    }
+  }
+
+  function removeDragListeners() {
+    // 捕获阶段监听：指针落在 Drawer、Modal 等带 .stop 的容器上时，仍能收到 move/up。
+    window.removeEventListener('pointermove', handleMove, true)
+    window.removeEventListener('pointerup', handleUp, true)
+    window.removeEventListener('pointercancel', handleCancel, true)
+    window.removeEventListener('blur', handleWindowBlur)
+    captureTarget?.removeEventListener('lostpointercapture', handleLostPointerCapture)
+    if (hasPointerCapture && pointerId !== null && captureTarget?.hasPointerCapture?.(pointerId)) {
+      captureTarget.releasePointerCapture(pointerId)
+    }
+    if (dragCleanup === cancelDrag) dragCleanup = null
+  }
+
+  function handleMove(moveEvent: PointerEvent) {
+    if (!isSamePointer(moveEvent)) return
+    if (props.disabled) {
+      cancelDrag()
+      return
+    }
     moveEvent.preventDefault()
     update(moveEvent)
   }
-  const removeListeners = () => {
-    document.removeEventListener('pointermove', handleMove)
-    document.removeEventListener('pointerup', handleUp)
-    document.removeEventListener('pointercancel', handleCancel)
-  }
-  const handleUp = (upEvent: PointerEvent) => {
-    removeListeners()
-    dragCleanup = null
+
+  function handleUp(upEvent: PointerEvent) {
+    if (!isSamePointer(upEvent)) return
+    removeDragListeners()
     onEnd?.(upEvent)
   }
-  const handleCancel = () => {
-    removeListeners()
-    dragCleanup = null
+
+  function handleCancel(cancelEvent: PointerEvent) {
+    if (!isSamePointer(cancelEvent)) return
+    removeDragListeners()
     onCancel?.()
   }
 
-  document.addEventListener('pointermove', handleMove)
-  document.addEventListener('pointerup', handleUp)
-  document.addEventListener('pointercancel', handleCancel)
-  dragCleanup = handleCancel
+  function handleWindowBlur() {
+    removeDragListeners()
+    onCancel?.()
+  }
+
+  function handleLostPointerCapture() {
+    removeDragListeners()
+    onCancel?.()
+  }
+
+  function cancelDrag() {
+    removeDragListeners()
+    onCancel?.()
+  }
+
+  window.addEventListener('pointermove', handleMove, true)
+  window.addEventListener('pointerup', handleUp, true)
+  window.addEventListener('pointercancel', handleCancel, true)
+  // 指针在窗口外释放或系统夺走焦点时不会派发 pointerup，需主动结束拖拽。
+  window.addEventListener('blur', handleWindowBlur)
+  if (hasPointerCapture) captureTarget?.addEventListener('lostpointercapture', handleLostPointerCapture)
+  dragCleanup = cancelDrag
+  return true
 }
 
 function handlePalettePointerDown(event: PointerEvent) {
@@ -562,45 +615,27 @@ function handlePalettePointerDown(event: PointerEvent) {
 }
 
 function handleHuePointerDown(event: PointerEvent) {
+  const stopDragging = () => {
+    isDraggingHue.value = false
+  }
+  if (!startDrag(event, updateHueFromPointer, stopDragging, stopDragging)) return
   isDraggingHue.value = true
-  startDrag(
-    event,
-    updateHueFromPointer,
-    () => {
-      isDraggingHue.value = false
-    },
-    () => {
-      isDraggingHue.value = false
-    }
-  )
 }
 
 function handleOpacityPointerDown(event: PointerEvent) {
+  const stopDragging = () => {
+    isDraggingOpacity.value = false
+  }
+  if (!startDrag(event, updateOpacityFromPointer, stopDragging, stopDragging)) return
   isDraggingOpacity.value = true
-  startDrag(
-    event,
-    updateOpacityFromPointer,
-    () => {
-      isDraggingOpacity.value = false
-    },
-    () => {
-      isDraggingOpacity.value = false
-    }
-  )
 }
 
 function handleDegreePointerDown(event: PointerEvent) {
+  const stopDragging = () => {
+    isDraggingDegree.value = false
+  }
+  if (!startDrag(event, updateDegreeFromPointer, stopDragging, stopDragging)) return
   isDraggingDegree.value = true
-  startDrag(
-    event,
-    updateDegreeFromPointer,
-    () => {
-      isDraggingDegree.value = false
-    },
-    () => {
-      isDraggingDegree.value = false
-    }
-  )
 }
 
 function addGradientStop(event: PointerEvent) {
@@ -622,22 +657,23 @@ function handleGradientStopPointerDown(event: PointerEvent, stopId: number) {
   if (props.disabled) return
   const stop = gradientStops.value.find((item) => item.id === stopId)
   if (!stop) return
-  activeGradientStopId.value = stop.id
-  draggingGradientStopId.value = stop.id
-  syncPaletteColor(stop.color)
-  startDrag(
+  const stopDragging = () => {
+    draggingGradientStopId.value = null
+    pendingRemoveGradientStopId.value = null
+  }
+  const started = startDrag(
     event,
     (moveEvent) => updateGradientStopFromPointer(moveEvent, stopId),
     () => {
       if (pendingRemoveGradientStopId.value === stopId) removeGradientStop(stopId)
-      draggingGradientStopId.value = null
-      pendingRemoveGradientStopId.value = null
+      stopDragging()
     },
-    () => {
-      draggingGradientStopId.value = null
-      pendingRemoveGradientStopId.value = null
-    }
+    stopDragging
   )
+  if (!started) return
+  activeGradientStopId.value = stop.id
+  draggingGradientStopId.value = stop.id
+  syncPaletteColor(stop.color)
 }
 
 function handleGradientStopKeydown(event: KeyboardEvent, stopId: number) {

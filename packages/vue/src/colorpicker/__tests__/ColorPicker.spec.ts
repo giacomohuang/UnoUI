@@ -253,6 +253,108 @@ describe('ColorPicker', () => {
     wrapper.unmount()
   })
 
+  it('ends dragging when an outside overlay swallows pointerup', async () => {
+    const wrapper = mountColorPicker({
+      props: {
+        modelValue: {
+          mode: 'solid',
+          color: { r: 255, g: 0, b: 0, a: 1 }
+        }
+      } satisfies ColorPickerProps
+    })
+
+    await wrapper.find('[data-ui-colorpicker="true"]').trigger('click')
+    await flushPromises()
+
+    // 模拟 Drawer/Modal 这类会对 pointer 事件 stopPropagation 的外层容器。
+    const overlay = document.createElement('div')
+    overlay.addEventListener('pointerup', (event) => event.stopPropagation())
+    overlay.addEventListener('pointermove', (event) => event.stopPropagation())
+    document.body.appendChild(overlay)
+
+    const hueBar = document.body.querySelector('.ui-colorpicker-huebar') as HTMLElement
+    mockRect(hueBar, { width: 360, right: 360 })
+    dispatchPointerDown(hueBar, 60)
+    await flushPromises()
+
+    expect(wrapper.find('[data-ui-colorpicker-hue-handle="true"]').classes()).toContain('scale-125')
+    const emittedBeforeRelease = wrapper.emitted('update:modelValue')?.length ?? 0
+
+    // 拖出色谱条后在抽屉容器内松手，事件冒泡被拦截，拖拽仍应结束。
+    overlay.dispatchEvent(new MouseEvent('pointerup', { clientX: 420, clientY: 6, bubbles: true }))
+    await flushPromises()
+
+    expect(wrapper.find('[data-ui-colorpicker-hue-handle="true"]').classes()).not.toContain('scale-125')
+
+    dispatchPointerMove(300)
+    await flushPromises()
+    expect(wrapper.emitted('update:modelValue')?.length).toBe(emittedBeforeRelease)
+    wrapper.unmount()
+  })
+
+  it('ends dragging when the window loses focus without a pointerup', async () => {
+    const wrapper = mountColorPicker({
+      props: {
+        modelValue: {
+          mode: 'solid',
+          color: { r: 255, g: 0, b: 0, a: 1 }
+        }
+      } satisfies ColorPickerProps
+    })
+
+    await wrapper.find('[data-ui-colorpicker="true"]').trigger('click')
+    await flushPromises()
+
+    const hueBar = document.body.querySelector('.ui-colorpicker-huebar') as HTMLElement
+    mockRect(hueBar, { width: 360, right: 360 })
+    dispatchPointerDown(hueBar, 60)
+    await flushPromises()
+
+    const emittedBeforeBlur = wrapper.emitted('update:modelValue')?.length ?? 0
+    window.dispatchEvent(new Event('blur'))
+    await flushPromises()
+
+    expect(wrapper.find('[data-ui-colorpicker-hue-handle="true"]').classes()).not.toContain('scale-125')
+
+    dispatchPointerMove(300)
+    await flushPromises()
+    expect(wrapper.emitted('update:modelValue')?.length).toBe(emittedBeforeBlur)
+    wrapper.unmount()
+  })
+
+  it('clears dragging state when the panel closes during a drag', async () => {
+    const wrapper = mountColorPicker({
+      props: {
+        modelValue: {
+          mode: 'solid',
+          color: { r: 255, g: 0, b: 0, a: 1 }
+        }
+      } satisfies ColorPickerProps
+    })
+
+    await wrapper.find('[data-ui-colorpicker="true"]').trigger('click')
+    await flushPromises()
+
+    const hueBar = document.body.querySelector('.ui-colorpicker-huebar') as HTMLElement
+    mockRect(hueBar, { width: 360, right: 360 })
+    dispatchPointerDown(hueBar, 60)
+    await flushPromises()
+
+    document.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }))
+    await flushPromises()
+    expect(wrapper.find('[role="dialog"]').exists()).toBe(false)
+
+    await wrapper.find('[data-ui-colorpicker="true"]').trigger('click')
+    await flushPromises()
+
+    expect(wrapper.find('[data-ui-colorpicker-hue-handle="true"]').classes()).not.toContain('scale-125')
+    const emittedBeforeMove = wrapper.emitted('update:modelValue')?.length ?? 0
+    dispatchPointerMove(300)
+    await flushPromises()
+    expect(wrapper.emitted('update:modelValue')?.length).toBe(emittedBeforeMove)
+    wrapper.unmount()
+  })
+
   it('clamps gradient stop dragging to bar edges', async () => {
     const wrapper = mountColorPicker({
       props: {
