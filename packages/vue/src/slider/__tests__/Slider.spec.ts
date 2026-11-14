@@ -91,6 +91,47 @@ describe('Slider', () => {
     wrapper.unmount()
   })
 
+  it('continues dragging when an ancestor stops pointer events from bubbling', async () => {
+    const wrapper = mount(
+      {
+        components: { Slider },
+        data() {
+          return {
+            value: 20
+          }
+        },
+        template: '<div data-drag-boundary @pointermove.stop @pointerup.stop><Slider v-model="value" /></div>'
+      },
+      {
+        attachTo: document.body
+      }
+    )
+    const root = wrapper.find('[data-ui-slider="true"]')
+    const handle = wrapper.find('[data-ui-slider-handle="true"]')
+
+    mockSliderRect(root.element)
+    await dispatchPointer(handle.element, 'pointerdown', {
+      button: 0,
+      clientX: 40,
+      clientY: 20
+    })
+    await dispatchPointer(root.element, 'pointermove', {
+      button: 0,
+      buttons: 1,
+      clientX: 100,
+      clientY: 20
+    })
+    await dispatchPointer(root.element, 'pointerup', {
+      button: 0,
+      clientX: 100,
+      clientY: 20
+    })
+    await wrapper.vm.$nextTick()
+
+    expect(wrapper.vm.value).toBe(50)
+    wrapper.unmount()
+  })
+
   it('renders visible rail and selected track sizes', () => {
     const horizontalWrapper = mount(Slider, {
       props: {

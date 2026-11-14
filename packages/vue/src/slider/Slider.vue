@@ -270,15 +270,16 @@ watch(
 )
 
 onMounted(() => {
-  window.addEventListener('pointermove', handleDocumentPointerMove)
-  window.addEventListener('pointerup', handleDocumentPointerUp)
-  window.addEventListener('pointercancel', handleDocumentPointerUp)
+  // Modal 等容器会阻止指针事件继续冒泡；捕获阶段监听仍能完成手柄拖拽。
+  window.addEventListener('pointermove', handleDocumentPointerMove, true)
+  window.addEventListener('pointerup', handleDocumentPointerUp, true)
+  window.addEventListener('pointercancel', handleDocumentPointerUp, true)
 })
 
 onBeforeUnmount(() => {
-  window.removeEventListener('pointermove', handleDocumentPointerMove)
-  window.removeEventListener('pointerup', handleDocumentPointerUp)
-  window.removeEventListener('pointercancel', handleDocumentPointerUp)
+  window.removeEventListener('pointermove', handleDocumentPointerMove, true)
+  window.removeEventListener('pointerup', handleDocumentPointerUp, true)
+  window.removeEventListener('pointercancel', handleDocumentPointerUp, true)
 })
 
 function uniqueNumbers(values: number[]) {
