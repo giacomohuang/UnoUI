@@ -492,6 +492,7 @@ const getSortIcon = (column: TableColumn<T>) => {
 <template>
   <div
     ref="tableRoot"
+    data-ui-table="true"
     :class="
       clsx(
         'ui-table overflow-hidden bg-primary',

@@ -317,9 +317,9 @@ type NumberDragSession = {
 let numberDragSession: NumberDragSession | null = null
 
 const stopNumberDragListeners = () => {
-  window.removeEventListener('pointermove', handleNumberDragMove)
-  window.removeEventListener('pointerup', handleNumberDragEnd)
-  window.removeEventListener('pointercancel', handleNumberDragEnd)
+  window.removeEventListener('pointermove', handleNumberDragMove, true)
+  window.removeEventListener('pointerup', handleNumberDragEnd, true)
+  window.removeEventListener('pointercancel', handleNumberDragEnd, true)
 }
 
 const getCurrentNumber = () => {
@@ -370,9 +370,10 @@ const startNumberDrag = (event: PointerEvent) => {
   }
   ;(event.currentTarget as HTMLElement | null)?.setPointerCapture?.(event.pointerId)
   emit('drag-start', startValue, event)
-  window.addEventListener('pointermove', handleNumberDragMove)
-  window.addEventListener('pointerup', handleNumberDragEnd)
-  window.addEventListener('pointercancel', handleNumberDragEnd)
+  // Modal/Drawer 会阻止事件继续冒泡；捕获阶段保证数字拖拽在外层容器中仍能结束。
+  window.addEventListener('pointermove', handleNumberDragMove, true)
+  window.addEventListener('pointerup', handleNumberDragEnd, true)
+  window.addEventListener('pointercancel', handleNumberDragEnd, true)
 }
 
 onUnmounted(() => {

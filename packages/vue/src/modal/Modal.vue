@@ -56,6 +56,8 @@
 <script setup lang="ts">
 import { onBeforeUnmount, watch } from 'vue'
 
+import { createInternalDragBoundary } from '../utils/internal-drag'
+
 /**
  * Modal 是轻量弹窗容器。
  */
@@ -95,19 +97,19 @@ const emit = defineEmits<{
   (e: 'update:visible', value: boolean): void
 }>()
 
+const shouldAllowInteraction = createInternalDragBoundary()
+
 /** 关闭弹窗并同步 v-model 状态。 */
 const close = () => {
   emit('update:visible', false)
 }
 
-const shouldAllowEventPropagation = (event: Event) => {
-  if (!props.eventPropagationSelector || !(event.target instanceof Element)) return false
-  return event.target.closest(props.eventPropagationSelector) !== null
-}
-
-/** 默认拦截编辑器事件；少数嵌入式地图可通过选择器放行事件冒泡。 */
+/**
+ * 默认拦截编辑器事件；显式选择器放行整个手势，内部拖拽组件只放行 move/up，
+ * 避免初始 down 同时触发弹窗后的地图交互。
+ */
 const handleInteractionEvent = (event: Event) => {
-  if (shouldAllowEventPropagation(event)) return
+  if (shouldAllowInteraction(event, props.eventPropagationSelector)) return
   event.stopPropagation()
 }
 

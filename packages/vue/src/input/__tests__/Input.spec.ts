@@ -239,4 +239,31 @@ describe('Input', () => {
     expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([3])
     expect(wrapper.emitted('drag-end')).toBeTruthy()
   })
+
+  it('continues number dragging when an ancestor stops pointer events from bubbling', () => {
+    const wrapper = mount(Input, {
+      props: {
+        modelValue: 1,
+        type: 'number',
+        draggable: true,
+        step: 0.5,
+        precision: 1
+      },
+      attachTo: document.body
+    })
+    const stopPropagation = (event: Event) => event.stopPropagation()
+    wrapper.element.addEventListener('pointermove', stopPropagation)
+    wrapper.element.addEventListener('pointerup', stopPropagation)
+    const prefix = wrapper.find('.i-lucide\\:grip-horizontal').element
+
+    prefix.dispatchEvent(new PointerEvent('pointerdown', { button: 0, pointerId: 2, clientX: 10, bubbles: true }))
+    prefix.dispatchEvent(new PointerEvent('pointermove', { pointerId: 2, clientX: 14, bubbles: true }))
+    prefix.dispatchEvent(new PointerEvent('pointerup', { pointerId: 2, clientX: 14, bubbles: true }))
+
+    expect(wrapper.emitted('update:modelValue')?.[0]).toEqual([3])
+    expect(wrapper.emitted('drag-end')).toBeTruthy()
+    wrapper.element.removeEventListener('pointermove', stopPropagation)
+    wrapper.element.removeEventListener('pointerup', stopPropagation)
+    wrapper.unmount()
+  })
 })

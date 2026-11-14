@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { computed, inject, nextTick, onBeforeUnmount, provide, ref, watch, type CSSProperties } from 'vue'
 
+import { createInternalDragBoundary } from '../utils/internal-drag'
+
 import { drawerContextKey, drawerPanel, type DrawerDirection, type DrawerPush, type DrawerPushDistance } from '.'
 
 type DrawerBeforeClose = (done: () => void) => void | boolean | Promise<void | boolean>
@@ -71,6 +73,7 @@ const emit = defineEmits<{
   (e: 'closed'): void
 }>()
 
+const shouldAllowInteraction = createInternalDragBoundary()
 const isVisible = computed(() => props.modelValue ?? props.visible ?? false)
 const shouldRender = ref(isVisible.value)
 const drawerId = Symbol('ui-drawer')
@@ -150,6 +153,11 @@ function handleKeydown(event: KeyboardEvent) {
   event.preventDefault()
   event.stopPropagation()
   void requestClose()
+}
+
+/** Drawer 默认拦截页面事件；内部拖拽控件只放行当前手势的 move/up。 */
+function handleInteractionEvent(event: Event) {
+  if (!shouldAllowInteraction(event)) event.stopPropagation()
 }
 
 function lockBodyScroll() {
@@ -233,12 +241,12 @@ onBeforeUnmount(() => {
         v-show="isVisible"
         class="fixed inset-0 pointer-events-auto"
         :style="{ zIndex }"
-        @mousemove.stop
-        @mousedown.stop
-        @mouseup.stop
-        @pointermove.stop
-        @pointerdown.stop
-        @pointerup.stop
+        @mousemove="handleInteractionEvent"
+        @mousedown="handleInteractionEvent"
+        @mouseup="handleInteractionEvent"
+        @pointermove="handleInteractionEvent"
+        @pointerdown="handleInteractionEvent"
+        @pointerup="handleInteractionEvent"
         @wheel.stop
         @click.stop
         @dblclick.stop

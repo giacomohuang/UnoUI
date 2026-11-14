@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils'
-import { afterEach, describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vitest'
 
 import Drawer from '../Drawer.vue'
 
@@ -38,6 +38,38 @@ describe('Drawer', () => {
     const drawer = document.body.querySelector('[data-ui-drawer="true"]') as HTMLElement
 
     expect(drawer.style.height).toBe('320px')
+    wrapper.unmount()
+  })
+
+  it('allows an internal drag gesture while still blocking its initial pointerdown', async () => {
+    const onPointerDown = vi.fn<(event: PointerEvent) => void>()
+    const onPointerMove = vi.fn<(event: PointerEvent) => void>()
+    const onPointerUp = vi.fn<(event: PointerEvent) => void>()
+    window.addEventListener('pointerdown', onPointerDown)
+    window.addEventListener('pointermove', onPointerMove)
+    window.addEventListener('pointerup', onPointerUp)
+    const wrapper = mount(Drawer, {
+      props: {
+        modelValue: true
+      },
+      slots: {
+        default: '<div data-ui-image-editor="true"><button data-test="drag-target">drag</button></div>'
+      },
+      attachTo: document.body
+    })
+    await wrapper.vm.$nextTick()
+    const target = document.querySelector('[data-test="drag-target"]')!
+
+    target.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, pointerId: 3 }))
+    target.dispatchEvent(new PointerEvent('pointermove', { bubbles: true, buttons: 1, pointerId: 3 }))
+    target.dispatchEvent(new PointerEvent('pointerup', { bubbles: true, pointerId: 3 }))
+
+    expect(onPointerDown).not.toHaveBeenCalled()
+    expect(onPointerMove).toHaveBeenCalledOnce()
+    expect(onPointerUp).toHaveBeenCalledOnce()
+    window.removeEventListener('pointerdown', onPointerDown)
+    window.removeEventListener('pointermove', onPointerMove)
+    window.removeEventListener('pointerup', onPointerUp)
     wrapper.unmount()
   })
 
